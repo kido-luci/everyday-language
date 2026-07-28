@@ -1,6 +1,7 @@
 import 'package:feature_home/feature_home.dart';
 import 'package:feature_profile/feature_profile.dart';
 import 'package:feature_splash/feature_splash.dart';
+import 'package:feature_vocabulary/feature_vocabulary.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_contracts/shared_contracts.dart';
@@ -14,6 +15,18 @@ part 'router.g.dart';
     TypedStatefulShellBranch<HomeBranchData>(
       routes: <TypedRoute<RouteData>>[
         TypedGoRoute<HomeRoute>(path: '/', name: 'home'),
+      ],
+    ),
+    TypedStatefulShellBranch<VocabularyBranchData>(
+      routes: <TypedRoute<RouteData>>[
+        TypedGoRoute<WordsRoute>(
+          path: '/words',
+          name: 'words',
+          routes: <TypedRoute<RouteData>>[
+            TypedGoRoute<AddWordRoute>(path: 'add', name: 'wordAdd'),
+            TypedGoRoute<WordDetailRoute>(path: ':id', name: 'wordDetail'),
+          ],
+        ),
       ],
     ),
     TypedStatefulShellBranch<ProfileBranchData>(
@@ -42,6 +55,10 @@ class HomeBranchData extends StatefulShellBranchData {
   const HomeBranchData();
 }
 
+class VocabularyBranchData extends StatefulShellBranchData {
+  const VocabularyBranchData();
+}
+
 class ProfileBranchData extends StatefulShellBranchData {
   const ProfileBranchData();
 }
@@ -64,6 +81,34 @@ class HomeRoute extends GoRouteData with $HomeRoute {
 
   @override
   Widget build(BuildContext context, GoRouterState state) => const HomeScreen();
+}
+
+class WordsRoute extends GoRouteData with $WordsRoute {
+  const WordsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => WordsListScreen(
+    onAdd: () => const AddWordRoute().push<void>(context),
+    onOpen: (id) => WordDetailRoute(id: id).push<void>(context),
+  );
+}
+
+class AddWordRoute extends GoRouteData with $AddWordRoute {
+  const AddWordRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      AddWordScreen(onSaved: () => context.pop());
+}
+
+class WordDetailRoute extends GoRouteData with $WordDetailRoute {
+  const WordDetailRoute({required this.id});
+
+  final int id;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      WordDetailScreen(wordId: id);
 }
 
 class ProfileRoute extends GoRouteData with $ProfileRoute {

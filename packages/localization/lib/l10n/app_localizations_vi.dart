@@ -149,6 +149,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get commonEdit => 'Chỉnh sửa';
 
   @override
+  String get commonErrorGeneric => 'Đã có lỗi xảy ra.';
+
+  @override
   String get commonImageLoadFailed => 'Không tải được hình ảnh';
 
   @override
@@ -515,6 +518,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get navHome => 'Trang chủ';
 
   @override
+  String get navWords => 'Từ vựng';
+
+  @override
   String get navBookmarks => 'Bookmark';
 
   @override
@@ -686,4 +692,58 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get homeCreateCollection => 'Tạo bộ sưu tập';
+
+  @override
+  String get vocabularyTitle => 'Từ của tôi';
+
+  @override
+  String get vocabularyEmptyTitle => 'Chưa có từ nào';
+
+  @override
+  String get vocabularyEmptyMessage =>
+      'Thêm một từ bạn gặp hôm nay, kèm câu bạn đã gặp nó.';
+
+  @override
+  String get vocabularyAddTitle => 'Thêm từ';
+
+  @override
+  String get vocabularyWordLabel => 'Từ';
+
+  @override
+  String get vocabularyWordHint => 'decision';
+
+  @override
+  String get vocabularySentenceLabel => 'Câu bạn đã gặp từ này';
+
+  @override
+  String get vocabularySentenceHint => 'It was a hard decision.';
+
+  @override
+  String get vocabularySentenceHelper =>
+      'Không bắt buộc — nhưng giúp nhớ lâu hơn nhiều.';
+
+  @override
+  String get vocabularyMeaningLabel => 'Nghĩa';
+
+  @override
+  String get vocabularyMeaningHint => 'Không bắt buộc';
+
+  @override
+  String get vocabularySave => 'Lưu từ';
+
+  @override
+  String get vocabularyDelete => 'Xoá từ';
+
+  @override
+  String get vocabularyDeleteConfirm =>
+      'Xoá từ này và mọi thứ bạn đã học về nó?';
+
+  @override
+  String get vocabularyPendingEnrichment => 'Thông tin sẽ về khi bạn có mạng';
+
+  @override
+  String get vocabularyExamples => 'Ví dụ';
+
+  @override
+  String get vocabularyFromYourReading => 'Từ bài bạn đọc';
 }

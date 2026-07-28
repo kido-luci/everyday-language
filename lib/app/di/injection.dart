@@ -3,6 +3,7 @@ import 'package:app_platform/app_platform.dart';
 import 'package:config/config.dart';
 import 'package:feature_home/feature_home.dart';
 import 'package:feature_profile/feature_profile.dart';
+import 'package:feature_vocabulary/feature_vocabulary.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_contracts/shared_contracts.dart';
@@ -33,6 +34,7 @@ final GetIt getIt = GetIt.instance;
     ExternalModule(SharedContractsPackageModule),
     ExternalModule(FeatureHomePackageModule),
     ExternalModule(FeatureProfilePackageModule),
+    ExternalModule(FeatureVocabularyPackageModule),
     // fst:feature-modules — `fst add-feature` inserts new feature modules above
   ],
 )
