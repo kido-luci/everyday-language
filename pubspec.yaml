@@ -33,6 +33,7 @@ workspace:
   - packages/shared_contracts
   - packages/shared_ui
   - packages/database
+  - packages/srs
   - packages/localization
   - packages/features/splash
   - packages/features/home
