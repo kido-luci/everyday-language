@@ -10,6 +10,5 @@ abstract class AnalyticsModule {
   /// `// fst:analytics-impl` marker to `const NoOpAnalyticsService()`. To use a
   /// non-Firebase backend, replace it with your own [AnalyticsService].
   @lazySingleton
-  AnalyticsService provideAnalyticsService() =>
-      const NoOpAnalyticsService(); // fst:analytics-impl
+  AnalyticsService provideAnalyticsService() => const NoOpAnalyticsService(); // fst:analytics-impl
 }

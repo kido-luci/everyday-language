@@ -61,7 +61,6 @@ void main() {
   // for an app scaffolded from this template.
   const bannedTerms = <String>['bookmark', 'collection'];
 
-
   test('usage descriptions name no template-specific demo feature', () {
     final offenders = <String>[];
     descriptions.forEach((key, value) {
@@ -81,7 +80,6 @@ void main() {
           '${offenders.join('\n')}',
     );
   });
-
 
   // These permissions exist only for the bookmarks media-capture flow. The
   // `fst` CLI strips them when bookmarks is removed by stripping the

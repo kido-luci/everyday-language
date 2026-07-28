@@ -9,7 +9,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:localization/localization.dart';
 
 void main() {
-
   // Kept session-free at the call site so the harness reads the same with and
   // without the auth pillar — only the SessionScope wrapper differs.
   Widget host(void Function(BuildContext context) onRestored) {
@@ -20,7 +19,6 @@ void main() {
       home: home,
     );
   }
-
 
   testWidgets('calls onRestored only after the minimum display time', (
     tester,

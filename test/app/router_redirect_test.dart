@@ -12,7 +12,6 @@
 import 'package:everyday_language/app/router.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-
 const splash = '/splash';
 const home = '/';
 
@@ -23,9 +22,7 @@ DeepLinkState gate({bool splashCompleted = false, String? pending}) {
     ..pendingRedirect = pending;
 }
 
-
 void main() {
-
   group('no auth pillar — status null, splash is the only gate', () {
     String? resolveNoAuth({
       required String location,

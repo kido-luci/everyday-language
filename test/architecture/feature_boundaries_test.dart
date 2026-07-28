@@ -33,8 +33,7 @@ import 'package:flutter_test/flutter_test.dart';
 /// Each value is the set of feature packages it is allowed to import. Keep this
 /// list minimal and commented — every entry is a deliberate exception to the
 /// boundary rule.
-const _allowedCrossFeatureImports = <String, Set<String>>{
-};
+const _allowedCrossFeatureImports = <String, Set<String>>{};
 
 void main() {
   final featuresDir = Directory('packages/features');

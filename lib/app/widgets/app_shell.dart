@@ -4,7 +4,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:localization/localization.dart';
 
-
 /// Hosts the persistent adaptive navigation around the authenticated branches.
 ///
 /// Renders an [AppAdaptiveScaffold] whose body is the [navigationShell] (the
@@ -20,7 +19,6 @@ class AppShell extends StatefulWidget {
 }
 
 class _AppShellState extends State<AppShell> {
-
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;

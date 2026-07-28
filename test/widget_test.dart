@@ -8,7 +8,6 @@ import 'package:theme/theme.dart';
 
 import 'test_utils.dart';
 
-
 void main() {
   late MockAnalyticsService analytics;
   late ThemeBloc themeBloc;
@@ -19,7 +18,6 @@ void main() {
     SharedPreferences.setMockInitialValues({});
     analytics = MockAnalyticsService();
     stubAnalyticsService(analytics);
-
 
     final bookmarkStats = MockBookmarkStatsReader();
     when(
@@ -38,7 +36,6 @@ void main() {
       homeBloc = bloc;
       return bloc;
     });
-
   });
 
   tearDown(() async {
@@ -49,5 +46,4 @@ void main() {
     }
     await themeBloc.close();
   });
-
 }

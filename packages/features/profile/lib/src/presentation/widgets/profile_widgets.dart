@@ -16,7 +16,6 @@ class ProfileBody extends StatelessWidget {
   /// Extra bottom padding so content clears the floating bottom bar.
   static const double _bottomInset = 96;
 
-
   @override
   Widget build(BuildContext context) {
     Widget body = AppScaffold(

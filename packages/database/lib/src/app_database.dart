@@ -1,7 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 
-
 part 'app_database.g.dart';
 
 /// Single Drift database for the app. Feature data layers receive this via DI
@@ -10,8 +9,7 @@ part 'app_database.g.dart';
 /// One table per line so `fst create` can strip an excluded feature's table
 /// without rewriting the list.
 @DriftDatabase(
-  tables: [
-  ],
+  tables: [],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase(super.e);

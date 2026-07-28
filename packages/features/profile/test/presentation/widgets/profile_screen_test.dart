@@ -19,7 +19,6 @@ class MockThemeBloc extends Mock implements ThemeBloc {}
 
 class MockProfileBloc extends Mock implements ProfileBloc {}
 
-
 void main() {
   late MockThemeBloc themeBloc;
   late MockProfileBloc profileBloc;
@@ -42,7 +41,6 @@ void main() {
     const profileState = ProfileState();
     when(() => profileBloc.state).thenReturn(profileState);
     when(() => profileBloc.stream).thenAnswer((_) => const Stream.empty());
-
   });
 
   Future<void> pumpProfile(WidgetTester tester) async {
@@ -70,7 +68,6 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-
   testWidgets('selecting a theme mode dispatches ThemeModeChanged', (
     tester,
   ) async {
@@ -96,5 +93,4 @@ void main() {
       ),
     ).called(1);
   });
-
 }

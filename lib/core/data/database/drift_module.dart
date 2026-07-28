@@ -8,7 +8,4 @@ import 'package:injectable/injectable.dart';
 abstract class DriftModule {
   @lazySingleton
   AppDatabase provideDatabase() => AppDatabase.open();
-
-
-
 }

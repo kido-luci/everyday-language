@@ -1,4 +1,3 @@
-
 import 'feature_module.dart';
 
 /// All optional features enabled in this project.
@@ -7,8 +6,5 @@ import 'feature_module.dart';
 const List<FeatureModule> enabledFeatures = [
   // fst:enabled-features — `fst add-feature` inserts new modules above this line
 ];
-
-
-
 
 // fst:feature-module-classes — `fst add-feature` inserts new module classes above

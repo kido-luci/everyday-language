@@ -21,8 +21,7 @@ part 'router.g.dart';
         TypedGoRoute<ProfileRoute>(
           path: '/profile',
           name: 'profile',
-          routes: <TypedRoute<RouteData>>[
-          ],
+          routes: <TypedRoute<RouteData>>[],
         ),
       ],
     ),
@@ -42,8 +41,6 @@ class AppShellRouteData extends StatefulShellRouteData {
 class HomeBranchData extends StatefulShellBranchData {
   const HomeBranchData();
 }
-
-
 
 class ProfileBranchData extends StatefulShellBranchData {
   const ProfileBranchData();
@@ -69,7 +66,6 @@ class HomeRoute extends GoRouteData with $HomeRoute {
   Widget build(BuildContext context, GoRouterState state) => const HomeScreen();
 }
 
-
 class ProfileRoute extends GoRouteData with $ProfileRoute {
   const ProfileRoute();
 
@@ -77,8 +73,6 @@ class ProfileRoute extends GoRouteData with $ProfileRoute {
   Widget build(BuildContext context, GoRouterState state) =>
       const ProfileScreen();
 }
-
-
 
 /// Tracks deep-link targets and splash-screen completion so the redirect can
 /// capture cold-start URIs and replay them after auth resolves.
