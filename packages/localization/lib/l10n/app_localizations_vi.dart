@@ -311,6 +311,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get profileSectionAbout => 'Giới thiệu';
 
   @override
+  String get profileLicenses => 'Giấy phép mã nguồn mở';
+
+  @override
   String get profileUserIdCopied => 'Đã sao chép ID người dùng';
 
   @override

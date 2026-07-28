@@ -110,6 +110,7 @@
   "changePasswordSuccessMessage": "Cập nhật mật khẩu thành công.",
   "changePasswordMismatchError": "Mật khẩu mới không khớp.",
   "profileSectionAbout": "Giới thiệu",
+  "profileLicenses": "Giấy phép mã nguồn mở",
   "profileUserIdCopied": "Đã sao chép ID người dùng",
   "profileAppearanceThemeLabel": "Chủ đề",
   "profileAppearanceColorLabel": "Màu nhấn",

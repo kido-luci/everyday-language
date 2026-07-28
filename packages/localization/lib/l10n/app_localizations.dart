@@ -662,6 +662,12 @@ abstract class AppLocalizations {
   /// **'About'**
   String get profileSectionAbout;
 
+  /// No description provided for @profileLicenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Open-source licenses'**
+  String get profileLicenses;
+
   /// No description provided for @profileUserIdCopied.
   ///
   /// In en, this message translates to:

@@ -311,6 +311,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileSectionAbout => 'About';
 
   @override
+  String get profileLicenses => 'Open-source licenses';
+
+  @override
   String get profileUserIdCopied => 'User ID copied';
 
   @override

@@ -169,6 +169,7 @@
   "changePasswordSuccessMessage": "Password updated successfully.",
   "changePasswordMismatchError": "New passwords do not match.",
   "profileSectionAbout": "About",
+  "profileLicenses": "Open-source licenses",
   "profileUserIdCopied": "User ID copied",
   "profileAppearanceThemeLabel": "Theme",
   "profileAppearanceColorLabel": "Accent color",
