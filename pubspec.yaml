@@ -54,6 +54,7 @@ dependencies:
   architecture: ^0.1.0
   app_platform: ^0.1.0
   storage: ^0.1.0
+  srs: ^0.1.0
   theme: ^0.1.0
   shared_contracts: ^0.1.0
   shared_ui: ^0.1.0
