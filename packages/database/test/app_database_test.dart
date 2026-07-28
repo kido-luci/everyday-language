@@ -7,9 +7,6 @@
 // word grow two competing schedules for the same direction.
 
 import 'package:database/database.dart';
-// `isNull` and `Value` come from both drift and matcher; the test wants the
-// matcher, and only needs `Value`/`Variable` from drift.
-import 'package:drift/drift.dart' show Value, Variable;
 import 'package:drift/native.dart';
 import 'package:drift_dev/api/migrations_native.dart';
 import 'package:flutter_test/flutter_test.dart';

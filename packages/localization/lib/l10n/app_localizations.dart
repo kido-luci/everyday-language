@@ -362,6 +362,12 @@ abstract class AppLocalizations {
   /// **'Delete'**
   String get commonDelete;
 
+  /// No description provided for @commonDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get commonDone;
+
   /// No description provided for @commonEdit.
   ///
   /// In en, this message translates to:
@@ -1447,6 +1453,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'From your reading'**
   String get vocabularyFromYourReading;
+
+  /// No description provided for @reviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review'**
+  String get reviewTitle;
+
+  /// No description provided for @reviewStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Review'**
+  String get reviewStart;
+
+  /// No description provided for @reviewShowAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Show answer'**
+  String get reviewShowAnswer;
+
+  /// No description provided for @reviewAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Again'**
+  String get reviewAgain;
+
+  /// No description provided for @reviewHard.
+  ///
+  /// In en, this message translates to:
+  /// **'Hard'**
+  String get reviewHard;
+
+  /// No description provided for @reviewGood.
+  ///
+  /// In en, this message translates to:
+  /// **'Good'**
+  String get reviewGood;
+
+  /// No description provided for @reviewEasy.
+  ///
+  /// In en, this message translates to:
+  /// **'Easy'**
+  String get reviewEasy;
+
+  /// No description provided for @reviewDoneTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing due'**
+  String get reviewDoneTitle;
+
+  /// No description provided for @reviewDoneMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You are up to date. Come back when a card is ready.'**
+  String get reviewDoneMessage;
+
+  /// No description provided for @reviewFinishedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Session done'**
+  String get reviewFinishedTitle;
+
+  /// No description provided for @reviewRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} left'**
+  String reviewRemaining(int count);
+
+  /// No description provided for @reviewProduceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Say it out loud before you reveal.'**
+  String get reviewProduceHint;
 }
 
 class _AppLocalizationsDelegate

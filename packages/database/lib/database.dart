@@ -7,7 +7,21 @@ library;
 
 export 'dart:convert' show jsonDecode, jsonEncode;
 
-export 'package:drift/drift.dart' show OrderingTerm, Value;
+// The query surface feature data layers legitimately need, and no more.
+// Exporting all of drift would drag `Column` and `Table` into scope and
+// collide with Flutter's widgets of the same names; keeping the list explicit
+// also keeps drift itself an implementation detail of this package rather
+// than a dependency every feature declares.
+export 'package:drift/drift.dart'
+    show
+        BaseAggregate,
+        ComparableExpr,
+        OrderingTerm,
+        Value,
+        Variable,
+        countAll,
+        innerJoin,
+        leftOuterJoin;
 
 export 'src/app_database.dart';
 export 'src/enums.dart';

@@ -44,6 +44,7 @@
   "commonCancel": "Cancel",
   "commonCreate": "Create",
   "commonDelete": "Delete",
+  "commonDone": "Done",
   "commonEdit": "Edit",
   "commonErrorGeneric": "Something went wrong.",
   "commonImageLoadFailed": "Failed to load image",
@@ -386,5 +387,24 @@
   "vocabularyDeleteConfirm": "Delete this word and everything you have learned about it?",
   "vocabularyPendingEnrichment": "Details arrive when you are online",
   "vocabularyExamples": "Examples",
-  "vocabularyFromYourReading": "From your reading"
+  "vocabularyFromYourReading": "From your reading",
+  "reviewTitle": "Review",
+  "reviewStart": "Review",
+  "reviewShowAnswer": "Show answer",
+  "reviewAgain": "Again",
+  "reviewHard": "Hard",
+  "reviewGood": "Good",
+  "reviewEasy": "Easy",
+  "reviewDoneTitle": "Nothing due",
+  "reviewDoneMessage": "You are up to date. Come back when a card is ready.",
+  "reviewFinishedTitle": "Session done",
+  "reviewRemaining": "{count} left",
+  "@reviewRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reviewProduceHint": "Say it out loud before you reveal."
 }

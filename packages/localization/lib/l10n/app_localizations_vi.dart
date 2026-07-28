@@ -146,6 +146,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get commonDelete => 'Xóa';
 
   @override
+  String get commonDone => 'Xong';
+
+  @override
   String get commonEdit => 'Chỉnh sửa';
 
   @override
@@ -746,4 +749,43 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get vocabularyFromYourReading => 'Từ bài bạn đọc';
+
+  @override
+  String get reviewTitle => 'Ôn tập';
+
+  @override
+  String get reviewStart => 'Ôn tập';
+
+  @override
+  String get reviewShowAnswer => 'Hiện đáp án';
+
+  @override
+  String get reviewAgain => 'Lại';
+
+  @override
+  String get reviewHard => 'Khó';
+
+  @override
+  String get reviewGood => 'Được';
+
+  @override
+  String get reviewEasy => 'Dễ';
+
+  @override
+  String get reviewDoneTitle => 'Chưa tới hạn';
+
+  @override
+  String get reviewDoneMessage =>
+      'Bạn đã ôn xong. Quay lại khi có thẻ tới hạn nhé.';
+
+  @override
+  String get reviewFinishedTitle => 'Xong phiên ôn';
+
+  @override
+  String reviewRemaining(int count) {
+    return 'Còn $count';
+  }
+
+  @override
+  String get reviewProduceHint => 'Nói to trước khi xem đáp án.';
 }

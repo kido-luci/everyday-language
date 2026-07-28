@@ -6,21 +6,33 @@
 import 'dart:async' as _i687;
 
 import 'package:database/database.dart' as _i252;
+import 'package:feature_vocabulary/src/data/local/review_local_data_source.dart'
+    as _i740;
 import 'package:feature_vocabulary/src/data/local/vocabulary_local_data_source.dart'
     as _i566;
+import 'package:feature_vocabulary/src/data/repositories/review_repository_impl.dart'
+    as _i158;
 import 'package:feature_vocabulary/src/data/repositories/vocabulary_repository_impl.dart'
     as _i669;
 import 'package:feature_vocabulary/src/di.dart' as _i41;
+import 'package:feature_vocabulary/src/domain/repositories/review_repository.dart'
+    as _i400;
 import 'package:feature_vocabulary/src/domain/repositories/vocabulary_repository.dart'
     as _i644;
 import 'package:feature_vocabulary/src/domain/usecases/add_word.dart' as _i967;
 import 'package:feature_vocabulary/src/domain/usecases/delete_word.dart'
     as _i314;
 import 'package:feature_vocabulary/src/domain/usecases/get_word.dart' as _i985;
+import 'package:feature_vocabulary/src/domain/usecases/grade_card.dart'
+    as _i1051;
 import 'package:feature_vocabulary/src/domain/usecases/list_words.dart'
     as _i1044;
+import 'package:feature_vocabulary/src/domain/usecases/load_due_cards.dart'
+    as _i345;
 import 'package:feature_vocabulary/src/presentation/bloc/add_word/add_word_cubit.dart'
     as _i330;
+import 'package:feature_vocabulary/src/presentation/bloc/review_session/review_session_cubit.dart'
+    as _i1028;
 import 'package:feature_vocabulary/src/presentation/bloc/word_detail/word_detail_cubit.dart'
     as _i122;
 import 'package:feature_vocabulary/src/presentation/bloc/words_list/words_list_bloc.dart'
@@ -36,10 +48,31 @@ class FeatureVocabularyPackageModule extends _i526.MicroPackageModule {
     gh.lazySingleton<_i902.SrsScheduler>(
       () => vocabularyExternalModule.provideScheduler(),
     );
+    gh.lazySingleton<_i740.ReviewLocalDataSource>(
+      () => _i740.ReviewLocalDataSource(gh<_i252.AppDatabase>()),
+    );
     gh.lazySingleton<_i566.VocabularyLocalDataSource>(
       () => _i566.VocabularyLocalDataSource(
         gh<_i252.AppDatabase>(),
         gh<_i902.SrsScheduler>(),
+      ),
+    );
+    gh.lazySingleton<_i400.ReviewRepository>(
+      () => _i158.ReviewRepositoryImpl(
+        gh<_i740.ReviewLocalDataSource>(),
+        gh<_i902.SrsScheduler>(),
+      ),
+    );
+    gh.factory<_i1051.GradeCard>(
+      () => _i1051.GradeCard(gh<_i400.ReviewRepository>()),
+    );
+    gh.factory<_i345.LoadDueCards>(
+      () => _i345.LoadDueCards(gh<_i400.ReviewRepository>()),
+    );
+    gh.factory<_i1028.ReviewSessionCubit>(
+      () => _i1028.ReviewSessionCubit(
+        gh<_i345.LoadDueCards>(),
+        gh<_i1051.GradeCard>(),
       ),
     );
     gh.lazySingleton<_i644.VocabularyRepository>(
