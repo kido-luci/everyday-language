@@ -52,6 +52,7 @@ const _layers = <String, int>{
   //     them), each depending on no sibling feature.
   'feature_home': 4,
   'feature_splash': 4,
+  'feature_vocabulary': 4, // -> database, srs; depends on no sibling feature
   // 5 — feature packages that surface a single sibling's capability; each
   //     depends on exactly one lower feature (the capability provider). The
   //     allowed edges are documented in feature_boundaries_test.

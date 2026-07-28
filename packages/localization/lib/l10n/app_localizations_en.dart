@@ -147,6 +147,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonEdit => 'Edit';
 
   @override
+  String get commonErrorGeneric => 'Something went wrong.';
+
+  @override
   String get commonImageLoadFailed => 'Failed to load image';
 
   @override
@@ -513,6 +516,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navHome => 'Home';
 
   @override
+  String get navWords => 'Words';
+
+  @override
   String get navBookmarks => 'Bookmarks';
 
   @override
@@ -685,4 +691,59 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeCreateCollection => 'Create collection';
+
+  @override
+  String get vocabularyTitle => 'My words';
+
+  @override
+  String get vocabularyEmptyTitle => 'No words yet';
+
+  @override
+  String get vocabularyEmptyMessage =>
+      'Add a word you met today, with the sentence you met it in.';
+
+  @override
+  String get vocabularyAddTitle => 'Add a word';
+
+  @override
+  String get vocabularyWordLabel => 'Word';
+
+  @override
+  String get vocabularyWordHint => 'decision';
+
+  @override
+  String get vocabularySentenceLabel => 'Sentence you met it in';
+
+  @override
+  String get vocabularySentenceHint => 'It was a hard decision.';
+
+  @override
+  String get vocabularySentenceHelper =>
+      'Optional — but it makes the word stick.';
+
+  @override
+  String get vocabularyMeaningLabel => 'Meaning';
+
+  @override
+  String get vocabularyMeaningHint => 'Optional';
+
+  @override
+  String get vocabularySave => 'Save word';
+
+  @override
+  String get vocabularyDelete => 'Delete word';
+
+  @override
+  String get vocabularyDeleteConfirm =>
+      'Delete this word and everything you have learned about it?';
+
+  @override
+  String get vocabularyPendingEnrichment =>
+      'Details arrive when you are online';
+
+  @override
+  String get vocabularyExamples => 'Examples';
+
+  @override
+  String get vocabularyFromYourReading => 'From your reading';
 }

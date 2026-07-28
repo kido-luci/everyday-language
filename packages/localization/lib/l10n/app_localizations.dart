@@ -368,6 +368,12 @@ abstract class AppLocalizations {
   /// **'Edit'**
   String get commonEdit;
 
+  /// No description provided for @commonErrorGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong.'**
+  String get commonErrorGeneric;
+
   /// No description provided for @commonImageLoadFailed.
   ///
   /// In en, this message translates to:
@@ -1046,6 +1052,12 @@ abstract class AppLocalizations {
   /// **'Home'**
   String get navHome;
 
+  /// No description provided for @navWords.
+  ///
+  /// In en, this message translates to:
+  /// **'Words'**
+  String get navWords;
+
   /// No description provided for @navBookmarks.
   ///
   /// In en, this message translates to:
@@ -1333,6 +1345,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Create collection'**
   String get homeCreateCollection;
+
+  /// No description provided for @vocabularyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My words'**
+  String get vocabularyTitle;
+
+  /// No description provided for @vocabularyEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No words yet'**
+  String get vocabularyEmptyTitle;
+
+  /// No description provided for @vocabularyEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a word you met today, with the sentence you met it in.'**
+  String get vocabularyEmptyMessage;
+
+  /// No description provided for @vocabularyAddTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a word'**
+  String get vocabularyAddTitle;
+
+  /// No description provided for @vocabularyWordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Word'**
+  String get vocabularyWordLabel;
+
+  /// No description provided for @vocabularyWordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'decision'**
+  String get vocabularyWordHint;
+
+  /// No description provided for @vocabularySentenceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sentence you met it in'**
+  String get vocabularySentenceLabel;
+
+  /// No description provided for @vocabularySentenceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'It was a hard decision.'**
+  String get vocabularySentenceHint;
+
+  /// No description provided for @vocabularySentenceHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional — but it makes the word stick.'**
+  String get vocabularySentenceHelper;
+
+  /// No description provided for @vocabularyMeaningLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Meaning'**
+  String get vocabularyMeaningLabel;
+
+  /// No description provided for @vocabularyMeaningHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional'**
+  String get vocabularyMeaningHint;
+
+  /// No description provided for @vocabularySave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save word'**
+  String get vocabularySave;
+
+  /// No description provided for @vocabularyDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete word'**
+  String get vocabularyDelete;
+
+  /// No description provided for @vocabularyDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this word and everything you have learned about it?'**
+  String get vocabularyDeleteConfirm;
+
+  /// No description provided for @vocabularyPendingEnrichment.
+  ///
+  /// In en, this message translates to:
+  /// **'Details arrive when you are online'**
+  String get vocabularyPendingEnrichment;
+
+  /// No description provided for @vocabularyExamples.
+  ///
+  /// In en, this message translates to:
+  /// **'Examples'**
+  String get vocabularyExamples;
+
+  /// No description provided for @vocabularyFromYourReading.
+  ///
+  /// In en, this message translates to:
+  /// **'From your reading'**
+  String get vocabularyFromYourReading;
 }
 
 class _AppLocalizationsDelegate

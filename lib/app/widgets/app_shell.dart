@@ -30,6 +30,11 @@ class _AppShellState extends State<AppShell> {
         label: l10n.navHome,
       ),
       AppDestination(
+        icon: FontAwesomeIcons.bookOpen,
+        selectedIcon: FontAwesomeIcons.solidBookmark,
+        label: l10n.navWords,
+      ),
+      AppDestination(
         icon: FontAwesomeIcons.user,
         selectedIcon: FontAwesomeIcons.solidUser,
         label: l10n.navProfile,
