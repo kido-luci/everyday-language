@@ -144,6 +144,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonDelete => 'Delete';
 
   @override
+  String get commonDone => 'Done';
+
+  @override
   String get commonEdit => 'Edit';
 
   @override
@@ -746,4 +749,43 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get vocabularyFromYourReading => 'From your reading';
+
+  @override
+  String get reviewTitle => 'Review';
+
+  @override
+  String get reviewStart => 'Review';
+
+  @override
+  String get reviewShowAnswer => 'Show answer';
+
+  @override
+  String get reviewAgain => 'Again';
+
+  @override
+  String get reviewHard => 'Hard';
+
+  @override
+  String get reviewGood => 'Good';
+
+  @override
+  String get reviewEasy => 'Easy';
+
+  @override
+  String get reviewDoneTitle => 'Nothing due';
+
+  @override
+  String get reviewDoneMessage =>
+      'You are up to date. Come back when a card is ready.';
+
+  @override
+  String get reviewFinishedTitle => 'Session done';
+
+  @override
+  String reviewRemaining(int count) {
+    return '$count left';
+  }
+
+  @override
+  String get reviewProduceHint => 'Say it out loud before you reveal.';
 }

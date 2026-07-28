@@ -44,6 +44,7 @@
   "commonCancel": "Hủy",
   "commonCreate": "Tạo",
   "commonDelete": "Xóa",
+  "commonDone": "Xong",
   "commonEdit": "Chỉnh sửa",
   "commonErrorGeneric": "Đã có lỗi xảy ra.",
   "commonImageLoadFailed": "Không tải được hình ảnh",
@@ -296,5 +297,17 @@
   "vocabularyDeleteConfirm": "Xoá từ này và mọi thứ bạn đã học về nó?",
   "vocabularyPendingEnrichment": "Thông tin sẽ về khi bạn có mạng",
   "vocabularyExamples": "Ví dụ",
-  "vocabularyFromYourReading": "Từ bài bạn đọc"
+  "vocabularyFromYourReading": "Từ bài bạn đọc",
+  "reviewTitle": "Ôn tập",
+  "reviewStart": "Ôn tập",
+  "reviewShowAnswer": "Hiện đáp án",
+  "reviewAgain": "Lại",
+  "reviewHard": "Khó",
+  "reviewGood": "Được",
+  "reviewEasy": "Dễ",
+  "reviewDoneTitle": "Chưa tới hạn",
+  "reviewDoneMessage": "Bạn đã ôn xong. Quay lại khi có thẻ tới hạn nhé.",
+  "reviewFinishedTitle": "Xong phiên ôn",
+  "reviewRemaining": "Còn {count}",
+  "reviewProduceHint": "Nói to trước khi xem đáp án."
 }

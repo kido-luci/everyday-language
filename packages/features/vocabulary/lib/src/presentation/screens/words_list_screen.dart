@@ -12,26 +12,42 @@ import '../widgets/word_tile.dart';
 
 /// The learner's collected words, newest first.
 class WordsListScreen extends StatelessWidget {
-  const WordsListScreen({super.key, required this.onAdd, required this.onOpen});
+  const WordsListScreen({
+    super.key,
+    required this.onAdd,
+    required this.onOpen,
+    required this.onReview,
+  });
 
   final VoidCallback onAdd;
   final void Function(int wordId) onOpen;
+  final VoidCallback onReview;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => getIt<WordsListBloc>()..add(const WordsRequested()),
-      child: WordsListView(onAdd: onAdd, onOpen: onOpen),
+      child: WordsListView(
+        onAdd: onAdd,
+        onOpen: onOpen,
+        onReview: onReview,
+      ),
     );
   }
 }
 
 @visibleForTesting
 class WordsListView extends StatelessWidget {
-  const WordsListView({super.key, required this.onAdd, required this.onOpen});
+  const WordsListView({
+    super.key,
+    required this.onAdd,
+    required this.onOpen,
+    required this.onReview,
+  });
 
   final VoidCallback onAdd;
   final void Function(int wordId) onOpen;
+  final VoidCallback onReview;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +55,14 @@ class WordsListView extends StatelessWidget {
       builder: (context, state) {
         return AppScaffold(
           title: context.l10n.vocabularyTitle,
+          actions: [
+            if (state.words.isNotEmpty)
+              IconButton(
+                onPressed: onReview,
+                tooltip: context.l10n.reviewStart,
+                icon: const FaIcon(FontAwesomeIcons.graduationCap),
+              ),
+          ],
           padding: EdgeInsets.zero,
           isLoading: state.status == WordsListStatus.loading,
           floatingActionButton: FloatingActionButton(

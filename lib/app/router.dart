@@ -24,6 +24,7 @@ part 'router.g.dart';
           name: 'words',
           routes: <TypedRoute<RouteData>>[
             TypedGoRoute<AddWordRoute>(path: 'add', name: 'wordAdd'),
+            TypedGoRoute<ReviewRoute>(path: 'review', name: 'review'),
             TypedGoRoute<WordDetailRoute>(path: ':id', name: 'wordDetail'),
           ],
         ),
@@ -90,7 +91,16 @@ class WordsRoute extends GoRouteData with $WordsRoute {
   Widget build(BuildContext context, GoRouterState state) => WordsListScreen(
     onAdd: () => const AddWordRoute().push<void>(context),
     onOpen: (id) => WordDetailRoute(id: id).push<void>(context),
+    onReview: () => const ReviewRoute().push<void>(context),
   );
+}
+
+class ReviewRoute extends GoRouteData with $ReviewRoute {
+  const ReviewRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      ReviewScreen(onFinished: () => context.pop());
 }
 
 class AddWordRoute extends GoRouteData with $AddWordRoute {
