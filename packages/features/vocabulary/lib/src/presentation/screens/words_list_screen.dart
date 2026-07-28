@@ -19,7 +19,7 @@ class WordsListScreen extends StatelessWidget {
     required this.onReview,
   });
 
-  final VoidCallback onAdd;
+  final Future<void> Function() onAdd;
   final void Function(int wordId) onOpen;
   final VoidCallback onReview;
 
@@ -45,7 +45,7 @@ class WordsListView extends StatelessWidget {
     required this.onReview,
   });
 
-  final VoidCallback onAdd;
+  final Future<void> Function() onAdd;
   final void Function(int wordId) onOpen;
   final VoidCallback onReview;
 
@@ -55,6 +55,9 @@ class WordsListView extends StatelessWidget {
       builder: (context, state) {
         return AppScaffold(
           title: context.l10n.vocabularyTitle,
+          // Both actions live in the app bar rather than in a floating action
+          // button: on a phone the shell's floating nav pill sits over the
+          // bottom-right corner, so a FAB there is unreachable.
           actions: [
             if (state.words.isNotEmpty)
               IconButton(
@@ -62,13 +65,21 @@ class WordsListView extends StatelessWidget {
                 tooltip: context.l10n.reviewStart,
                 icon: const FaIcon(FontAwesomeIcons.graduationCap),
               ),
+            IconButton(
+              // Reload on return: the add screen writes through the repository,
+              // so the list this bloc is holding is stale the moment it pops.
+              onPressed: () async {
+                await onAdd();
+                if (context.mounted) {
+                  context.read<WordsListBloc>().add(const WordsRequested());
+                }
+              },
+              tooltip: context.l10n.vocabularyAddTitle,
+              icon: const FaIcon(FontAwesomeIcons.plus),
+            ),
           ],
           padding: EdgeInsets.zero,
           isLoading: state.status == WordsListStatus.loading,
-          floatingActionButton: FloatingActionButton(
-            onPressed: onAdd,
-            child: const FaIcon(FontAwesomeIcons.plus),
-          ),
           body: switch (state.status) {
             WordsListStatus.failure => AppErrorView(
               message: state.failureMessage ?? context.l10n.commonErrorGeneric,
@@ -81,9 +92,13 @@ class WordsListView extends StatelessWidget {
               message: context.l10n.vocabularyEmptyMessage,
             ),
             _ => ListView.builder(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.lg,
-                vertical: AppSpacing.md,
+              // The last card would otherwise sit behind the shell's
+              // floating nav pill.
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                AppSpacing.md,
+                AppSpacing.lg,
+                AppSpacing.md + kFloatingNavBarInset,
               ),
               itemCount: state.words.length,
               itemBuilder: (context, i) {

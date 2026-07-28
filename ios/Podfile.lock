@@ -1,8 +1,6 @@
 PODS:
   - camera_avfoundation (0.0.1):
     - Flutter
-  - connectivity_plus (0.0.1):
-    - Flutter
   - Firebase/CoreOnly (12.15.0):
     - FirebaseCore (~> 12.15.0)
   - Firebase/Crashlytics (12.15.0):
@@ -11,9 +9,6 @@ PODS:
   - Firebase/Messaging (12.15.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 12.15.0)
-  - Firebase/Performance (12.15.0):
-    - Firebase/CoreOnly
-    - FirebasePerformance (~> 12.15.0)
   - Firebase/RemoteConfig (12.15.0):
     - Firebase/CoreOnly
     - FirebaseRemoteConfig (~> 12.15.0)
@@ -28,12 +23,8 @@ PODS:
     - Firebase/Crashlytics (= 12.15.0)
     - firebase_core
     - Flutter
-  - firebase_messaging (16.4.0):
+  - firebase_messaging (16.4.1):
     - Firebase/Messaging (= 12.15.0)
-    - firebase_core
-    - Flutter
-  - firebase_performance (0.11.4-1):
-    - Firebase/Performance (= 12.15.0)
     - firebase_core
     - Flutter
   - firebase_remote_config (6.5.3):
@@ -91,16 +82,6 @@ PODS:
     - GoogleUtilities/Reachability (~> 8.1)
     - GoogleUtilities/UserDefaults (~> 8.1)
     - nanopb (~> 3.30910.0)
-  - FirebasePerformance (12.15.0):
-    - FirebaseCore (~> 12.15.0)
-    - FirebaseInstallations (~> 12.15.0)
-    - FirebaseRemoteConfig (~> 12.15.0)
-    - FirebaseSessions (~> 12.15.0)
-    - GoogleDataTransport (~> 10.1)
-    - GoogleUtilities/Environment (~> 8.1)
-    - GoogleUtilities/MethodSwizzler (~> 8.1)
-    - GoogleUtilities/UserDefaults (~> 8.1)
-    - nanopb (~> 3.30910.0)
   - FirebaseRemoteConfig (12.15.0):
     - FirebaseABTesting (~> 12.15.0)
     - FirebaseCore (~> 12.15.0)
@@ -126,6 +107,8 @@ PODS:
   - flutter_secure_storage_darwin (10.0.0):
     - Flutter
     - FlutterMacOS
+  - flutter_timezone (0.0.1):
+    - Flutter
   - GoogleAdsOnDeviceConversion (3.6.0):
     - GoogleUtilities/Environment (~> 8.1)
     - GoogleUtilities/Logger (~> 8.1)
@@ -192,10 +175,6 @@ PODS:
     - nanopb/encode (= 3.30910.0)
   - nanopb/decode (3.30910.0)
   - nanopb/encode (3.30910.0)
-  - ObjectBox (5.3.0)
-  - objectbox_flutter_libs (0.0.1):
-    - Flutter
-    - ObjectBox (= 5.3.0)
   - package_info_plus (0.4.5):
     - Flutter
   - permission_handler_apple (9.3.0):
@@ -211,6 +190,31 @@ PODS:
   - sqflite_darwin (0.0.4):
     - Flutter
     - FlutterMacOS
+  - sqlite3 (3.52.0):
+    - sqlite3/common (= 3.52.0)
+  - sqlite3/common (3.52.0)
+  - sqlite3/dbstatvtab (3.52.0):
+    - sqlite3/common
+  - sqlite3/fts5 (3.52.0):
+    - sqlite3/common
+  - sqlite3/math (3.52.0):
+    - sqlite3/common
+  - sqlite3/perf-threadsafe (3.52.0):
+    - sqlite3/common
+  - sqlite3/rtree (3.52.0):
+    - sqlite3/common
+  - sqlite3/session (3.52.0):
+    - sqlite3/common
+  - sqlite3_flutter_libs (0.0.1):
+    - Flutter
+    - FlutterMacOS
+    - sqlite3 (~> 3.52.0)
+    - sqlite3/dbstatvtab
+    - sqlite3/fts5
+    - sqlite3/math
+    - sqlite3/perf-threadsafe
+    - sqlite3/rtree
+    - sqlite3/session
   - url_launcher_ios (0.0.1):
     - Flutter
   - video_player_avfoundation (0.0.1):
@@ -219,24 +223,23 @@ PODS:
 
 DEPENDENCIES:
   - camera_avfoundation (from `.symlinks/plugins/camera_avfoundation/ios`)
-  - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_crashlytics (from `.symlinks/plugins/firebase_crashlytics/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
-  - firebase_performance (from `.symlinks/plugins/firebase_performance/ios`)
   - firebase_remote_config (from `.symlinks/plugins/firebase_remote_config/ios`)
   - Flutter (from `Flutter`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_secure_storage_darwin (from `.symlinks/plugins/flutter_secure_storage_darwin/darwin`)
+  - flutter_timezone (from `.symlinks/plugins/flutter_timezone/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
-  - objectbox_flutter_libs (from `.symlinks/plugins/objectbox_flutter_libs/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sqflite_darwin (from `.symlinks/plugins/sqflite_darwin/darwin`)
+  - sqlite3_flutter_libs (from `.symlinks/plugins/sqlite3_flutter_libs/darwin`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/darwin`)
 
@@ -251,7 +254,6 @@ SPEC REPOS:
     - FirebaseCrashlytics
     - FirebaseInstallations
     - FirebaseMessaging
-    - FirebasePerformance
     - FirebaseRemoteConfig
     - FirebaseRemoteConfigInterop
     - FirebaseSessions
@@ -261,15 +263,13 @@ SPEC REPOS:
     - GoogleDataTransport
     - GoogleUtilities
     - nanopb
-    - ObjectBox
     - PromisesObjC
     - PromisesSwift
+    - sqlite3
 
 EXTERNAL SOURCES:
   camera_avfoundation:
     :path: ".symlinks/plugins/camera_avfoundation/ios"
-  connectivity_plus:
-    :path: ".symlinks/plugins/connectivity_plus/ios"
   firebase_analytics:
     :path: ".symlinks/plugins/firebase_analytics/ios"
   firebase_core:
@@ -278,8 +278,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_crashlytics/ios"
   firebase_messaging:
     :path: ".symlinks/plugins/firebase_messaging/ios"
-  firebase_performance:
-    :path: ".symlinks/plugins/firebase_performance/ios"
   firebase_remote_config:
     :path: ".symlinks/plugins/firebase_remote_config/ios"
   Flutter:
@@ -288,12 +286,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
   flutter_secure_storage_darwin:
     :path: ".symlinks/plugins/flutter_secure_storage_darwin/darwin"
+  flutter_timezone:
+    :path: ".symlinks/plugins/flutter_timezone/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   integration_test:
     :path: ".symlinks/plugins/integration_test/ios"
-  objectbox_flutter_libs:
-    :path: ".symlinks/plugins/objectbox_flutter_libs/ios"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
   permission_handler_apple:
@@ -304,6 +302,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
   sqflite_darwin:
     :path: ".symlinks/plugins/sqflite_darwin/darwin"
+  sqlite3_flutter_libs:
+    :path: ".symlinks/plugins/sqlite3_flutter_libs/darwin"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
   video_player_avfoundation:
@@ -311,13 +311,11 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   camera_avfoundation: 968a9a5323c79a99c166ad9d7866bfd2047b5a9b
-  connectivity_plus: cb623214f4e1f6ef8fe7403d580fdad517d2f7dd
   Firebase: a8539b633d474fbeb654c7043f9c1649e274045b
   firebase_analytics: 5e356f558625ce2d8b21deff00946b56d6e8d0d5
   firebase_core: fc23178af8ea070194d09031ae4198a9608a3d22
   firebase_crashlytics: 344bb168f55aee1086c6cdd0b105a9db018cd344
-  firebase_messaging: cbffc91e44e4e29d5a255c63f6cde1d1a7f98745
-  firebase_performance: f345a8f1d65d5c4fe59422a05e96e635d5b5235f
+  firebase_messaging: 870b2939a7f7cc52bc38ca0250127c45b42f4bad
   firebase_remote_config: 3c6c60acab323f3e2f5dc25d35cfe5be984c7bd3
   FirebaseABTesting: 04cab3e6db77b86af50b6cf7c825a13e04beca52
   FirebaseAnalytics: 9c9fa7915fc52ea03077000d5a7b6a8947b2d76e
@@ -327,7 +325,6 @@ SPEC CHECKSUMS:
   FirebaseCrashlytics: 87e76cc33259b076dd1f96cd829db76849338e08
   FirebaseInstallations: eb29ccbf64eaedf86fd5b2ccc7fabde567660b52
   FirebaseMessaging: 40017d7bc8457ee295b0f41d480a80fdabc9994e
-  FirebasePerformance: 4817b556f47b991e8cd42761ec47d6c31150b037
   FirebaseRemoteConfig: d8b57e994277aabef7cca708e671ce676eefed7a
   FirebaseRemoteConfigInterop: 7e3d57ce4b1e958bb1d15403faa7178f46bbb5b7
   FirebaseSessions: acfe7eadca47cda94ac86592737204581bb1abf6
@@ -335,6 +332,7 @@ SPEC CHECKSUMS:
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
   flutter_local_notifications: 643a3eda1ce1c0599413ca31672536d423dee214
   flutter_secure_storage_darwin: acdb3f316ed05a3e68f856e0353b133eec373a23
+  flutter_timezone: 7c838e17ffd4645d261e87037e5bebf6d38fe544
   GoogleAdsOnDeviceConversion: 80ce443fa1b4b5750913d53a04ecda644ff57744
   GoogleAppMeasurement: a6d37949071d456e9147dac6789c4342e0e7a8c5
   GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
@@ -342,8 +340,6 @@ SPEC CHECKSUMS:
   image_picker_ios: e0ece4aa2a75771a7de3fa735d26d90817041326
   integration_test: 4a889634ef21a45d28d50d622cf412dc6d9f586e
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
-  ObjectBox: 2aae8ad350012cb53c6e7848064307cf68617f73
-  objectbox_flutter_libs: 42b57158b8c4869b731487f220e07d6edc6616e0
   package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
   permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
   PromisesObjC: 752c3227f599e3467650e47ea36f433eeb10c273
@@ -351,6 +347,8 @@ SPEC CHECKSUMS:
   share_plus: 50da8cb520a8f0f65671c6c6a99b3617ed10a58a
   shared_preferences_foundation: 7036424c3d8ec98dfe75ff1667cb0cd531ec82bb
   sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0
+  sqlite3: a51c07cf16e023d6c48abd5e5791a61a47354921
+  sqlite3_flutter_libs: b3e120efe9a82017e5552a620f696589ed4f62ab
   url_launcher_ios: 7a95fa5b60cc718a708b8f2966718e93db0cef1b
   video_player_avfoundation: 3453f792138786248960ca029747fcd9f318ef52
 

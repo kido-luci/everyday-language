@@ -119,6 +119,16 @@ class AppAdaptiveScaffold extends StatelessWidget {
 /// Height of the floating pill itself.
 const double _floatingBarPillHeight = 72;
 
+/// Vertical space the floating navigation pill occupies above the safe area.
+///
+/// On a compact layout the pill floats *over* the body rather than taking a
+/// slot beneath it, so a screen that anchors anything to the bottom — a
+/// button, a list's last row — has to reserve this much or it ends up behind
+/// the pill, invisible and untappable. Exported because otherwise every screen
+/// guesses its own number and they drift apart.
+const double kFloatingNavBarInset =
+    _floatingBarPillHeight + AppSpacing.md + AppSpacing.xs;
+
 /// A floating, pill-shaped bottom navigation bar.
 ///
 /// Destinations are icon-only on compact screens. The selected destination is

@@ -37,6 +37,14 @@ class ReviewView extends StatelessWidget {
         final cubit = context.read<ReviewSessionCubit>();
         return AppScaffold(
           title: context.l10n.reviewTitle,
+          // The shell's floating nav pill overlays the bottom of the body,
+          // and the grade buttons sit right there.
+          padding: const EdgeInsets.fromLTRB(
+            AppSpacing.lg,
+            AppSpacing.lg,
+            AppSpacing.lg,
+            AppSpacing.lg + kFloatingNavBarInset,
+          ),
           actions: [
             if (state.status == ReviewSessionStatus.reviewing)
               Padding(

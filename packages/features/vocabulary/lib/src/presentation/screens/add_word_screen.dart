@@ -44,6 +44,12 @@ class AddWordView extends StatelessWidget {
       builder: (context, state) {
         return AppScaffold(
           title: context.l10n.vocabularyAddTitle,
+          padding: const EdgeInsets.fromLTRB(
+            AppSpacing.lg,
+            AppSpacing.lg,
+            AppSpacing.lg,
+            AppSpacing.lg + kFloatingNavBarInset,
+          ),
           body: ListView(
             children: [
               AppTextField(
