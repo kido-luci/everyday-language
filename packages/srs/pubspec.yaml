@@ -1,0 +1,19 @@
+name: srs
+description: >-
+  Spaced-repetition scheduling for the app's review queue. Wraps the FSRS
+  algorithm behind this project's own vocabulary so the engine can be swapped
+  without touching callers. Pure Dart — no Flutter.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.12.0
+
+resolution: workspace
+
+dependencies:
+  fsrs: ^2.0.1
+  meta: ^1.16.0
+
+dev_dependencies:
+  test: ^1.25.0
