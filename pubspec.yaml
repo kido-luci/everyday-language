@@ -1,0 +1,226 @@
+name: everyday_language
+description: "A new Flutter project."
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.12.0
+
+workspace:
+  - packages/app_ui
+  - packages/analytics
+  - packages/config
+  - packages/architecture
+  - packages/app_platform
+  - packages/storage
+  - packages/theme
+  - packages/test_utils
+  - packages/shared_contracts
+  - packages/shared_ui
+  - packages/database
+  - packages/localization
+  - packages/features/splash
+  - packages/features/home
+  - packages/features/profile
+  # fst:features — `fst add-feature` inserts new feature packages above this line
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  app_ui: ^0.1.0
+  analytics: ^0.1.0
+  config: ^0.1.0
+  architecture: ^0.1.0
+  app_platform: ^0.1.0
+  storage: ^0.1.0
+  theme: ^0.1.0
+  shared_contracts: ^0.1.0
+  shared_ui: ^0.1.0
+  database: ^0.1.0
+  localization: ^0.1.0
+  feature_splash: ^0.1.0
+  feature_home: ^0.1.0
+  feature_profile: ^0.1.0
+  # fst:feature-deps — `fst add-feature` inserts new feature deps above this line
+
+  flutter:
+    sdk: flutter
+
+  # iOS-style icon set, used via the CupertinoIcons class.
+  cupertino_icons: ^1.0.8
+
+  # State management: BLoC pattern (BlocProvider, BlocBuilder, BlocListener).
+  flutter_bloc: ^9.1.1
+  # Event transformers for Bloc handlers.
+  bloc_concurrency: ^0.3.0
+
+  # Declarative routing with deep-linking and auth-redirect support.
+  # Pairs with go_router_builder for typed routes.
+  go_router: ^17.3.0
+
+  # Material/Cupertino/Widgets localization delegates required by the
+  # i18n pipeline (generate: true + ARB files under lib/l10n/).
+  flutter_localizations:
+    sdk: flutter
+
+  # DI annotations (@injectable, @singleton, @module) — drives registration
+  # codegen on top of get_it via injectable_generator.
+  injectable: ^3.0.0
+
+  # Service-locator container that holds the DI graph injectable generates.
+  get_it: ^9.2.1
+
+  # Runtime annotations (@freezed) consumed by freezed to generate
+  # immutable data classes and sealed unions (used by auth models).
+  freezed_annotation: ^3.1.0
+
+
+  # Client-side UUID generation for offline-first creates: the app mints a
+  # stable id locally and the server accepts it on POST /api/bookmarks.
+  uuid: ^4.5.3
+
+  package_info_plus: ^10.1.0
+
+  # SVG rendering. Pairs with flutter_gen_runner: SVGs placed in assets/icons/
+  # get typed accessors that expose a ready-to-use SvgPicture widget.
+  flutter_svg: ^2.3.0
+
+  # Firebase platform initialization — required by every Firebase plugin.
+  firebase_core: ^4.9.0
+
+  vector_graphics: ^1.2.2
+  font_awesome_flutter: ^11.0.0
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # End-to-end testing harness. Drives the assembled app (via the testable
+  # App(...) seams) through full user flows; runs on a device or headless.
+  integration_test:
+    sdk: flutter
+
+  test_utils: ^0.1.0
+
+  # High-level testing utilities for Bloc: blocTest helper, wait
+  # for states, and verify exact emission sequences.
+  bloc_test: ^10.0.0
+
+  # Codegen for typed route classes (TypedGoRoute) — strongly-typed navigation.
+  go_router_builder: ^4.3.0
+
+  # Codegen driver. Runs every generator below.
+  # Run: dart run build_runner build --delete-conflicting-outputs
+  build_runner: ^2.15.0
+
+  # CI guard: fails the build if generated files are stale
+  # (i.e. someone forgot to re-run build_runner).
+  build_verify: ^3.1.1
+
+  # Generates configureDependencies() registration code for get_it
+  # from @injectable annotations.
+  injectable_generator: ^3.0.2
+
+  # Generates type-safe references to assets and fonts declared below
+  # (output: lib/gen/assets.gen.dart). Use e.g. Assets.images.logo instead
+  # of raw 'assets/images/logo.png' strings.
+  flutter_gen_runner: ^5.14.1
+  very_good_analysis: ^10.3.0
+
+  # Generates native launcher icons for all platforms from a single source
+  # image. Run: dart run flutter_launcher_icons (config below).
+  flutter_launcher_icons: ^0.14.3
+  checks: ^0.3.1
+
+flutter_gen:
+  output: lib/gen/
+  line_length: 80
+  integrations:
+    flutter_svg: true
+  assets:
+    enabled: true
+    outputs:
+      package_parameter_enabled: false
+      style: dot-delimiter
+  fonts:
+    enabled: true
+
+# Native launcher icons. Source images live in tool/launcher_icons/ (build-time
+# only, so they are not bundled into the app). Regenerate after editing them:
+#   dart run flutter_launcher_icons
+# `image_path` is a full-bleed square (iOS/Android/web mask their own corners);
+# Android adaptive icons use a solid brand background plus a padded foreground.
+flutter_launcher_icons:
+  image_path: "tool/launcher_icons/app_icon.png"
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  min_sdk_android: 21
+  adaptive_icon_background: "#095D9E"
+  adaptive_icon_foreground: "tool/launcher_icons/app_icon_foreground.png"
+  web:
+    generate: true
+    background_color: "#095D9E"
+    theme_color: "#095D9E"
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+
+  # Localized strings now live in `package:localization` (gen-l10n runs there);
+  # the app consumes `AppLocalizations` from that package.
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/to/resolution-aware-images
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/to/asset-from-package
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/to/font-from-package

@@ -1,0 +1,145 @@
+# https://dart.dev/guides/libraries/private-files
+
+# -------------------------------------------------------------------------
+# Flutter/Dart
+# -------------------------------------------------------------------------
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+
+# -------------------------------------------------------------------------
+# build_runner-generated Dart code. Regenerated on demand
+# (`dart run build_runner build --delete-conflicting-outputs`); CI and the
+# release lanes generate it before building. See README "Code Generation".
+# -------------------------------------------------------------------------
+*.g.dart
+*.freezed.dart
+*.config.dart
+*.gen.dart
+# ObjectBox is the deliberate exception: its generated binding stays tracked
+# alongside packages/database/lib/objectbox-model.json (which no glob matches).
+# Together they encode stable entity/schema UIDs that must persist across builds
+# for on-device DB migrations. The binding lives in the database package now that
+# entities are centralized there, so it is un-ignored at that path.
+!packages/database/lib/objectbox.g.dart
+# Drift's generated database binding is similarly tracked; it must be present at
+# scaffold time so `fst create --database drift` works without requiring a
+# build_runner run before the first compile.
+!packages/database_drift/lib/src/app_database.g.dart
+
+# Test coverage output
+coverage/
+
+# Golden test failure output
+test/**/golden/failures/
+
+# -------------------------------------------------------------------------
+# Android (in addition to android/.gitignore)
+# -------------------------------------------------------------------------
+android/app/local.properties
+android/key.properties
+android/app/src/main/res/values/strings.xml
+android/app/src/main/res/values/google-services.json
+android/app/google-services.json
+android/flutter_sdk_path_relative.properties
+android/app/crashlytics-build.properties
+*.keystore
+*.jks
+
+# -------------------------------------------------------------------------
+# iOS/macOS (in addition to ios/.gitignore)
+# -------------------------------------------------------------------------
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/App.framework
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Pods/
+ios/.symlinks/
+macos/Flutter/GeneratedXCConfig.xcconfig
+macos/Flutter/flutter_export_environment.sh
+macos/Flutter/ephemeral/
+macos/Pods/
+macos/.symlinks/
+
+# -------------------------------------------------------------------------
+# IDEs & Editors
+# -------------------------------------------------------------------------
+# IntelliJ IDEA / Android Studio
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/README.md
+
+# -------------------------------------------------------------------------
+# System Files
+# -------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+
+# -------------------------------------------------------------------------
+# FVM (Flutter Version Manager)
+# -------------------------------------------------------------------------
+.fvm/
+
+# -------------------------------------------------------------------------
+# AI / editor tooling (machine-local; kept here rather than relying on a
+# user-global ~/.config/git/ignore so the rules travel with the repo)
+# -------------------------------------------------------------------------
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+.cursor/
+
+# -------------------------------------------------------------------------
+# MCP
+# -------------------------------------------------------------------------
+.mcp/**/node_modules/
+
+# Local helper binaries / UI inspection artifacts
+.bin/
+.fvm_bin/
+screen.png
+window_dump.xml
+
+# -------------------------------------------------------------------------
+# Fastlane (ios/fastlane). The .env holds App Store Connect credentials and
+# the App Store Connect API .p8 key must never be committed. Build output and
+# fastlane's run reports are machine-local. Gemfile.lock is intentionally
+# committed (not ignored) so gem versions are reproducible.
+# -------------------------------------------------------------------------
+**/fastlane/.env
+**/fastlane/.env.*
+!**/fastlane/.env.example
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/test_output/
+ios/fastlane/build/
+**/AuthKey_*.p8
+
+# -------------------------------------------------------------------------
+# Firebase
+# -------------------------------------------------------------------------
+firebase.json
+.firebaserc
+# lib/firebase_options.dart is intentionally committed as a non-real PLACEHOLDER
+# so the template builds out of the box; run `flutterfire configure` to generate
+# your own (it overwrites the placeholder locally). Native config stays ignored.
+ios/Runner/GoogleService-Info.plist
+macos/Runner/GoogleService-Info.plist
+
+# -------------------------------------------------------------------------
+# Local screenshot/demo tooling (not part of the template surface)
+# -------------------------------------------------------------------------
+tool/seed_demo.sh
+tool/capture_sim_window.sh
