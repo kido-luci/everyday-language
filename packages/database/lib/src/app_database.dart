@@ -1,15 +1,45 @@
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
+import 'package:srs/srs.dart';
+
+// The generated part file below resolves the enum types the tables use, and a
+// part sees only what its own library imports — Dart imports are not
+// transitive, so importing the table files is not enough.
+import 'enums.dart';
+import 'tables/capture_sources_table.dart';
+import 'tables/cards_table.dart';
+import 'tables/deck_words_table.dart';
+import 'tables/decks_table.dart';
+import 'tables/examples_table.dart';
+import 'tables/review_logs_table.dart';
+import 'tables/words_table.dart';
 
 part 'app_database.g.dart';
 
 /// Single Drift database for the app. Feature data layers receive this via DI
 /// and access their respective table accessors.
 ///
-/// One table per line so `fst create` can strip an excluded feature's table
-/// without rewriting the list.
+/// **Foreign keys are declared as raw `customConstraints` strings, not with
+/// `.references()`.** drift_dev 2.31.0 cannot resolve a reference under the
+/// analyzer this SDK ships: it reports "This parameter should be a simple
+/// class name" and then emits no constraint at all — the generated
+/// `CREATE TABLE` silently contains no `REFERENCES` clause, so nothing
+/// cascades and orphan rows accumulate unnoticed. Reproduced with two tables
+/// in a single file, so it is not a cross-file resolution problem.
+///
+/// The strings cost compile-time checking of column names. The schema tests
+/// buy it back by asserting the cascades actually fire, which is exactly what
+/// a rename would break. Revisit once drift_dev handles this analyzer.
 @DriftDatabase(
-  tables: [],
+  tables: [
+    Words,
+    CaptureSources,
+    Examples,
+    Decks,
+    DeckWords,
+    Cards,
+    ReviewLogs,
+  ],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase(super.e);

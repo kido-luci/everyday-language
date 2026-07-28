@@ -16,6 +16,10 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # The cards table stores SRS scheduling state, so it speaks that package's
+  # vocabulary rather than duplicating the enums.
+  srs: ^0.1.0
+
   drift: ^2.22.0
   drift_flutter: ^0.2.2
 
