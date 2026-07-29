@@ -178,12 +178,12 @@ flutter_launcher_icons:
   ios: true
   remove_alpha_ios: true
   min_sdk_android: 21
-  adaptive_icon_background: "#095D9E"
+  adaptive_icon_background: "#0D243D"
   adaptive_icon_foreground: "tool/launcher_icons/app_icon_foreground.png"
   web:
     generate: true
-    background_color: "#095D9E"
-    theme_color: "#095D9E"
+    background_color: "#0D243D"
+    theme_color: "#0D243D"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
