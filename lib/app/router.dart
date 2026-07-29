@@ -106,12 +106,23 @@ class ReviewRoute extends GoRouteData with $ReviewRoute {
       ReviewScreen(onFinished: () => context.pop());
 }
 
+/// The capture form.
+///
+/// [word] and [sentence] arrive as query parameters when the screen was opened
+/// from a share, so the whole target is a location string — which is what lets
+/// a cold-start share ride the existing splash gate instead of racing it.
 class AddWordRoute extends GoRouteData with $AddWordRoute {
-  const AddWordRoute();
+  const AddWordRoute({this.word, this.sentence});
+
+  final String? word;
+  final String? sentence;
 
   @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      AddWordScreen(onSaved: () => context.pop());
+  Widget build(BuildContext context, GoRouterState state) => AddWordScreen(
+    onSaved: () => context.pop(),
+    initialWord: word,
+    initialSentence: sentence,
+  );
 }
 
 class WordDetailRoute extends GoRouteData with $WordDetailRoute {

@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:app_platform/app_platform.dart';
 import 'package:database/database.dart';
 import 'package:everyday_language/app/app.dart';
 import 'package:everyday_language/app/di/injection.dart';
@@ -15,14 +18,24 @@ import 'package:flutter_test/flutter_test.dart';
 /// Set [seeded] to run the bundled content pack in first, the way `main` does
 /// on a real launch. It is off by default so the flows about capturing a word
 /// start from a genuinely empty list.
-Future<void> launchApp(WidgetTester tester, {bool seeded = false}) async {
+Future<void> launchApp(
+  WidgetTester tester, {
+  bool seeded = false,
+  String? sharedText,
+}) async {
   if (!getIt.isRegistered<AppDatabase>()) {
     await configureDependencies();
   }
   await clearDatabase();
   if (seeded) await getIt<ImportSeedPack>()();
 
-  await tester.pumpWidget(const App());
+  await tester.pumpWidget(
+    App(
+      sharedTextService: sharedText == null
+          ? null
+          : FakeSharedTextService(sharedText),
+    ),
+  );
   await tester.pumpAndSettle();
 
   // The app opens on splash and leaves only once its minimum display time has
@@ -69,4 +82,25 @@ Future<void> tapAndSettle(WidgetTester tester, Finder finder) async {
   await tester.ensureVisible(finder);
   await tester.tap(finder);
   await tester.pumpAndSettle();
+}
+
+/// A [SharedTextService] that reports one waiting share and nothing after.
+///
+/// Stands in for the platform channel so the end-to-end run can exercise the
+/// cold-start path — the one where the share is already waiting before the
+/// first frame, and has to survive the splash gate.
+class FakeSharedTextService implements SharedTextService {
+  FakeSharedTextService(this.initial);
+
+  final String initial;
+  bool handled = false;
+
+  @override
+  Future<String?> initialText() async => initial;
+
+  @override
+  Stream<String> textStream() => const Stream<String>.empty();
+
+  @override
+  Future<void> markHandled() async => handled = true;
 }

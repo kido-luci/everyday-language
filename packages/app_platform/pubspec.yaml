@@ -26,6 +26,15 @@ dependencies:
   video_player: ^2.11.1
   timezone: ^0.11.1
   flutter_timezone: ^5.1.0
+  # Receiving text shared from other apps (the share sheet, and Android's
+  # text-selection menu).
+  #
+  # Pinned to 1.8.1, the last release that ships a CocoaPods podspec: 1.9.0
+  # moved to Swift Package Manager only, and this project cannot enable SPM.
+  # Firebase needs an iOS deployment target of 15.0 while Flutter 3.44
+  # hardcodes SPM-generated packages to 13.0, so an SPM build fails outright —
+  # see the note in CLAUDE.md. Revisit when that hardcode is gone.
+  receive_sharing_intent: 1.8.1
 
 dev_dependencies:
   flutter_test:

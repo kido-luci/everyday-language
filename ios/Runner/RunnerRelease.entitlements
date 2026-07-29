@@ -8,5 +8,9 @@
 	<array>
 		<string>applinks:yourdomain.com</string>
 	</array>
+	<key>com.apple.security.application-groups</key>
+	<array>
+		<string>group.com.lucistudio.everydaylanguage</string>
+	</array>
 </dict>
 </plist>

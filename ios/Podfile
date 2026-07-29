@@ -43,6 +43,13 @@ target 'Runner' do
   target 'RunnerTests' do
     inherit! :search_paths
   end
+
+  # The Share Extension links against the same plugin pods as the app; it
+  # inherits the search paths rather than the pods themselves, which is what
+  # keeps the .appex small. Created by tool/ios_share_extension.rb.
+  target 'Share Extension' do
+    inherit! :search_paths
+  end
 end
 
 post_install do |installer|

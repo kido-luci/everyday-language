@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <!-- Xcode writes these itself for a target created through its own
+         New → Target flow. This one is created by a script, so they are
+         spelled out. Without CFBundleIdentifier the built .appex has no
+         identifier at all, and embedding it fails with "Embedded binary's
+         bundle identifier is not prefixed with the parent app's". -->
+    <key>CFBundleDevelopmentRegion</key>
+    <string>$(DEVELOPMENT_LANGUAGE)</string>
+    <key>CFBundleDisplayName</key>
+    <string>Everyday Language</string>
+    <key>CFBundleExecutable</key>
+    <string>$(EXECUTABLE_NAME)</string>
+    <key>CFBundleIdentifier</key>
+    <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundleName</key>
+    <string>$(PRODUCT_NAME)</string>
+    <key>CFBundlePackageType</key>
+    <string>XPC!</string>
+    <key>CFBundleShortVersionString</key>
+    <string>$(FLUTTER_BUILD_NAME)</string>
+    <key>CFBundleVersion</key>
+    <string>$(FLUTTER_BUILD_NUMBER)</string>
+
+    <!-- Where the plugin looks for the container it shares with the app. -->
+    <key>AppGroupId</key>
+    <string>$(CUSTOM_GROUP_ID)</string>
+
+    <key>NSExtension</key>
+    <dict>
+      <key>NSExtensionAttributes</key>
+      <dict>
+        <!-- Text only. This app collects words, so an image or a video share
+             has nothing to offer it, and claiming to accept one would put
+             Everyday Language in share sheets where it is no use. -->
+        <key>NSExtensionActivationRule</key>
+        <dict>
+          <key>NSExtensionActivationSupportsText</key>
+          <true/>
+        </dict>
+      </dict>
+      <key>NSExtensionMainStoryboard</key>
+      <string>MainInterface</string>
+      <key>NSExtensionPointIdentifier</key>
+      <string>com.apple.share-services</string>
+    </dict>
+  </dict>
+</plist>

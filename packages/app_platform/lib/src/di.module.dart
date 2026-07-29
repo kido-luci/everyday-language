@@ -21,6 +21,7 @@ import 'package:app_platform/src/notifications/notifications_service.dart'
 import 'package:app_platform/src/permissions/permission_service.dart' as _i735;
 import 'package:app_platform/src/share/share_module.dart' as _i614;
 import 'package:app_platform/src/share/share_service.dart' as _i527;
+import 'package:app_platform/src/share/shared_text_service.dart' as _i590;
 import 'package:firebase_messaging/firebase_messaging.dart' as _i892;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart'
     as _i163;
@@ -52,6 +53,7 @@ class AppPlatformPackageModule extends _i526.MicroPackageModule {
     );
     gh.lazySingleton<_i735.PermissionService>(() => _i735.PermissionService());
     gh.lazySingleton<_i998.SharePlus>(() => shareModule.provideSharePlus());
+    gh.lazySingleton<_i590.SharedTextService>(() => _i590.SharedTextService());
     gh.lazySingleton<_i315.ImagePickerService>(
       () => _i315.ImagePickerService(gh<_i183.ImagePicker>()),
     );
