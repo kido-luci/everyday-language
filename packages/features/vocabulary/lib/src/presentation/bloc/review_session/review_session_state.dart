@@ -11,6 +11,8 @@ class ReviewSessionState {
     this.queue = const [],
     this.isRevealed = false,
     this.reviewed = 0,
+    this.typed = '',
+    this.wasCorrect,
     this.failureMessage,
   });
 
@@ -26,9 +28,25 @@ class ReviewSessionState {
   /// How many gradings this session, counting repeats of the same card.
   final int reviewed;
 
+  /// What the learner has typed for a production card, before submitting.
+  final String typed;
+
+  /// Whether the submitted answer matched, or null for a card that was not
+  /// typed — a recognition card, or one not yet answered.
+  ///
+  /// Drives which grades are offered: getting it wrong is not a judgement
+  /// call, so `ReviewGrade.again` is the only honest option.
+  final bool? wasCorrect;
+
   final String? failureMessage;
 
   ReviewCard? get current => queue.isEmpty ? null : queue.first;
+
+  /// Whether the card on screen wants the word typed rather than self-graded.
+  bool get isTypingDrill => current?.asksForProduction ?? false;
+
+  /// Whether the typed answer is worth submitting.
+  bool get canSubmitAnswer => typed.trim().isNotEmpty && !isRevealed;
 
   /// Cards left including the one on screen.
   int get remaining => queue.length;
@@ -38,12 +56,16 @@ class ReviewSessionState {
     List<ReviewCard>? queue,
     bool? isRevealed,
     int? reviewed,
+    String? typed,
+    bool? wasCorrect,
     String? failureMessage,
   }) => ReviewSessionState(
     status: status ?? this.status,
     queue: queue ?? this.queue,
     isRevealed: isRevealed ?? this.isRevealed,
     reviewed: reviewed ?? this.reviewed,
+    typed: typed ?? this.typed,
+    wasCorrect: wasCorrect,
     failureMessage: failureMessage,
   );
 
@@ -54,6 +76,8 @@ class ReviewSessionState {
           other.status == status &&
           other.isRevealed == isRevealed &&
           other.reviewed == reviewed &&
+          other.typed == typed &&
+          other.wasCorrect == wasCorrect &&
           other.failureMessage == failureMessage &&
           other.queue.length == queue.length &&
           other.current?.id == current?.id;
@@ -63,6 +87,8 @@ class ReviewSessionState {
     status,
     isRevealed,
     reviewed,
+    typed,
+    wasCorrect,
     failureMessage,
     queue.length,
     current?.id,

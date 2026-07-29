@@ -74,6 +74,42 @@ void main() {
     )..where((c) => c.id.equals(logs.single.cardId))).getSingle();
     expect(reviewed.reps, 1);
     expect(reviewed.stability, isNotNull);
+
+    // ── The next cards ask for the word to be typed ─────────────────────────
+    // Recognition is self-graded; recall and cloze are not. There is no "show
+    // answer" here — that would be a way past the retrieval.
+    expect(find.text('Show answer'), findsNothing);
+    expect(find.byKey(const Key('reviewAnswerField')), findsOneWidget);
+
+    await tester.enterText(
+      find.byKey(const Key('reviewAnswerField')),
+      'decision',
+    );
+    await tester.pumpAndSettle();
+    await tapAndSettle(tester, find.text('Check'));
+
+    expect(find.text('Correct'), findsOneWidget);
+    // A correct answer leaves only the question of how hard it felt.
+    expect(find.text('Again'), findsNothing);
+    await tapAndSettle(tester, find.text('Good'));
+
+    // ── Getting it wrong shows the word, and offers only one way on ─────────
+    await tester.enterText(
+      find.byKey(const Key('reviewAnswerField')),
+      'decison',
+    );
+    await tester.pumpAndSettle();
+    await tapAndSettle(tester, find.text('Check'));
+
+    expect(find.text('Not quite'), findsOneWidget);
+    expect(find.text('You typed: decison'), findsOneWidget);
+    expect(find.text('Good'), findsNothing);
+    await tapAndSettle(tester, find.text('Continue'));
+
+    // ── All three cards were graded; the failed one was logged as such ──────
+    final allLogs = await db.select(db.reviewLogs).get();
+    expect(allLogs, hasLength(3));
+    expect(allLogs.last.grade, ReviewGrade.again);
   });
 
   testWidgets('a word met twice is enriched, not duplicated', (tester) async {

@@ -1525,6 +1525,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Say it out loud before you reveal.'**
   String get reviewProduceHint;
+
+  /// No description provided for @reviewTypeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Type the word'**
+  String get reviewTypeHint;
+
+  /// No description provided for @reviewCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Check'**
+  String get reviewCheck;
+
+  /// No description provided for @reviewCorrect.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct'**
+  String get reviewCorrect;
+
+  /// No description provided for @reviewIncorrect.
+  ///
+  /// In en, this message translates to:
+  /// **'Not quite'**
+  String get reviewIncorrect;
+
+  /// No description provided for @reviewYouTyped.
+  ///
+  /// In en, this message translates to:
+  /// **'You typed: {answer}'**
+  String reviewYouTyped(String answer);
+
+  /// No description provided for @reviewContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get reviewContinue;
 }
 
 class _AppLocalizationsDelegate

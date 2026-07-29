@@ -73,9 +73,17 @@ class ReviewView extends StatelessWidget {
               ),
             ),
             ReviewSessionStatus.reviewing => ReviewCardView(
+              // Keyed by card so the answer field is rebuilt — not reused with
+              // the previous card's text still in it — when the queue moves on.
+              key: ValueKey(state.current!.id),
               card: state.current!,
               isRevealed: state.isRevealed,
+              typed: state.typed,
+              wasCorrect: state.wasCorrect,
+              canSubmitAnswer: state.canSubmitAnswer,
               onReveal: cubit.reveal,
+              onAnswerChanged: cubit.answerChanged,
+              onSubmitAnswer: cubit.submitAnswer,
               onGrade: cubit.grade,
             ),
           },

@@ -406,5 +406,18 @@
       }
     }
   },
-  "reviewProduceHint": "Say it out loud before you reveal."
+  "reviewProduceHint": "Say it out loud before you reveal.",
+  "reviewTypeHint": "Type the word",
+  "reviewCheck": "Check",
+  "reviewCorrect": "Correct",
+  "reviewIncorrect": "Not quite",
+  "reviewYouTyped": "You typed: {answer}",
+  "@reviewYouTyped": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "reviewContinue": "Continue"
 }
