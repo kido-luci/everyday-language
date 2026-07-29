@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "test-pack",
+  "name": "Test pack",
+  "generatedAt": "2026-06-01T09:00:00.000Z",
+  "entries": [
+    {
+      "display": "decision",
+      "phonetic": "/dɪˈsɪʒn/",
+      "partOfSpeech": "noun",
+      "meaningEn": "a choice you make after thinking about the options",
+      "meaningVi": "quyết định",
+      "collocation": "make a decision",
+      "sentence": "We put off the decision until we had seen the numbers."
+    },
+    {
+      "display": "Deadline",
+      "meaningEn": "the time by which something has to be finished",
+      "collocation": "meet a deadline",
+      "sentence": "There is no way we hit that deadline without dropping a feature."
+    },
+    {
+      "display": "reckon",
+      "phonetic": "/ˈrekən/",
+      "partOfSpeech": "verb",
+      "meaningEn": "to think something is probably true",
+      "meaningVi": "cho rằng",
+      "collocation": "reckon so",
+      "sentence": "Reckon we should leave now if we want a seat."
+    }
+  ]
+}

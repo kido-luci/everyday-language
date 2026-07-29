@@ -15,6 +15,8 @@ export 'dart:convert' show jsonDecode, jsonEncode;
 export 'package:drift/drift.dart'
     show
         BaseAggregate,
+        // `&` and `|` between two conditions, for a multi-column `where`.
+        BooleanExpressionOperators,
         ComparableExpr,
         OrderingTerm,
         Value,

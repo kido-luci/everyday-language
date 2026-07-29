@@ -1,7 +1,9 @@
 import 'dart:developer' as developer;
 
 import 'package:app_platform/app_platform.dart';
+import 'package:architecture/architecture.dart';
 import 'package:config/config.dart';
+import 'package:feature_vocabulary/feature_vocabulary.dart';
 import 'package:flutter/material.dart';
 import 'package:storage/storage.dart';
 
@@ -35,10 +37,38 @@ Future<void> main() async {
     // so this must follow the platform block.
     await getIt<CrashReporter>().install();
 
+    await _importSeedVocabulary();
+
     runApp(const App());
   } on Object catch (error, stackTrace) {
     await _reportBootstrapFailure(error, stackTrace);
     runApp(BootstrapErrorApp(error: error));
+  }
+}
+
+/// Puts the bundled starter words in place before the first screen renders.
+///
+/// Awaited rather than fired and forgotten, so the word list cannot render
+/// empty and then fill in underneath the learner. It is a no-op on every
+/// launch after the first, and on a build that shipped without a pack.
+///
+/// A failure here is not fatal: a malformed pack should cost the starter
+/// words, not the app. It is logged rather than swallowed, because "the
+/// starter set silently never arrives" is exactly the bug that would
+/// otherwise go unnoticed.
+Future<void> _importSeedVocabulary() async {
+  final result = await getIt<ImportSeedPack>()();
+  switch (result) {
+    case Ok(value: final added) when added > 0:
+      developer.log('Imported $added seed words', name: 'bootstrap');
+    case Ok():
+      break;
+    case Err(:final failure):
+      developer.log(
+        'Seed vocabulary import failed: ${failure.message}',
+        name: 'bootstrap',
+        level: 900,
+      );
   }
 }
 
