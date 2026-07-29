@@ -168,10 +168,20 @@ flutter_gen:
     enabled: true
 
 # Native launcher icons. Source images live in tool/launcher_icons/ (build-time
-# only, so they are not bundled into the app). Regenerate after editing them:
-#   dart run flutter_launcher_icons
-# `image_path` is a full-bleed square (iOS/Android/web mask their own corners);
-# Android adaptive icons use a solid brand background plus a padded foreground.
+# only, so they are not bundled into the app). The PNGs there are drawn by a
+# script, not exported by hand, so regenerating takes two steps:
+#   python3 tool/render_launcher_icons.py    # redraw the two source PNGs
+#   dart run flutter_launcher_icons          # fan them out per platform
+# Check `git diff ios/Runner.xcodeproj/project.pbxproj` after that second step
+# and revert it: the generator rewrites the value of every line matching
+# ASSETCATALOG, so it clobbers unrelated booleans such as
+# ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS with the icon
+# name. Nothing about the icons needs that file to change.
+# The .svg files alongside them are the design reference only — they cannot be
+# rasterised on a stock macOS box without losing transparency; see the script's
+# docstring. `image_path` is a full-bleed square (iOS/Android/web mask their own
+# corners); Android adaptive icons use a solid brand background plus a padded
+# foreground, sized against the inset in mipmap-anydpi-v26/ic_launcher.xml.
 flutter_launcher_icons:
   image_path: "tool/launcher_icons/app_icon.png"
   android: true
