@@ -314,6 +314,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get changePasswordMismatchError => 'New passwords do not match.';
 
   @override
+  String get profileSectionReminder => 'Reminder';
+
+  @override
+  String get profileReminderSwitchLabel => 'Daily reminder';
+
+  @override
+  String get profileReminderSwitchHint =>
+      'A nudge to run through your due words';
+
+  @override
+  String get profileReminderTimeLabel => 'Remind me at';
+
+  @override
+  String get profileReminderPermissionDenied =>
+      'Notifications are turned off for this app.';
+
+  @override
+  String get profileReminderOpenSettings => 'Settings';
+
+  @override
+  String get reminderNotificationTitle => 'Time to practise';
+
+  @override
+  String get reminderNotificationBody =>
+      'A few minutes now keeps your streak alive.';
+
+  @override
   String get profileSectionAbout => 'About';
 
   @override

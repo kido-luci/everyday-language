@@ -3,6 +3,7 @@ import 'dart:developer' as developer;
 import 'package:app_platform/app_platform.dart';
 import 'package:architecture/architecture.dart';
 import 'package:config/config.dart';
+import 'package:feature_profile/feature_profile.dart';
 import 'package:feature_vocabulary/feature_vocabulary.dart';
 import 'package:flutter/material.dart';
 import 'package:storage/storage.dart';
@@ -25,6 +26,11 @@ Future<void> main() async {
 
     // Local notifications are not a Firebase service — always initialise.
     await getIt<NotificationsService>().init();
+
+    // The OS keeps the daily reminder across reboots but not across an
+    // install, and it holds the timezone it was scheduled in. Re-arming here
+    // covers both; it is a no-op when the learner has no reminder set.
+    await getIt<DailyReminder>().restore();
 
     if (kFirebaseEnabled) {
       await getIt<FirebaseService>().init();

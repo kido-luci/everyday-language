@@ -668,6 +668,54 @@ abstract class AppLocalizations {
   /// **'New passwords do not match.'**
   String get changePasswordMismatchError;
 
+  /// No description provided for @profileSectionReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder'**
+  String get profileSectionReminder;
+
+  /// No description provided for @profileReminderSwitchLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily reminder'**
+  String get profileReminderSwitchLabel;
+
+  /// No description provided for @profileReminderSwitchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A nudge to run through your due words'**
+  String get profileReminderSwitchHint;
+
+  /// No description provided for @profileReminderTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Remind me at'**
+  String get profileReminderTimeLabel;
+
+  /// No description provided for @profileReminderPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are turned off for this app.'**
+  String get profileReminderPermissionDenied;
+
+  /// No description provided for @profileReminderOpenSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get profileReminderOpenSettings;
+
+  /// Title of the daily reminder notification.
+  ///
+  /// In en, this message translates to:
+  /// **'Time to practise'**
+  String get reminderNotificationTitle;
+
+  /// Body of the daily reminder notification.
+  ///
+  /// In en, this message translates to:
+  /// **'A few minutes now keeps your streak alive.'**
+  String get reminderNotificationBody;
+
   /// No description provided for @profileSectionAbout.
   ///
   /// In en, this message translates to:

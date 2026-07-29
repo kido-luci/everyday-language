@@ -7,7 +7,10 @@ import 'package:theme/theme.dart';
 
 import '../bloc/profile_bloc.dart';
 import '../bloc/profile_state.dart';
+import '../bloc/reminder/reminder_cubit.dart';
+import '../bloc/reminder/reminder_state.dart';
 part 'profile_appearance.dart';
+part 'profile_reminder.dart';
 part 'profile_about.dart';
 
 class ProfileBody extends StatelessWidget {
@@ -31,7 +34,9 @@ class ProfileBody extends StatelessWidget {
         children: [
           const _AppearanceCard().animateSlideUp(delay: 200.ms),
           const SizedBox(height: AppSpacing.lg),
-          const _AboutCard().animateSlideUp(delay: 280.ms),
+          const _ReminderCard().animateSlideUp(delay: 240.ms),
+          const SizedBox(height: AppSpacing.lg),
+          const _AboutCard().animateSlideUp(delay: 320.ms),
         ],
       ),
     );

@@ -314,6 +314,32 @@ class AppLocalizationsVi extends AppLocalizations {
   String get changePasswordMismatchError => 'Mật khẩu mới không khớp.';
 
   @override
+  String get profileSectionReminder => 'Nhắc nhở';
+
+  @override
+  String get profileReminderSwitchLabel => 'Nhắc mỗi ngày';
+
+  @override
+  String get profileReminderSwitchHint => 'Nhắc bạn ôn những từ đến hạn';
+
+  @override
+  String get profileReminderTimeLabel => 'Nhắc lúc';
+
+  @override
+  String get profileReminderPermissionDenied =>
+      'Ứng dụng đang bị tắt thông báo.';
+
+  @override
+  String get profileReminderOpenSettings => 'Cài đặt';
+
+  @override
+  String get reminderNotificationTitle => 'Đến giờ ôn từ rồi';
+
+  @override
+  String get reminderNotificationBody =>
+      'Vài phút bây giờ là giữ được chuỗi ngày của bạn.';
+
+  @override
   String get profileSectionAbout => 'Giới thiệu';
 
   @override
