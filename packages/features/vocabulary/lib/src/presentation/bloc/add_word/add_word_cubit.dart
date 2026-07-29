@@ -11,6 +11,21 @@ class AddWordCubit extends Cubit<AddWordState> {
 
   final AddWord _addWord;
 
+  /// Seeds the form from text shared in from another app.
+  ///
+  /// Called once, as the screen is created. Nothing is validated here — the
+  /// share is only a starting point, and the learner still has to press save,
+  /// which is where the real rules run.
+  void prefill({String? word, String? sentence}) {
+    if (word == null && sentence == null) return;
+    emit(
+      state.copyWith(
+        display: word ?? state.display,
+        sentence: sentence ?? state.sentence,
+      ),
+    );
+  }
+
   void displayChanged(String value) =>
       emit(state.copyWith(display: value, status: AddWordStatus.editing));
 

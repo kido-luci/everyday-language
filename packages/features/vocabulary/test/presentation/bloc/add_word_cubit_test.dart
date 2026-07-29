@@ -24,6 +24,37 @@ void main() {
   setUpAll(() => registerFallbackValue(_FakeParams()));
   setUp(() => addWord = _MockAddWord());
 
+  group('a share seeds the form', () {
+    blocTest<AddWordCubit, AddWordState>(
+      'a shared word fills the word, leaving the sentence empty',
+      build: () => AddWordCubit(addWord),
+      act: (cubit) => cubit.prefill(word: 'decision'),
+      expect: () => [
+        isA<AddWordState>()
+            .having((s) => s.display, 'display', 'decision')
+            .having((s) => s.sentence, 'sentence', ''),
+      ],
+    );
+
+    blocTest<AddWordCubit, AddWordState>(
+      'a shared sentence fills the sentence, leaving the word to the learner',
+      build: () => AddWordCubit(addWord),
+      act: (cubit) => cubit.prefill(sentence: 'It was a hard decision.'),
+      expect: () => [
+        isA<AddWordState>()
+            .having((s) => s.display, 'display', '')
+            .having((s) => s.sentence, 'sentence', 'It was a hard decision.'),
+      ],
+    );
+
+    blocTest<AddWordCubit, AddWordState>(
+      'nothing shared emits nothing',
+      build: () => AddWordCubit(addWord),
+      act: (cubit) => cubit.prefill(),
+      expect: () => <AddWordState>[],
+    );
+  });
+
   blocTest<AddWordCubit, AddWordState>(
     'passes what was typed to the use case',
     setUp: () => when(() => addWord(any())).thenAnswer((_) async => Ok(word)),

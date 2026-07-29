@@ -13,6 +13,7 @@ library;
 
 export 'src/di.module.dart' show FeatureVocabularyPackageModule;
 export 'src/domain/entities/review_card.dart';
+export 'src/domain/entities/shared_capture.dart';
 export 'src/domain/entities/word.dart';
 export 'src/domain/usecases/import_seed_pack.dart';
 export 'src/presentation/bloc/add_word/add_word_cubit.dart';

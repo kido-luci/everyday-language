@@ -13,24 +13,50 @@ import '../bloc/add_word/add_word_state.dart';
 /// with the sentence it was met in is the whole premise of the app, and the
 /// cloze drill has nothing to blank out without one.
 class AddWordScreen extends StatelessWidget {
-  const AddWordScreen({super.key, required this.onSaved});
+  const AddWordScreen({
+    super.key,
+    required this.onSaved,
+    this.initialWord,
+    this.initialSentence,
+  });
 
   final VoidCallback onSaved;
+
+  /// Filled in when the screen was opened from a share.
+  final String? initialWord;
+  final String? initialSentence;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => getIt<AddWordCubit>(),
-      child: AddWordView(onSaved: onSaved),
+      create: (_) =>
+          getIt<AddWordCubit>()
+            ..prefill(word: initialWord, sentence: initialSentence),
+      child: AddWordView(
+        onSaved: onSaved,
+        initialWord: initialWord,
+        initialSentence: initialSentence,
+      ),
     );
   }
 }
 
 @visibleForTesting
 class AddWordView extends StatelessWidget {
-  const AddWordView({super.key, required this.onSaved});
+  const AddWordView({
+    super.key,
+    required this.onSaved,
+    this.initialWord,
+    this.initialSentence,
+  });
 
   final VoidCallback onSaved;
+
+  /// Seed values for the fields. Read once, on the first build: the cubit is
+  /// the source of truth afterwards, and feeding state back in on every
+  /// rebuild would fight the learner's cursor.
+  final String? initialWord;
+  final String? initialSentence;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +81,10 @@ class AddWordView extends StatelessWidget {
               AppTextField(
                 label: context.l10n.vocabularyWordLabel,
                 hint: context.l10n.vocabularyWordHint,
-                autofocus: true,
+                initialValue: initialWord,
+                // A shared sentence leaves the word blank and the cursor
+                // waiting in it, which is exactly the one thing still needed.
+                autofocus: initialWord == null,
                 errorText: state.status == AddWordStatus.failure
                     ? state.failureMessage
                     : null,
@@ -66,6 +95,7 @@ class AddWordView extends StatelessWidget {
                 label: context.l10n.vocabularySentenceLabel,
                 hint: context.l10n.vocabularySentenceHint,
                 helperText: context.l10n.vocabularySentenceHelper,
+                initialValue: initialSentence,
                 maxLines: 3,
                 onChanged: cubit.sentenceChanged,
               ),

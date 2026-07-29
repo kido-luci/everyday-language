@@ -52,6 +52,49 @@ data, update this file: add the `NSPrivacyAccessedAPICategory*` entry (with a
 valid reason code) or extend `NSPrivacyCollectedDataTypes`. If an ad/attribution
 SDK is added, flip `NSPrivacyTracking` to `true` and list the tracking domains.
 
+## iOS: the Share Extension is scripted, not hand-made
+
+Capturing a word from another app goes through an iOS Share Extension — a
+second Xcode target that Xcode would normally create through File → New →
+Target. Here it is created by a script instead:
+
+```bash
+ruby tool/ios_share_extension.rb   # idempotent; run after a fresh clone or if the target is lost
+```
+
+The script owns everything about the target that lives inside
+`ios/Runner.xcodeproj`: build settings, the app group, the embed phase's
+position, and one `ios/Flutter/ShareExtension<Config>.xcconfig` per build
+configuration. The extension's own sources under `ios/Share Extension/` are
+committed and hand-written.
+
+Three settings are load-bearing, and each one fails in a way that points
+somewhere else:
+
+- **`LD_RUNPATH_SEARCH_PATHS` must include `@executable_path/../../Frameworks`.**
+  The Podfile gives the extension `inherit! :search_paths`, so the frameworks
+  live in the app's bundle, two levels up. Without it the extension builds,
+  installs, and dies the instant it is tapped — the share sheet just closes,
+  with the reason only in a crash report.
+- **The `ShareExtension<Config>.xcconfig` files must include
+  `Generated.xcconfig`.** Otherwise `$(FLUTTER_BUILD_NAME)` and
+  `$(FLUTTER_BUILD_NUMBER)` do not resolve, Xcode drops the empty keys, and
+  the `.appex` ships with no `CFBundleVersion` — which fails at App Store
+  submission and nowhere earlier. There is one per configuration, flavors
+  included, because the shipping configurations are the flavored ones.
+- **`Embed Foundation Extensions` must run before `Thin Binary`**, or the
+  build fails with "no such module 'receive_sharing_intent'".
+
+`receive_sharing_intent` is pinned to **1.8.1**, the last release with a
+CocoaPods podspec; 1.9.0 is Swift Package Manager only, which this project
+cannot use (see the SPM note above).
+
+**App Groups on a real device:** the simulator accepts
+`group.com.lucistudio.everydaylanguage` as-is, but a device or TestFlight
+build needs that group registered on the provisioning profile in the Apple
+Developer portal. It is the channel the extension uses to hand text to the
+app, so a build without it installs and then captures nothing.
+
 ## Common commands
 
 ```bash

@@ -4,6 +4,7 @@ import 'dart:developer' as developer;
 import 'package:analytics/analytics.dart';
 import 'package:app_platform/app_platform.dart';
 import 'package:app_ui/app_ui.dart';
+import 'package:feature_vocabulary/feature_vocabulary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -23,6 +24,7 @@ class App extends StatefulWidget {
     this.features,
     this.navigatorObservers,
     this.videoPlayerService,
+    this.sharedTextService,
   });
 
   final ThemeBloc? themeBloc;
@@ -32,6 +34,9 @@ class App extends StatefulWidget {
   final List<FeatureModule>? features;
   final List<NavigatorObserver>? navigatorObservers;
   final VideoPlayerService? videoPlayerService;
+
+  /// Overridable so a test can feed a share in without a platform channel.
+  final SharedTextService? sharedTextService;
 
   @override
   State<App> createState() => _AppState();
@@ -44,6 +49,8 @@ class _AppState extends State<App> {
   late final DeepLinkState _deepLink;
   late final List<FeatureSyncController> _syncControllers;
   late final VideoPlayerService _videoPlayerService;
+  late final SharedTextService _sharedText;
+  StreamSubscription<String>? _sharedTextSubscription;
 
   @override
   void initState() {
@@ -65,6 +72,8 @@ class _AppState extends State<App> {
         .toList(growable: false);
     _videoPlayerService =
         widget.videoPlayerService ?? getIt<VideoPlayerService>();
+    _sharedText = widget.sharedTextService ?? getIt<SharedTextService>();
+    unawaited(_watchSharedText());
     final session = _session;
     if (session != null) {
       session.addListener(_onSessionChanged);
@@ -100,8 +109,54 @@ class _AppState extends State<App> {
     }
   }
 
+  /// Opens the capture form for anything shared into the app.
+  ///
+  /// Both arrival routes are handled: a share that launched the app is waiting
+  /// in [SharedTextService.initialText], and later ones come down the stream.
+  /// Wiring only the stream is the classic version of this bug — it works
+  /// perfectly while the app is already open and does nothing from a cold
+  /// start, which is the common case for a share.
+  Future<void> _watchSharedText() async {
+    try {
+      final initial = await _sharedText.initialText();
+      if (initial != null) _openCapture(initial);
+      _sharedTextSubscription = _sharedText.textStream().listen(_openCapture);
+    } on Object catch (error, stackTrace) {
+      developer.log(
+        'Could not listen for shared text',
+        name: 'App',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+  }
+
+  void _openCapture(String raw) {
+    final capture = SharedCapture.parse(raw);
+    if (capture.isEmpty) return;
+
+    final target = AddWordRoute(
+      word: capture.word,
+      sentence: capture.sentence,
+    ).location;
+
+    if (_deepLink.splashCompleted) {
+      _router.push<void>(target);
+    } else {
+      // Cold start: the router is still holding everything at splash. Handing
+      // the target to the same gate a deep link uses replays it once splash
+      // finishes, rather than racing it with a push that would be swallowed.
+      _deepLink.pendingRedirect = target;
+    }
+
+    // Tell the platform it has been taken, so re-opening the app later does
+    // not offer the same word again.
+    unawaited(_sharedText.markHandled());
+  }
+
   @override
   void dispose() {
+    unawaited(_sharedTextSubscription?.cancel());
     _session?.removeListener(_onSessionChanged);
     for (final c in _syncControllers) {
       unawaited(

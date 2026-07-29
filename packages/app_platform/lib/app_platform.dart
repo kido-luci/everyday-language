@@ -16,3 +16,4 @@ export 'src/notifications/firebase_messaging_service.dart';
 export 'src/notifications/notifications_service.dart';
 export 'src/permissions/permission_service.dart';
 export 'src/share/share_service.dart';
+export 'src/share/shared_text_service.dart';

@@ -193,6 +193,48 @@ void main() {
     expect(await db.select(db.reviewLogs).get(), hasLength(1));
   });
 
+  testWidgets('a word shared from another app opens the form filled in', (
+    tester,
+  ) async {
+    // The Dart half of the share path, on a real device: the share is waiting
+    // before the first frame, so it has to survive the splash gate rather
+    // than being pushed at a router that is still holding everything back.
+    // The platform half — the iOS extension and the Android intent filter —
+    // can only be checked by actually sharing from another app.
+    await launchApp(tester, sharedText: 'decision');
+
+    await waitFor(tester, find.text('Add a word'));
+    expect(
+      find.widgetWithText(TextField, 'decision'),
+      findsOneWidget,
+      reason: 'a one-word share is the word itself',
+    );
+
+    // And it saves like any other capture.
+    await tapAndSettle(tester, find.text('Save word'));
+
+    final db = getIt<AppDatabase>();
+    final words = await db.select(db.words).get();
+    expect(words.single.lemma, 'decision');
+  });
+
+  testWidgets('a shared sentence leaves the word for the learner', (
+    tester,
+  ) async {
+    await launchApp(tester, sharedText: 'It was a hard decision to make.');
+
+    await waitFor(tester, find.text('Add a word'));
+    expect(
+      find.widgetWithText(TextField, 'It was a hard decision to make.'),
+      findsOneWidget,
+    );
+    expect(
+      find.widgetWithText(TextField, 'decision'),
+      findsNothing,
+      reason: 'picking the word out of a phrase is the learner’s call',
+    );
+  });
+
   testWidgets('a word met twice is enriched, not duplicated', (tester) async {
     await launchApp(tester);
     await tapAndSettle(tester, find.byTooltip('Words'));
