@@ -723,7 +723,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.lucistudio.everydaylanguage.ShareExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lucistudio.everydaylanguage.staging.ShareExtension;
 				PRODUCT_NAME = "Share Extension";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -922,7 +922,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.lucistudio.everydaylanguage.ShareExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lucistudio.everydaylanguage.dev.ShareExtension;
 				PRODUCT_NAME = "Share Extension";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -972,7 +972,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.lucistudio.everydaylanguage.ShareExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lucistudio.everydaylanguage.dev.ShareExtension;
 				PRODUCT_NAME = "Share Extension";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -997,7 +997,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.lucistudio.everydaylanguage.ShareExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lucistudio.everydaylanguage.staging.ShareExtension;
 				PRODUCT_NAME = "Share Extension";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1207,7 +1207,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.lucistudio.everydaylanguage.ShareExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lucistudio.everydaylanguage.staging.ShareExtension;
 				PRODUCT_NAME = "Share Extension";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1231,7 +1231,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.lucistudio.everydaylanguage.ShareExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lucistudio.everydaylanguage.dev.ShareExtension;
 				PRODUCT_NAME = "Share Extension";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;

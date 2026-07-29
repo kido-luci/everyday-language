@@ -56,6 +56,25 @@ def file_ref(project, group, path)
     group.new_reference(path.sub(%r{^[^/]+/}, ''))
 end
 
+# The app's bundle identifier on a given configuration.
+#
+# It is not one value: each flavor has its own (`…everydaylanguage.dev`,
+# `.staging`, and the bare id for prod), and the flavored configurations do not
+# carry it in the target at all — they leave it to the flavor's xcconfig. Both
+# places have to be read, or every flavor but prod comes back wrong.
+def app_bundle_id(runner, config_name)
+  config = runner.build_configurations.find { |c| c.name == config_name }
+  return nil unless config
+
+  from_target = config.build_settings['PRODUCT_BUNDLE_IDENTIFIER']
+  return from_target if from_target
+
+  xcconfig = config.base_configuration_reference&.real_path
+  return nil unless xcconfig&.exist?
+
+  File.read(xcconfig)[/^\s*PRODUCT_BUNDLE_IDENTIFIER\s*=\s*(\S+)/, 1]
+end
+
 SOURCES.each do |path|
   ref = file_ref(project, group, path)
   extension.source_build_phase.add_file_reference(ref, true)
@@ -81,8 +100,16 @@ end
 
 # ── Build settings, on every configuration ───────────────────────────────────
 extension.build_configurations.each do |config|
+  # Xcode refuses to embed an extension whose bundle identifier is not prefixed
+  # by the app's own, and the app's own changes per flavor. Hard-coding the
+  # prod id here builds prod and fails every other flavor with "Embedded
+  # binary's bundle identifier is not prefixed with the parent app's bundle
+  # identifier" — which is exactly what ships to CI, since CI builds dev.
+  app_id = app_bundle_id(runner, config.name) ||
+           abort("No bundle identifier for Runner on #{config.name}.")
+
   config.build_settings.merge!(
-    'PRODUCT_BUNDLE_IDENTIFIER' => "#{APP_BUNDLE_ID}.ShareExtension",
+    'PRODUCT_BUNDLE_IDENTIFIER' => "#{app_id}.ShareExtension",
     'PRODUCT_NAME' => EXTENSION_NAME,
     'INFOPLIST_FILE' => "#{EXTENSION_NAME}/Info.plist",
     'CODE_SIGN_ENTITLEMENTS' => "#{EXTENSION_NAME}/#{EXTENSION_NAME}.entitlements",
