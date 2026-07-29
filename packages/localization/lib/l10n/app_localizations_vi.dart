@@ -788,4 +788,24 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get reviewProduceHint => 'Nói to trước khi xem đáp án.';
+
+  @override
+  String get reviewTypeHint => 'Gõ lại từ';
+
+  @override
+  String get reviewCheck => 'Kiểm tra';
+
+  @override
+  String get reviewCorrect => 'Chính xác';
+
+  @override
+  String get reviewIncorrect => 'Chưa đúng';
+
+  @override
+  String reviewYouTyped(String answer) {
+    return 'Bạn đã gõ: $answer';
+  }
+
+  @override
+  String get reviewContinue => 'Tiếp tục';
 }

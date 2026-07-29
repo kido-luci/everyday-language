@@ -309,5 +309,11 @@
   "reviewDoneMessage": "Bạn đã ôn xong. Quay lại khi có thẻ tới hạn nhé.",
   "reviewFinishedTitle": "Xong phiên ôn",
   "reviewRemaining": "Còn {count}",
-  "reviewProduceHint": "Nói to trước khi xem đáp án."
+  "reviewProduceHint": "Nói to trước khi xem đáp án.",
+  "reviewTypeHint": "Gõ lại từ",
+  "reviewCheck": "Kiểm tra",
+  "reviewCorrect": "Chính xác",
+  "reviewIncorrect": "Chưa đúng",
+  "reviewYouTyped": "Bạn đã gõ: {answer}",
+  "reviewContinue": "Tiếp tục"
 }

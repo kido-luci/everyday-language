@@ -46,8 +46,24 @@ class ReviewCard {
 
   /// Whether the prompt asks the learner to produce the word rather than
   /// recognise it.
+  ///
+  /// A production card that fell back to showing the word (no meaning, no
+  /// usable sentence) is not one — it would be asking the learner to copy what
+  /// is already on screen.
   bool get asksForProduction =>
       kind != CardKind.recognise && prompt() != display;
+
+  /// Whether [typed] is the word this card is asking for.
+  ///
+  /// Compared after trimming, lowercasing and collapsing internal whitespace,
+  /// so a stray space or a capital does not count as forgetting the word. A
+  /// misspelling does: the point of typing it is that recall has to be exact,
+  /// and accepting near-misses would feed the scheduler a success the learner
+  /// did not have.
+  bool accepts(String typed) => _normalise(typed) == _normalise(display);
+
+  static String _normalise(String value) =>
+      value.trim().toLowerCase().replaceAll(RegExp(r'\s+'), ' ');
 
   /// The sentence with the word replaced by a blank, or null if there is no
   /// usable sentence.

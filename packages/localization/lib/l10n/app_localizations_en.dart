@@ -788,4 +788,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reviewProduceHint => 'Say it out loud before you reveal.';
+
+  @override
+  String get reviewTypeHint => 'Type the word';
+
+  @override
+  String get reviewCheck => 'Check';
+
+  @override
+  String get reviewCorrect => 'Correct';
+
+  @override
+  String get reviewIncorrect => 'Not quite';
+
+  @override
+  String reviewYouTyped(String answer) {
+    return 'You typed: $answer';
+  }
+
+  @override
+  String get reviewContinue => 'Continue';
 }

@@ -38,10 +38,36 @@ class ReviewSessionCubit extends Cubit<ReviewSessionState> {
     }
   }
 
-  /// Shows the answer. Until then the grade buttons are not offered.
+  /// Shows the answer on a recognition card.
+  ///
+  /// Refused on a typing drill: there the answer appears by submitting one, and
+  /// a reveal button would be a way to skip the retrieval the card exists for.
   void reveal() {
-    if (state.current == null || state.isRevealed) return;
-    emit(state.copyWith(isRevealed: true));
+    if (state.current == null || state.isRevealed || state.isTypingDrill) {
+      return;
+    }
+    emit(state.copyWith(isRevealed: true, typed: state.typed));
+  }
+
+  void answerChanged(String value) {
+    if (state.isRevealed) return;
+    emit(state.copyWith(typed: value));
+  }
+
+  /// Checks what was typed and shows the answer either way.
+  ///
+  /// Deliberately does not grade. A wrong answer still has to show the word —
+  /// being told you were wrong and moving on teaches nothing — so the grade is
+  /// a separate step, with `again` as the only option offered.
+  void submitAnswer() {
+    final card = state.current;
+    if (card == null || !state.canSubmitAnswer) return;
+    emit(
+      state.copyWith(
+        isRevealed: true,
+        wasCorrect: card.accepts(state.typed),
+      ),
+    );
   }
 
   /// Grades the card on screen and moves on.
@@ -53,6 +79,8 @@ class ReviewSessionCubit extends Cubit<ReviewSessionState> {
   Future<void> grade(ReviewGrade grade) async {
     final card = state.current;
     if (card == null || !state.isRevealed) return;
+    // Typing it wrong is not recall, whatever the learner would rather press.
+    if (state.wasCorrect == false && grade != ReviewGrade.again) return;
 
     final result = await _gradeCard(
       GradeCardParams(card: card, grade: grade),
@@ -82,6 +110,7 @@ class ReviewSessionCubit extends Cubit<ReviewSessionState> {
           state.copyWith(
             queue: queue,
             isRevealed: false,
+            typed: '',
             reviewed: state.reviewed + 1,
             status: queue.isEmpty
                 ? ReviewSessionStatus.finished
