@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart' as _i460;
 import 'package:storage/src/auth_token_store.dart' as _i121;
 import 'package:storage/src/daily_goal_store.dart' as _i1065;
 import 'package:storage/src/keychain_reset_on_reinstall.dart' as _i1049;
+import 'package:storage/src/reminder_store.dart' as _i490;
 import 'package:storage/src/secure_storage_module.dart' as _i837;
 import 'package:storage/src/shared_preferences_module.dart' as _i684;
 
@@ -38,6 +39,9 @@ class StoragePackageModule extends _i526.MicroPackageModule {
     );
     gh.lazySingleton<_i1065.DailyGoalStore>(
       () => _i1065.DailyGoalStore(gh<_i460.SharedPreferences>()),
+    );
+    gh.lazySingleton<_i490.ReminderStore>(
+      () => _i490.ReminderStore(gh<_i460.SharedPreferences>()),
     );
   }
 }

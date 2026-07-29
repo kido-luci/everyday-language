@@ -186,7 +186,11 @@ jobs:
           ' coverage/lcov.info > "$root_lcov"
           mv "$root_lcov" coverage/lcov.info
 
-          for package in packages/*; do
+          # Feature packages are nested one level deeper, and `packages/*`
+          # alone matches only their parent directory — which owns no test/ and
+          # is skipped, so every feature package's tests went unrun here while
+          # passing locally.
+          for package in packages/* packages/features/*; do
             if [ ! -d "$package/test" ]; then
               continue
             fi
@@ -212,7 +216,7 @@ jobs:
 
       # Fail the build if line coverage drops below the threshold. Generated
       # files are excluded so the percentage reflects hand-written code only.
-      # Current workspace baseline is ~54%; raise `min_coverage` as coverage improves.
+      # Current workspace baseline is ~53%; raise `min_coverage` as coverage improves.
       - name: Enforce coverage threshold
         uses: VeryGoodOpenSource/very_good_coverage@v3
         with:

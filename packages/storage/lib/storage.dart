@@ -5,3 +5,4 @@ export 'src/auth_token_store.dart';
 export 'src/daily_goal_store.dart';
 export 'src/di.module.dart' show StoragePackageModule;
 export 'src/keychain_reset_on_reinstall.dart';
+export 'src/reminder_store.dart';

@@ -3,6 +3,8 @@ import 'package:mocktail/mocktail.dart';
 
 class MockImagePickerService extends Mock implements ImagePickerService {}
 
+class MockNotificationsService extends Mock implements NotificationsService {}
+
 class MockPermissionService extends Mock implements PermissionService {}
 
 class MockShareService extends Mock implements ShareService {}

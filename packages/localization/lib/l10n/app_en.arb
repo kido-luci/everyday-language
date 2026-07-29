@@ -170,6 +170,20 @@
   "changePasswordSubmit": "Update Password",
   "changePasswordSuccessMessage": "Password updated successfully.",
   "changePasswordMismatchError": "New passwords do not match.",
+  "profileSectionReminder": "Reminder",
+  "profileReminderSwitchLabel": "Daily reminder",
+  "profileReminderSwitchHint": "A nudge to run through your due words",
+  "profileReminderTimeLabel": "Remind me at",
+  "profileReminderPermissionDenied": "Notifications are turned off for this app.",
+  "profileReminderOpenSettings": "Settings",
+  "reminderNotificationTitle": "Time to practise",
+  "@reminderNotificationTitle": {
+    "description": "Title of the daily reminder notification."
+  },
+  "reminderNotificationBody": "A few minutes now keeps your streak alive.",
+  "@reminderNotificationBody": {
+    "description": "Body of the daily reminder notification."
+  },
   "profileSectionAbout": "About",
   "profileLicenses": "Open-source licenses",
   "profileUserIdCopied": "User ID copied",
