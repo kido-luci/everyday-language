@@ -1,6 +1,7 @@
 import 'package:database/database.dart';
 import 'package:everyday_language/app/app.dart';
 import 'package:everyday_language/app/di/injection.dart';
+import 'package:feature_vocabulary/feature_vocabulary.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// Boots the real app for an end-to-end run.
@@ -10,11 +11,16 @@ import 'package:flutter_test/flutter_test.dart';
 /// starting data is controlled — the database is emptied first, because a
 /// device carries the previous run's words and a test that passes only on a
 /// fresh install is worse than no test.
-Future<void> launchApp(WidgetTester tester) async {
+///
+/// Set [seeded] to run the bundled content pack in first, the way `main` does
+/// on a real launch. It is off by default so the flows about capturing a word
+/// start from a genuinely empty list.
+Future<void> launchApp(WidgetTester tester, {bool seeded = false}) async {
   if (!getIt.isRegistered<AppDatabase>()) {
     await configureDependencies();
   }
   await clearDatabase();
+  if (seeded) await getIt<ImportSeedPack>()();
 
   await tester.pumpWidget(const App());
   await tester.pumpAndSettle();

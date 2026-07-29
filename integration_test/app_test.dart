@@ -6,8 +6,10 @@
 // model the locator cannot build, a transaction that deadlocks on a real
 // connection rather than an in-memory one.
 
+import 'package:architecture/architecture.dart';
 import 'package:database/database.dart';
 import 'package:everyday_language/app/di/injection.dart';
+import 'package:feature_vocabulary/feature_vocabulary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
@@ -110,6 +112,55 @@ void main() {
     final allLogs = await db.select(db.reviewLogs).get();
     expect(allLogs, hasLength(3));
     expect(allLogs.last.grade, ReviewGrade.again);
+  });
+
+  testWidgets('the bundled pack seeds the word list, once', (tester) async {
+    // This is the only test that can prove the pack is actually *bundled*.
+    // The unit tests read a fake asset bundle; a pack that exists on disk but
+    // was never declared in pubspec.yaml would sail past them and ship an
+    // empty app — the same shape of bug as an asset the build cannot find.
+    await launchApp(tester, seeded: true);
+
+    final db = getIt<AppDatabase>();
+    final words = await db.select(db.words).get();
+    if (words.isEmpty) {
+      markTestSkipped(
+        'No content pack in this build — generate one with '
+        'tool/content/generate_pack.dart to cover this flow.',
+      );
+      return;
+    }
+
+    // ── Every seeded word is studiable, not a stub ──────────────────────────
+    expect(words.every((w) => w.meaningEn != null), isTrue);
+    expect(words.every((w) => w.collocation != null), isTrue);
+    expect(
+      words.every((w) => w.enrichmentStatus == EnrichmentStatus.ready),
+      isTrue,
+    );
+    expect(
+      await db.select(db.cards).get(),
+      hasLength(words.length * CardKind.values.length),
+    );
+
+    // ── They are on screen, and reviewable ──────────────────────────────────
+    await tapAndSettle(tester, find.byTooltip('Words'));
+    expect(find.text('No words yet'), findsNothing);
+
+    await tapAndSettle(tester, find.byTooltip('Review'));
+    await tapAndSettle(tester, find.text('Show answer'));
+    await tapAndSettle(tester, find.text('Good'));
+    expect(await db.select(db.reviewLogs).get(), hasLength(1));
+
+    // ── Importing again on the next launch changes nothing ──────────────────
+    final result = await getIt<ImportSeedPack>()();
+    expect(result, isA<Ok<int>>().having((r) => r.value, 'added', 0));
+    expect(await db.select(db.words).get(), hasLength(words.length));
+    expect(
+      await db.select(db.decks).get(),
+      hasLength(1),
+      reason: 'a second import would mean a second deck of the same words',
+    );
   });
 
   testWidgets('a word met twice is enriched, not duplicated', (tester) async {

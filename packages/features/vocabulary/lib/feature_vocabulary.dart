@@ -5,11 +5,16 @@
 /// `externalPackageModulesBefore` and mounts the exported screens in its
 /// router, the same way it mounts home and profile. View models are
 /// exported so the app's tests can reference them.
+///
+/// `ImportSeedPack` is the one use case exported: seeding happens during
+/// bootstrap, before any of these screens exist, so the app shell has to run
+/// it rather than a widget.
 library;
 
 export 'src/di.module.dart' show FeatureVocabularyPackageModule;
 export 'src/domain/entities/review_card.dart';
 export 'src/domain/entities/word.dart';
+export 'src/domain/usecases/import_seed_pack.dart';
 export 'src/presentation/bloc/add_word/add_word_cubit.dart';
 export 'src/presentation/bloc/add_word/add_word_state.dart';
 export 'src/presentation/bloc/review_session/review_session_cubit.dart';
