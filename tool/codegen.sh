@@ -35,9 +35,18 @@ run_pkg() {
   echo "::endgroup::"
 }
 
-for pkg in packages/features/*/; do
+# Every workspace package that generates its own code, features and infra
+# alike. The infra packages (storage, theme, app_platform, …) own micro-package
+# DI modules exactly as the features do, and a service added to one of them is
+# simply never registered until its module is rebuilt — which surfaces at
+# runtime as "Error while creating <Bloc>", nowhere near the package at fault.
+for pkg in packages/*/ packages/features/*/; do
   [ -f "${pkg}pubspec.yaml" ] || continue
   grep -q 'build_runner' "${pkg}pubspec.yaml" || continue
+  case "${pkg%/}" in
+    # Handled below: these need a schema dump alongside the build.
+    packages/database|packages/database_drift) continue ;;
+  esac
   run_pkg "${pkg%/}"
 done
 

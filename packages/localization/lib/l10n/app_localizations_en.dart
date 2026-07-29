@@ -808,4 +808,78 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reviewContinue => 'Continue';
+
+  @override
+  String get homeGreeting => 'Today';
+
+  @override
+  String get homeStreakNone => 'No streak yet';
+
+  @override
+  String homeStreakDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days in a row',
+      one: '1 day in a row',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeStreakKeep => 'Review today to keep it going.';
+
+  @override
+  String get homeStreakStart => 'Review anything today and it begins.';
+
+  @override
+  String homeTodayProgress(int done, int goal) {
+    return '$done of $goal reviews';
+  }
+
+  @override
+  String get homeGoalMet => 'Goal met';
+
+  @override
+  String get homeDailyGoalTitle => 'Daily goal';
+
+  @override
+  String get homeDailyGoalHint =>
+      'Reviews to aim for each day. Small enough to manage on a bad day works best.';
+
+  @override
+  String homeGoalValue(int count) {
+    return '$count reviews';
+  }
+
+  @override
+  String homeReviewCta(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Review $count cards',
+      one: 'Review 1 card',
+      zero: 'Nothing due',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeStatWords => 'Words';
+
+  @override
+  String get homeStatDue => 'Due now';
+
+  @override
+  String get homeActivityTitle => 'Last 7 days';
+
+  @override
+  String get homeEmptyTitle => 'Nothing to study yet';
+
+  @override
+  String get homeEmptyMessage =>
+      'Add a word and its three cards are ready to review.';
+
+  @override
+  String get homeAddWord => 'Add a word';
 }

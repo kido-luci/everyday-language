@@ -9,6 +9,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 import 'package:storage/src/auth_token_store.dart' as _i121;
+import 'package:storage/src/daily_goal_store.dart' as _i1065;
 import 'package:storage/src/keychain_reset_on_reinstall.dart' as _i1049;
 import 'package:storage/src/secure_storage_module.dart' as _i837;
 import 'package:storage/src/shared_preferences_module.dart' as _i684;
@@ -34,6 +35,9 @@ class StoragePackageModule extends _i526.MicroPackageModule {
         gh<_i460.SharedPreferences>(),
         gh<_i558.FlutterSecureStorage>(),
       ),
+    );
+    gh.lazySingleton<_i1065.DailyGoalStore>(
+      () => _i1065.DailyGoalStore(gh<_i460.SharedPreferences>()),
     );
   }
 }

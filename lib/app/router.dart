@@ -81,7 +81,10 @@ class HomeRoute extends GoRouteData with $HomeRoute {
   const HomeRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => const HomeScreen();
+  Widget build(BuildContext context, GoRouterState state) => HomeScreen(
+    onReview: () => const ReviewRoute().push<void>(context),
+    onAddWord: () => const AddWordRoute().push<void>(context),
+  );
 }
 
 class WordsRoute extends GoRouteData with $WordsRoute {

@@ -1561,6 +1561,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Continue'**
   String get reviewContinue;
+
+  /// No description provided for @homeGreeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get homeGreeting;
+
+  /// No description provided for @homeStreakNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No streak yet'**
+  String get homeStreakNone;
+
+  /// No description provided for @homeStreakDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 day in a row} other{{count} days in a row}}'**
+  String homeStreakDays(int count);
+
+  /// No description provided for @homeStreakKeep.
+  ///
+  /// In en, this message translates to:
+  /// **'Review today to keep it going.'**
+  String get homeStreakKeep;
+
+  /// No description provided for @homeStreakStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Review anything today and it begins.'**
+  String get homeStreakStart;
+
+  /// No description provided for @homeTodayProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {goal} reviews'**
+  String homeTodayProgress(int done, int goal);
+
+  /// No description provided for @homeGoalMet.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal met'**
+  String get homeGoalMet;
+
+  /// No description provided for @homeDailyGoalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily goal'**
+  String get homeDailyGoalTitle;
+
+  /// No description provided for @homeDailyGoalHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviews to aim for each day. Small enough to manage on a bad day works best.'**
+  String get homeDailyGoalHint;
+
+  /// No description provided for @homeGoalValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} reviews'**
+  String homeGoalValue(int count);
+
+  /// No description provided for @homeReviewCta.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Nothing due} =1{Review 1 card} other{Review {count} cards}}'**
+  String homeReviewCta(int count);
+
+  /// No description provided for @homeStatWords.
+  ///
+  /// In en, this message translates to:
+  /// **'Words'**
+  String get homeStatWords;
+
+  /// No description provided for @homeStatDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Due now'**
+  String get homeStatDue;
+
+  /// No description provided for @homeActivityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 7 days'**
+  String get homeActivityTitle;
+
+  /// No description provided for @homeEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to study yet'**
+  String get homeEmptyTitle;
+
+  /// No description provided for @homeEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a word and its three cards are ready to review.'**
+  String get homeEmptyMessage;
+
+  /// No description provided for @homeAddWord.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a word'**
+  String get homeAddWord;
 }
 
 class _AppLocalizationsDelegate

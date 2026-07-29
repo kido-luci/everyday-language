@@ -1,5 +1,6 @@
 import 'package:architecture/architecture.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_contracts/shared_contracts.dart';
 import 'package:srs/srs.dart';
 
 import '../../domain/entities/review_card.dart';
@@ -8,10 +9,16 @@ import '../local/review_local_data_source.dart';
 
 @LazySingleton(as: ReviewRepository)
 class ReviewRepositoryImpl implements ReviewRepository {
-  const ReviewRepositoryImpl(this._local, this._scheduler);
+  const ReviewRepositoryImpl(this._local, this._scheduler, this._activity);
 
   final ReviewLocalDataSource _local;
   final SrsScheduler _scheduler;
+
+  /// Announces that the review history moved, so screens showing figures
+  /// derived from it — the dashboard's streak and today's count — can catch
+  /// up. Without it they would only refresh when rebuilt, and the shell keeps
+  /// every tab alive.
+  final ActivityNotifier _activity;
 
   @override
   Future<Result<List<ReviewCard>>> dueCards({int limit = 100}) async {
@@ -30,6 +37,7 @@ class ReviewRepositoryImpl implements ReviewRepository {
   ) async {
     final outcome = _scheduler.grade(card.schedule, grade);
     await _local.applyReview(cardId: card.id, outcome: outcome);
+    _activity.notifyActivityOccurred();
     return Ok(outcome.schedule);
   }
 

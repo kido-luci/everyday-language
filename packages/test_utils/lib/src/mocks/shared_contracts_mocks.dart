@@ -17,6 +17,8 @@ class MockCollectionsReader extends Mock implements CollectionsReader {}
 class MockBookmarkSummariesReader extends Mock
     implements BookmarkSummariesReader {}
 
+class MockStudyStatsReader extends Mock implements StudyStatsReader {}
+
 /// In-memory [Session] double for widget tests.
 class FakeSession extends ChangeNotifier implements Session {
   FakeSession({

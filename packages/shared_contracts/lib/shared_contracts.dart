@@ -10,3 +10,4 @@ export 'src/bookmark_summaries.dart';
 export 'src/collections.dart';
 export 'src/di.module.dart' show SharedContractsPackageModule;
 export 'src/session.dart';
+export 'src/study_stats.dart';

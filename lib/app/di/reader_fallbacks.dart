@@ -2,41 +2,27 @@ import 'package:architecture/architecture.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_contracts/shared_contracts.dart';
 
-/// Registers Null-Object readers for the cross-feature data sources that the
-/// bookmarks and collections features normally provide.
+/// Registers Null-Object readers for the cross-feature data sources that a
+/// feature normally provides.
 ///
-/// `home`'s dashboard reads bookmark stats and collection summaries through the
-/// `shared_contracts` reader interfaces; the bookmarks/collections features own
-/// the implementations. When `fst create --exclude-feature` drops those
-/// features, these fallbacks keep `home` working with empty data instead of
-/// failing to resolve the readers. Each registers only if the owning feature
-/// didn't — when the feature is present, its real reader wins.
+/// The home dashboard reads the learner's study figures through the
+/// `shared_contracts` reader interface; the vocabulary feature owns the
+/// implementation. When `fst create --exclude-feature` drops that feature,
+/// this fallback keeps home resolving — and showing an honest zero — instead
+/// of failing to build its bloc. It registers only if the owning feature
+/// didn't, so the real reader always wins.
 void registerReaderFallbacks(GetIt getIt) {
-  if (!getIt.isRegistered<BookmarkStatsReader>()) {
-    getIt.registerLazySingleton<BookmarkStatsReader>(
-      NoOpBookmarkStatsReader.new,
-    );
-  }
-  if (!getIt.isRegistered<CollectionsReader>()) {
-    getIt.registerLazySingleton<CollectionsReader>(NoOpCollectionsReader.new);
+  if (!getIt.isRegistered<StudyStatsReader>()) {
+    getIt.registerLazySingleton<StudyStatsReader>(NoOpStudyStatsReader.new);
   }
 }
 
-/// A [BookmarkStatsReader] that reports no bookmarks.
-class NoOpBookmarkStatsReader extends BookmarkStatsReader {
-  const NoOpBookmarkStatsReader();
+/// A [StudyStatsReader] for a build with no vocabulary feature: nothing
+/// studied, nothing due.
+class NoOpStudyStatsReader extends StudyStatsReader {
+  const NoOpStudyStatsReader();
 
   @override
-  Future<Result<BookmarkStats>> call([NoParams param = noParams]) async =>
-      const Ok(BookmarkStats());
-}
-
-/// A [CollectionsReader] that reports no collections.
-class NoOpCollectionsReader extends CollectionsReader {
-  const NoOpCollectionsReader();
-
-  @override
-  Future<Result<List<CollectionSummary>>> call([
-    NoParams param = noParams,
-  ]) async => const Ok(<CollectionSummary>[]);
+  Future<Result<StudyStats>> call([NoParams param = noParams]) async =>
+      const Ok(StudyStats());
 }
