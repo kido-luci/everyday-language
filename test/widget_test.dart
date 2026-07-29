@@ -19,20 +19,18 @@ void main() {
     analytics = MockAnalyticsService();
     stubAnalyticsService(analytics);
 
-    final bookmarkStats = MockBookmarkStatsReader();
-    when(
-      bookmarkStats.call,
-    ).thenAnswer((_) async => const Ok(BookmarkStats()));
+    final studyStats = MockStudyStatsReader();
+    when(studyStats.call).thenAnswer((_) async => const Ok(StudyStats()));
 
-    final collectionsReader = MockCollectionsReader();
-    when(
-      collectionsReader.call,
-    ).thenAnswer((_) async => const Ok<List<CollectionSummary>>([]));
+    final prefs = await SharedPreferences.getInstance();
+    themeBloc = ThemeBloc(prefs, analytics);
 
-    themeBloc = ThemeBloc(await SharedPreferences.getInstance(), analytics);
+    // The dashboard subscribes to this on mount, so the app cannot be pumped
+    // without one registered.
+    getIt.registerSingleton<ActivityNotifier>(ActivityNotifier());
 
     getIt.registerFactory<HomeBloc>(() {
-      final bloc = HomeBloc(bookmarkStats, collectionsReader);
+      final bloc = HomeBloc(studyStats, DailyGoalStore(prefs));
       homeBloc = bloc;
       return bloc;
     });

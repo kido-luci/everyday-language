@@ -1,6 +1,7 @@
 import 'package:architecture/architecture.dart';
 import 'package:database/database.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_contracts/shared_contracts.dart';
 
 import '../../domain/entities/word.dart';
 import '../../domain/repositories/vocabulary_repository.dart';
@@ -8,9 +9,13 @@ import '../local/vocabulary_local_data_source.dart';
 
 @LazySingleton(as: VocabularyRepository)
 class VocabularyRepositoryImpl implements VocabularyRepository {
-  const VocabularyRepositoryImpl(this._local);
+  const VocabularyRepositoryImpl(this._local, this._activity);
 
   final VocabularyLocalDataSource _local;
+
+  /// Announces that the collection changed, so the dashboard's word count and
+  /// due count can catch up without being rebuilt.
+  final ActivityNotifier _activity;
 
   @override
   Future<Result<List<Word>>> listWords() async {
@@ -44,12 +49,14 @@ class VocabularyRepositoryImpl implements VocabularyRepository {
       sentence: sentence,
       meaningVi: meaningVi,
     );
+    _activity.notifyActivityOccurred();
     return Ok(_toWord(row, await _local.examplesFor([row.id])));
   }
 
   @override
   Future<Result<void>> deleteWord(int id) async {
     await _local.deleteWord(id);
+    _activity.notifyActivityOccurred();
     return const Ok(null);
   }
 

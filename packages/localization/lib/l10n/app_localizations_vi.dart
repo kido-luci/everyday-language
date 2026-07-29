@@ -808,4 +808,77 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get reviewContinue => 'Tiếp tục';
+
+  @override
+  String get homeGreeting => 'Hôm nay';
+
+  @override
+  String get homeStreakNone => 'Chưa có chuỗi ngày nào';
+
+  @override
+  String homeStreakDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ngày liên tiếp',
+      one: '1 ngày liên tiếp',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeStreakKeep => 'Ôn hôm nay để giữ chuỗi.';
+
+  @override
+  String get homeStreakStart => 'Ôn bất cứ thẻ nào hôm nay là bắt đầu.';
+
+  @override
+  String homeTodayProgress(int done, int goal) {
+    return '$done/$goal lượt ôn';
+  }
+
+  @override
+  String get homeGoalMet => 'Đạt mục tiêu';
+
+  @override
+  String get homeDailyGoalTitle => 'Mục tiêu mỗi ngày';
+
+  @override
+  String get homeDailyGoalHint =>
+      'Số lượt ôn muốn đạt mỗi ngày. Đặt vừa sức để ngày bận vẫn làm được.';
+
+  @override
+  String homeGoalValue(int count) {
+    return '$count lượt ôn';
+  }
+
+  @override
+  String homeReviewCta(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ôn $count thẻ',
+      one: 'Ôn 1 thẻ',
+      zero: 'Chưa có thẻ nào',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeStatWords => 'Số từ';
+
+  @override
+  String get homeStatDue => 'Đến hạn';
+
+  @override
+  String get homeActivityTitle => '7 ngày qua';
+
+  @override
+  String get homeEmptyTitle => 'Chưa có gì để học';
+
+  @override
+  String get homeEmptyMessage => 'Thêm một từ là có ngay ba thẻ để ôn.';
+
+  @override
+  String get homeAddWord => 'Thêm từ';
 }

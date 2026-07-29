@@ -315,5 +315,53 @@
   "reviewCorrect": "Chính xác",
   "reviewIncorrect": "Chưa đúng",
   "reviewYouTyped": "Bạn đã gõ: {answer}",
-  "reviewContinue": "Tiếp tục"
+  "reviewContinue": "Tiếp tục",
+  "homeGreeting": "Hôm nay",
+  "homeStreakNone": "Chưa có chuỗi ngày nào",
+  "homeStreakDays": "{count, plural, =1{1 ngày liên tiếp} other{{count} ngày liên tiếp}}",
+  "@homeStreakDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeStreakKeep": "Ôn hôm nay để giữ chuỗi.",
+  "homeStreakStart": "Ôn bất cứ thẻ nào hôm nay là bắt đầu.",
+  "homeTodayProgress": "{done}/{goal} lượt ôn",
+  "@homeTodayProgress": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "goal": {
+        "type": "int"
+      }
+    }
+  },
+  "homeGoalMet": "Đạt mục tiêu",
+  "homeDailyGoalTitle": "Mục tiêu mỗi ngày",
+  "homeDailyGoalHint": "Số lượt ôn muốn đạt mỗi ngày. Đặt vừa sức để ngày bận vẫn làm được.",
+  "homeGoalValue": "{count} lượt ôn",
+  "@homeGoalValue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeReviewCta": "{count, plural, =0{Chưa có thẻ nào} =1{Ôn 1 thẻ} other{Ôn {count} thẻ}}",
+  "@homeReviewCta": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeStatWords": "Số từ",
+  "homeStatDue": "Đến hạn",
+  "homeActivityTitle": "7 ngày qua",
+  "homeEmptyTitle": "Chưa có gì để học",
+  "homeEmptyMessage": "Thêm một từ là có ngay ba thẻ để ôn.",
+  "homeAddWord": "Thêm từ"
 }

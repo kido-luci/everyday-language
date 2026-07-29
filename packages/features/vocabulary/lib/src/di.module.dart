@@ -10,8 +10,12 @@ import 'package:feature_vocabulary/src/data/local/review_local_data_source.dart'
     as _i740;
 import 'package:feature_vocabulary/src/data/local/seed_local_data_source.dart'
     as _i1024;
+import 'package:feature_vocabulary/src/data/local/study_stats_local_data_source.dart'
+    as _i886;
 import 'package:feature_vocabulary/src/data/local/vocabulary_local_data_source.dart'
     as _i566;
+import 'package:feature_vocabulary/src/data/readers/study_stats_reader_impl.dart'
+    as _i632;
 import 'package:feature_vocabulary/src/data/repositories/review_repository_impl.dart'
     as _i158;
 import 'package:feature_vocabulary/src/data/repositories/seed_repository_impl.dart'
@@ -48,6 +52,7 @@ import 'package:feature_vocabulary/src/presentation/bloc/word_detail/word_detail
 import 'package:feature_vocabulary/src/presentation/bloc/words_list/words_list_bloc.dart'
     as _i980;
 import 'package:injectable/injectable.dart' as _i526;
+import 'package:shared_contracts/shared_contracts.dart' as _i856;
 import 'package:srs/srs.dart' as _i902;
 
 class FeatureVocabularyPackageModule extends _i526.MicroPackageModule {
@@ -62,6 +67,13 @@ class FeatureVocabularyPackageModule extends _i526.MicroPackageModule {
     gh.lazySingleton<_i740.ReviewLocalDataSource>(
       () => _i740.ReviewLocalDataSource(gh<_i252.AppDatabase>()),
     );
+    gh.lazySingleton<_i400.ReviewRepository>(
+      () => _i158.ReviewRepositoryImpl(
+        gh<_i740.ReviewLocalDataSource>(),
+        gh<_i902.SrsScheduler>(),
+        gh<_i856.ActivityNotifier>(),
+      ),
+    );
     gh.lazySingleton<_i1024.SeedLocalDataSource>(
       () => _i1024.SeedLocalDataSource(
         gh<_i252.AppDatabase>(),
@@ -74,17 +86,17 @@ class FeatureVocabularyPackageModule extends _i526.MicroPackageModule {
         gh<_i902.SrsScheduler>(),
       ),
     );
-    gh.lazySingleton<_i400.ReviewRepository>(
-      () => _i158.ReviewRepositoryImpl(
-        gh<_i740.ReviewLocalDataSource>(),
-        gh<_i902.SrsScheduler>(),
-      ),
-    );
     gh.factory<_i1051.GradeCard>(
       () => _i1051.GradeCard(gh<_i400.ReviewRepository>()),
     );
     gh.factory<_i345.LoadDueCards>(
       () => _i345.LoadDueCards(gh<_i400.ReviewRepository>()),
+    );
+    gh.lazySingleton<_i644.VocabularyRepository>(
+      () => _i669.VocabularyRepositoryImpl(
+        gh<_i566.VocabularyLocalDataSource>(),
+        gh<_i856.ActivityNotifier>(),
+      ),
     );
     gh.lazySingleton<_i880.SeedRepository>(
       () => _i302.SeedRepositoryImpl(
@@ -98,9 +110,14 @@ class FeatureVocabularyPackageModule extends _i526.MicroPackageModule {
         gh<_i1051.GradeCard>(),
       ),
     );
-    gh.lazySingleton<_i644.VocabularyRepository>(
-      () =>
-          _i669.VocabularyRepositoryImpl(gh<_i566.VocabularyLocalDataSource>()),
+    gh.lazySingleton<_i886.StudyStatsLocalDataSource>(
+      () => _i886.StudyStatsLocalDataSource(
+        gh<_i252.AppDatabase>(),
+        gh<_i740.ReviewLocalDataSource>(),
+      ),
+    );
+    gh.lazySingleton<_i856.StudyStatsReader>(
+      () => _i632.StudyStatsReaderImpl(gh<_i886.StudyStatsLocalDataSource>()),
     );
     gh.factory<_i967.AddWord>(
       () => _i967.AddWord(gh<_i644.VocabularyRepository>()),

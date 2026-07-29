@@ -9,6 +9,7 @@
 import 'package:architecture/architecture.dart';
 import 'package:database/database.dart';
 import 'package:everyday_language/app/di/injection.dart';
+import 'package:feature_home/feature_home.dart';
 import 'package:feature_vocabulary/feature_vocabulary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -161,6 +162,35 @@ void main() {
       hasLength(1),
       reason: 'a second import would mean a second deck of the same words',
     );
+  });
+
+  testWidgets('the dashboard follows a review as it happens', (tester) async {
+    // The dashboard's figures cross three seams — the reader, the local-day
+    // bucketing, and the refresh that fires when the review screen pops. Only
+    // a real run puts all three together.
+    await launchApp(tester, seeded: true);
+
+    final db = getIt<AppDatabase>();
+    if ((await db.select(db.words).get()).isEmpty) {
+      markTestSkipped('No content pack in this build.');
+      return;
+    }
+
+    // ── Nothing studied yet ─────────────────────────────────────────────────
+    await tapAndSettle(tester, find.byTooltip('Home'));
+    expect(find.text('No streak yet'), findsOneWidget);
+    expect(find.textContaining('0 of'), findsOneWidget);
+
+    // ── Review one card, straight from the dashboard ────────────────────────
+    await tapAndSettle(tester, find.byKey(HomeDashboardKeys.reviewCta));
+    await tapAndSettle(tester, find.text('Show answer'));
+    await tapAndSettle(tester, find.text('Good'));
+    await tapAndSettle(tester, find.byTooltip('Back'));
+
+    // ── The dashboard caught up on the way back ─────────────────────────────
+    await waitFor(tester, find.text('1 day in a row'));
+    expect(find.textContaining('1 of'), findsOneWidget);
+    expect(await db.select(db.reviewLogs).get(), hasLength(1));
   });
 
   testWidgets('a word met twice is enriched, not duplicated', (tester) async {
