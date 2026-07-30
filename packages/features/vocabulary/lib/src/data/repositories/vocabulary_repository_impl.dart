@@ -92,6 +92,11 @@ class VocabularyRepositoryImpl implements VocabularyRepository {
   @override
   Future<Result<void>> giveUpOnMeaning(int wordId) async {
     await _local.markEnrichmentFailed(wordId, now: DateTime.now().toUtc());
+    // Announced for the same reason a found meaning is. The word tile tells a
+    // pending word that "details arrive when you are online"; once the lookup
+    // has given up, that sentence is a promise the app will not keep, and it
+    // stays on screen until something says otherwise.
+    _activity.notifyActivityOccurred();
     return const Ok(null);
   }
 
