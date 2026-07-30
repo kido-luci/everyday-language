@@ -752,12 +752,6 @@ class AppLocalizationsVi extends AppLocalizations {
       'Không bắt buộc — nhưng giúp nhớ lâu hơn nhiều.';
 
   @override
-  String get vocabularyMeaningLabel => 'Nghĩa';
-
-  @override
-  String get vocabularyMeaningHint => 'Không bắt buộc';
-
-  @override
   String get vocabularySave => 'Lưu từ';
 
   @override

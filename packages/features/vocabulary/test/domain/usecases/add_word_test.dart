@@ -30,7 +30,6 @@ void main() {
       () => repository.addWord(
         display: any(named: 'display'),
         sentence: any(named: 'sentence'),
-        meaningVi: any(named: 'meaningVi'),
       ),
     ).thenAnswer((_) async => Ok(word));
   });
@@ -43,7 +42,6 @@ void main() {
       () => repository.addWord(
         display: 'decision',
         sentence: null,
-        meaningVi: null,
       ),
     ).called(1);
   });
@@ -56,7 +54,6 @@ void main() {
       () => repository.addWord(
         display: any(named: 'display'),
         sentence: any(named: 'sentence'),
-        meaningVi: any(named: 'meaningVi'),
       ),
     );
   });
@@ -107,14 +104,13 @@ void main() {
 
   test('treats blank optional fields as absent', () async {
     await addWord(
-      const AddWordParams(display: 'decision', sentence: '  ', meaningVi: ''),
+      const AddWordParams(display: 'decision', sentence: '  '),
     );
 
     verify(
       () => repository.addWord(
         display: 'decision',
         sentence: null,
-        meaningVi: null,
       ),
     ).called(1);
   });
