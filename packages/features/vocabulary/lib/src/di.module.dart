@@ -34,6 +34,8 @@ import 'package:feature_vocabulary/src/domain/repositories/seed_repository.dart'
 import 'package:feature_vocabulary/src/domain/repositories/vocabulary_repository.dart'
     as _i644;
 import 'package:feature_vocabulary/src/domain/usecases/add_word.dart' as _i967;
+import 'package:feature_vocabulary/src/domain/usecases/count_due_cards.dart'
+    as _i1024;
 import 'package:feature_vocabulary/src/domain/usecases/delete_word.dart'
     as _i314;
 import 'package:feature_vocabulary/src/domain/usecases/get_word.dart' as _i985;
@@ -57,6 +59,7 @@ import 'package:feature_vocabulary/src/presentation/bloc/words_list/words_list_b
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_contracts/shared_contracts.dart' as _i856;
 import 'package:srs/srs.dart' as _i902;
+import 'package:storage/storage.dart' as _i431;
 
 class FeatureVocabularyPackageModule extends _i526.MicroPackageModule {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -90,6 +93,9 @@ class FeatureVocabularyPackageModule extends _i526.MicroPackageModule {
         gh<_i902.SrsScheduler>(),
       ),
     );
+    gh.factory<_i1024.CountDueCards>(
+      () => _i1024.CountDueCards(gh<_i400.ReviewRepository>()),
+    );
     gh.factory<_i1051.GradeCard>(
       () => _i1051.GradeCard(gh<_i400.ReviewRepository>()),
     );
@@ -108,12 +114,6 @@ class FeatureVocabularyPackageModule extends _i526.MicroPackageModule {
         gh<_i1024.SeedLocalDataSource>(),
       ),
     );
-    gh.factory<_i1028.ReviewSessionCubit>(
-      () => _i1028.ReviewSessionCubit(
-        gh<_i345.LoadDueCards>(),
-        gh<_i1051.GradeCard>(),
-      ),
-    );
     gh.lazySingleton<_i886.StudyStatsLocalDataSource>(
       () => _i886.StudyStatsLocalDataSource(
         gh<_i252.AppDatabase>(),
@@ -124,6 +124,14 @@ class FeatureVocabularyPackageModule extends _i526.MicroPackageModule {
       () => _i242.WordEnricher(
         gh<_i644.VocabularyRepository>(),
         gh<_i93.WiktionaryClient>(),
+      ),
+    );
+    gh.factory<_i1028.ReviewSessionCubit>(
+      () => _i1028.ReviewSessionCubit(
+        gh<_i345.LoadDueCards>(),
+        gh<_i1024.CountDueCards>(),
+        gh<_i1051.GradeCard>(),
+        gh<_i431.DailyGoalStore>(),
       ),
     );
     gh.lazySingleton<_i856.StudyStatsReader>(
