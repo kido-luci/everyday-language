@@ -11,11 +11,14 @@
 /// it rather than a widget.
 library;
 
+export 'src/data/remote/wiktionary_client.dart'
+    show registerWiktionaryAttribution;
 export 'src/di.module.dart' show FeatureVocabularyPackageModule;
 export 'src/domain/entities/review_card.dart';
 export 'src/domain/entities/shared_capture.dart';
 export 'src/domain/entities/word.dart';
 export 'src/domain/usecases/import_seed_pack.dart';
+export 'src/domain/word_enricher.dart' show WordEnricher;
 export 'src/presentation/bloc/add_word/add_word_cubit.dart';
 export 'src/presentation/bloc/add_word/add_word_state.dart';
 export 'src/presentation/bloc/review_session/review_session_cubit.dart';

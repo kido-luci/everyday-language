@@ -60,6 +60,41 @@ class VocabularyRepositoryImpl implements VocabularyRepository {
     return const Ok(null);
   }
 
+  @override
+  Future<Result<List<Word>>> wordsAwaitingMeaning({
+    required int limit,
+  }) async {
+    final rows = await _local.pendingEnrichment(limit: limit);
+    return Ok([for (final row in rows) _toWord(row, const [])]);
+  }
+
+  @override
+  Future<Result<void>> saveMeaning(
+    int wordId, {
+    required String meaningVi,
+    String? phonetic,
+    String? partOfSpeech,
+  }) async {
+    await _local.applyGloss(
+      wordId,
+      meaningVi: meaningVi,
+      phonetic: phonetic,
+      partOfSpeech: partOfSpeech,
+      now: DateTime.now().toUtc(),
+    );
+    // The word list shows the meaning as a subtitle, and the dashboard counts
+    // nothing that changed here — but the list is what the learner is looking
+    // at while this lands.
+    _activity.notifyActivityOccurred();
+    return const Ok(null);
+  }
+
+  @override
+  Future<Result<void>> giveUpOnMeaning(int wordId) async {
+    await _local.markEnrichmentFailed(wordId, now: DateTime.now().toUtc());
+    return const Ok(null);
+  }
+
   Word _toWord(WordRow row, List<ExampleRow> examples) => Word(
     id: row.id,
     lemma: row.lemma,

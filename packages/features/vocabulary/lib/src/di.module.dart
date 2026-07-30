@@ -16,6 +16,8 @@ import 'package:feature_vocabulary/src/data/local/vocabulary_local_data_source.d
     as _i566;
 import 'package:feature_vocabulary/src/data/readers/study_stats_reader_impl.dart'
     as _i632;
+import 'package:feature_vocabulary/src/data/remote/wiktionary_client.dart'
+    as _i93;
 import 'package:feature_vocabulary/src/data/repositories/review_repository_impl.dart'
     as _i158;
 import 'package:feature_vocabulary/src/data/repositories/seed_repository_impl.dart'
@@ -32,8 +34,6 @@ import 'package:feature_vocabulary/src/domain/repositories/seed_repository.dart'
 import 'package:feature_vocabulary/src/domain/repositories/vocabulary_repository.dart'
     as _i644;
 import 'package:feature_vocabulary/src/domain/usecases/add_word.dart' as _i967;
-import 'package:feature_vocabulary/src/domain/usecases/count_due_cards.dart'
-    as _i1024;
 import 'package:feature_vocabulary/src/domain/usecases/delete_word.dart'
     as _i314;
 import 'package:feature_vocabulary/src/domain/usecases/get_word.dart' as _i985;
@@ -45,6 +45,7 @@ import 'package:feature_vocabulary/src/domain/usecases/list_words.dart'
     as _i1044;
 import 'package:feature_vocabulary/src/domain/usecases/load_due_cards.dart'
     as _i345;
+import 'package:feature_vocabulary/src/domain/word_enricher.dart' as _i242;
 import 'package:feature_vocabulary/src/presentation/bloc/add_word/add_word_cubit.dart'
     as _i330;
 import 'package:feature_vocabulary/src/presentation/bloc/review_session/review_session_cubit.dart'
@@ -56,13 +57,13 @@ import 'package:feature_vocabulary/src/presentation/bloc/words_list/words_list_b
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_contracts/shared_contracts.dart' as _i856;
 import 'package:srs/srs.dart' as _i902;
-import 'package:storage/storage.dart' as _i431;
 
 class FeatureVocabularyPackageModule extends _i526.MicroPackageModule {
   // initializes the registration of main-scope dependencies inside of GetIt
   @override
   _i687.FutureOr<void> init(_i526.GetItHelper gh) {
     final vocabularyExternalModule = _$VocabularyExternalModule();
+    gh.lazySingleton<_i93.WiktionaryClient>(() => _i93.WiktionaryClient());
     gh.lazySingleton<_i914.SeedPackLoader>(() => _i914.SeedPackLoader());
     gh.lazySingleton<_i902.SrsScheduler>(
       () => vocabularyExternalModule.provideScheduler(),
@@ -89,9 +90,6 @@ class FeatureVocabularyPackageModule extends _i526.MicroPackageModule {
         gh<_i902.SrsScheduler>(),
       ),
     );
-    gh.factory<_i1024.CountDueCards>(
-      () => _i1024.CountDueCards(gh<_i400.ReviewRepository>()),
-    );
     gh.factory<_i1051.GradeCard>(
       () => _i1051.GradeCard(gh<_i400.ReviewRepository>()),
     );
@@ -110,18 +108,22 @@ class FeatureVocabularyPackageModule extends _i526.MicroPackageModule {
         gh<_i1024.SeedLocalDataSource>(),
       ),
     );
+    gh.factory<_i1028.ReviewSessionCubit>(
+      () => _i1028.ReviewSessionCubit(
+        gh<_i345.LoadDueCards>(),
+        gh<_i1051.GradeCard>(),
+      ),
+    );
     gh.lazySingleton<_i886.StudyStatsLocalDataSource>(
       () => _i886.StudyStatsLocalDataSource(
         gh<_i252.AppDatabase>(),
         gh<_i740.ReviewLocalDataSource>(),
       ),
     );
-    gh.factory<_i1028.ReviewSessionCubit>(
-      () => _i1028.ReviewSessionCubit(
-        gh<_i345.LoadDueCards>(),
-        gh<_i1024.CountDueCards>(),
-        gh<_i1051.GradeCard>(),
-        gh<_i431.DailyGoalStore>(),
+    gh.lazySingleton<_i242.WordEnricher>(
+      () => _i242.WordEnricher(
+        gh<_i644.VocabularyRepository>(),
+        gh<_i93.WiktionaryClient>(),
       ),
     );
     gh.lazySingleton<_i856.StudyStatsReader>(
@@ -152,7 +154,10 @@ class FeatureVocabularyPackageModule extends _i526.MicroPackageModule {
       () => _i122.WordDetailCubit(gh<_i985.GetWord>()),
     );
     gh.factory<_i330.AddWordCubit>(
-      () => _i330.AddWordCubit(gh<_i967.AddWord>()),
+      () => _i330.AddWordCubit(
+        gh<_i967.AddWord>(),
+        gh<_i242.WordEnricher>(),
+      ),
     );
   }
 }
