@@ -15,6 +15,32 @@ updates:
         update-types:
           - minor
           - patch
+    ignore:
+      # The drift family cannot move yet, and a grouped bump that includes it
+      # takes the whole group down with it.
+      #
+      # `drift` can reach 2.34.3, but the `drift_dev` that works with it is
+      # 2.34.5, and that needs analyzer 13. This workspace resolves analyzer
+      # 10.2.0 because the code generators hold it there (`lean_builder` and
+      # `injectable_generator` are both several versions behind, with a major
+      # among them). The reachable `drift_dev` 2.34.0 calls
+      # `GeneratedDatabase.allSchemaEntities`, which drift 2.34.3 removed, so
+      # codegen dies outright — see the closed #14.
+      #
+      # Lift this once the generators have been upgraded, which is a piece of
+      # work in its own right rather than a dependency refresh.
+      - dependency-name: drift
+      - dependency-name: drift_dev
+      - dependency-name: drift_flutter
+      - dependency-name: sqlparser
+      - dependency-name: sqlite3
+      - dependency-name: sqlite3_flutter_libs
+      # Held at 1.8.1 on purpose: 1.9.0 ships as a Swift package only, and this
+      # project builds iOS with CocoaPods because Flutter 3.44 hard-codes the
+      # SPM-generated package to iOS 13 while Firebase needs 15. See the "iOS:
+      # Swift Package Manager must be disabled" section of CLAUDE.md. Unpin
+      # when the app can build under SPM, not before.
+      - dependency-name: receive_sharing_intent
 
   # Android Gradle dependencies
   - package-ecosystem: gradle
