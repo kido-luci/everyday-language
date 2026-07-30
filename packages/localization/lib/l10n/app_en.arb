@@ -412,6 +412,26 @@
   "reviewDoneTitle": "Nothing due",
   "reviewDoneMessage": "You are up to date. Come back when a card is ready.",
   "reviewFinishedTitle": "Session done",
+  "reviewMoreDueMessage": "{count, plural, =1{1 card is still due today.} other{{count} cards are still due today.}}",
+  "@reviewMoreDueMessage": {
+    "description": "Shown when a review session ends with cards still waiting.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "160"
+      }
+    }
+  },
+  "reviewContinueCta": "{count, plural, =1{Review 1 more} other{Review {count} more}}",
+  "@reviewContinueCta": {
+    "description": "Starts another session of the same size.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "20"
+      }
+    }
+  },
   "reviewRemaining": "{count} left",
   "@reviewRemaining": {
     "placeholders": {

@@ -66,11 +66,23 @@ class ReviewView extends StatelessWidget {
               title: state.reviewed == 0
                   ? context.l10n.reviewDoneTitle
                   : context.l10n.reviewFinishedTitle,
-              message: context.l10n.reviewDoneMessage,
-              action: AppButton(
-                label: context.l10n.commonDone,
-                onPressed: onFinished,
-              ),
+              // Whatever is left has to be said out loud. A sitting serves the
+              // daily goal, so finishing one is not the same as clearing the
+              // queue — and a learner who is told "done" while cards wait has
+              // been misled.
+              message: state.hasMoreDue
+                  ? context.l10n.reviewMoreDueMessage(state.dueAfter)
+                  : context.l10n.reviewDoneMessage,
+              action: state.hasMoreDue
+                  ? _MoreDueActions(
+                      nextSize: state.nextSessionSize,
+                      onContinue: cubit.start,
+                      onFinished: onFinished,
+                    )
+                  : AppButton(
+                      label: context.l10n.commonDone,
+                      onPressed: onFinished,
+                    ),
             ),
             ReviewSessionStatus.reviewing => ReviewCardView(
               // Keyed by card so the answer field is rebuilt — not reused with
@@ -89,6 +101,40 @@ class ReviewView extends StatelessWidget {
           },
         );
       },
+    );
+  }
+}
+
+/// Carry on, or stop here — offered when the sitting ended with cards still
+/// due. Carrying on is the primary action, but stopping is a real choice and
+/// keeps its own button.
+class _MoreDueActions extends StatelessWidget {
+  const _MoreDueActions({
+    required this.nextSize,
+    required this.onContinue,
+    required this.onFinished,
+  });
+
+  final int nextSize;
+  final VoidCallback onContinue;
+  final VoidCallback onFinished;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        AppButton(
+          label: context.l10n.reviewContinueCta(nextSize),
+          onPressed: onContinue,
+        ),
+        const SizedBox(height: AppSpacing.sm),
+        AppButton(
+          label: context.l10n.commonDone,
+          variant: AppButtonVariant.text,
+          onPressed: onFinished,
+        ),
+      ],
     );
   }
 }

@@ -5,8 +5,8 @@ import '../entities/review_card.dart';
 
 /// The review queue.
 abstract interface class ReviewRepository {
-  /// Cards due now, most overdue first.
-  Future<Result<List<ReviewCard>>> dueCards({int limit});
+  /// Cards due now, most overdue first, at most [limit] of them.
+  Future<Result<List<ReviewCard>>> dueCards({required int limit});
 
   /// How many cards are waiting.
   Future<Result<int>> dueCount();

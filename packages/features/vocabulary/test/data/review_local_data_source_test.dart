@@ -37,6 +37,22 @@ void main() {
     expect(await review.dueCount(now: earlier), 0);
   });
 
+  test(
+    'a batch stops at its limit while the count keeps the whole truth',
+    () async {
+      // The pair the finished screen relies on: the queue hands over one
+      // sitting's worth, the count says how much is really waiting. They used
+      // to disagree silently, at a hard-coded hundred.
+      await vocabulary.addWord(display: 'decision', now: now);
+      await vocabulary.addWord(display: 'errand', now: now);
+
+      final all = CardKind.values.length * 2;
+      expect(await review.dueCount(now: now), all);
+      expect(await review.dueCards(now: now, limit: 2), hasLength(2));
+      expect(await review.dueCards(now: now, limit: all + 5), hasLength(all));
+    },
+  );
+
   test('the most overdue card comes first', () async {
     // Waiting longer means decayed further, so it is the one worth the
     // session's attention.
@@ -61,7 +77,7 @@ void main() {
       sentence: 'It was a hard decision.',
     );
 
-    final due = await review.dueCards(now: now);
+    final due = await review.dueCards(now: now, limit: 20);
 
     expect(due.first.example?.sentence, 'It was a hard decision.');
     expect(due.first.example?.origin, ExampleOrigin.userCapture);
@@ -92,14 +108,14 @@ void main() {
           ),
         );
 
-    final due = await review.dueCards(now: now);
+    final due = await review.dueCards(now: now, limit: 20);
 
     expect(due.first.example?.origin, ExampleOrigin.userCapture);
   });
 
   test('grading moves the card and logs it in one go', () async {
     await vocabulary.addWord(display: 'decision', now: now);
-    final card = (await review.dueCards(now: now)).first.card;
+    final card = (await review.dueCards(now: now, limit: 20)).first.card;
     final schedule = CardSchedule(
       dueAt: DateTime.fromMicrosecondsSinceEpoch(card.dueAtUs, isUtc: true),
     );
@@ -124,7 +140,7 @@ void main() {
     'review history survives nothing — it cannot be reconstructed',
     () async {
       await vocabulary.addWord(display: 'decision', now: now);
-      final card = (await review.dueCards(now: now)).first.card;
+      final card = (await review.dueCards(now: now, limit: 20)).first.card;
 
       for (final grade in [ReviewGrade.good, ReviewGrade.again]) {
         final current = await (db.select(

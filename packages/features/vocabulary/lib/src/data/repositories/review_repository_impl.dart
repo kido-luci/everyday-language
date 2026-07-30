@@ -21,7 +21,7 @@ class ReviewRepositoryImpl implements ReviewRepository {
   final ActivityNotifier _activity;
 
   @override
-  Future<Result<List<ReviewCard>>> dueCards({int limit = 100}) async {
+  Future<Result<List<ReviewCard>>> dueCards({required int limit}) async {
     final rows = await _local.dueCards(now: DateTime.now(), limit: limit);
     return Ok([for (final row in rows) _toCard(row)]);
   }
