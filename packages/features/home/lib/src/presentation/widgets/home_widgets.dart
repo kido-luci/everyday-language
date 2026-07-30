@@ -149,7 +149,12 @@ class _Dashboard extends StatelessWidget {
         const SizedBox(height: AppSpacing.lg),
         AppButton(
           key: HomeDashboardKeys.reviewCta,
-          label: context.l10n.homeReviewCta(stats.dueNow),
+          // The session serves the daily goal, not the whole queue, so the
+          // button counts what a tap actually starts. The true backlog is
+          // right above it in the "due" tile.
+          label: context.l10n.homeReviewCta(
+            stats.dueNow < state.dailyGoal ? stats.dueNow : state.dailyGoal,
+          ),
           expand: true,
           // Nothing due is a finished state, not a broken one: the label says
           // so, and the button simply stops inviting a tap.

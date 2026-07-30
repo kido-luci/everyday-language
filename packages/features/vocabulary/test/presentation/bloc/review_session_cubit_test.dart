@@ -2,15 +2,21 @@ import 'package:architecture/architecture.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:database/database.dart' show CardKind;
 import 'package:feature_vocabulary/feature_vocabulary.dart';
+import 'package:feature_vocabulary/src/domain/usecases/count_due_cards.dart';
 import 'package:feature_vocabulary/src/domain/usecases/grade_card.dart';
 import 'package:feature_vocabulary/src/domain/usecases/load_due_cards.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:srs/srs.dart';
+import 'package:storage/storage.dart';
 
 class _MockLoad extends Mock implements LoadDueCards {}
 
+class _MockCount extends Mock implements CountDueCards {}
+
 class _MockGrade extends Mock implements GradeCard {}
+
+class _MockDailyGoal extends Mock implements DailyGoalStore {}
 
 class _FakeParams extends Fake implements GradeCardParams {}
 
@@ -30,19 +36,27 @@ CardSchedule _scheduled(SchedulePhase phase) =>
 
 void main() {
   late _MockLoad load;
+  late _MockCount count;
   late _MockGrade grade;
+  late _MockDailyGoal goal;
 
   setUpAll(() => registerFallbackValue(_FakeParams()));
 
   setUp(() {
     load = _MockLoad();
+    count = _MockCount();
     grade = _MockGrade();
+    goal = _MockDailyGoal();
+
+    when(goal.read).thenReturn(20);
+    // Nothing left over unless a test says otherwise.
+    when(count.call).thenAnswer((_) async => const Ok(0));
   });
 
   blocTest<ReviewSessionCubit, ReviewSessionState>(
     'an empty queue finishes the session rather than showing a blank card',
-    setUp: () => when(load.call).thenAnswer((_) async => const Ok([])),
-    build: () => ReviewSessionCubit(load, grade),
+    setUp: () => when(() => load(any())).thenAnswer((_) async => const Ok([])),
+    build: () => ReviewSessionCubit(load, count, grade, goal),
     act: (cubit) => cubit.start(),
     expect: () => [
       const ReviewSessionState(),
@@ -55,9 +69,9 @@ void main() {
   blocTest<ReviewSessionCubit, ReviewSessionState>(
     'grading is refused until the answer has been shown',
     setUp: () {
-      when(load.call).thenAnswer((_) async => Ok([_card(1)]));
+      when(() => load(any())).thenAnswer((_) async => Ok([_card(1)]));
     },
-    build: () => ReviewSessionCubit(load, grade),
+    build: () => ReviewSessionCubit(load, count, grade, goal),
     act: (cubit) async {
       await cubit.start();
       await cubit.grade(ReviewGrade.easy);
@@ -68,12 +82,12 @@ void main() {
   blocTest<ReviewSessionCubit, ReviewSessionState>(
     'a graduated card leaves the queue',
     setUp: () {
-      when(load.call).thenAnswer((_) async => Ok([_card(1), _card(2)]));
+      when(() => load(any())).thenAnswer((_) async => Ok([_card(1), _card(2)]));
       when(
         () => grade(any()),
       ).thenAnswer((_) async => Ok(_scheduled(SchedulePhase.review)));
     },
-    build: () => ReviewSessionCubit(load, grade),
+    build: () => ReviewSessionCubit(load, count, grade, goal),
     act: (cubit) async {
       await cubit.start();
       cubit.reveal();
@@ -94,12 +108,12 @@ void main() {
   blocTest<ReviewSessionCubit, ReviewSessionState>(
     'a card still learning comes back later in the same sitting',
     setUp: () {
-      when(load.call).thenAnswer((_) async => Ok([_card(1), _card(2)]));
+      when(() => load(any())).thenAnswer((_) async => Ok([_card(1), _card(2)]));
       when(
         () => grade(any()),
       ).thenAnswer((_) async => Ok(_scheduled(SchedulePhase.relearning)));
     },
-    build: () => ReviewSessionCubit(load, grade),
+    build: () => ReviewSessionCubit(load, count, grade, goal),
     act: (cubit) async {
       await cubit.start();
       cubit.reveal();
@@ -116,12 +130,12 @@ void main() {
   blocTest<ReviewSessionCubit, ReviewSessionState>(
     'the requeued card carries its new schedule, not the stale one',
     setUp: () {
-      when(load.call).thenAnswer((_) async => Ok([_card(1)]));
+      when(() => load(any())).thenAnswer((_) async => Ok([_card(1)]));
       when(
         () => grade(any()),
       ).thenAnswer((_) async => Ok(_scheduled(SchedulePhase.learning)));
     },
-    build: () => ReviewSessionCubit(load, grade),
+    build: () => ReviewSessionCubit(load, count, grade, goal),
     act: (cubit) async {
       await cubit.start();
       cubit.reveal();
@@ -136,12 +150,12 @@ void main() {
   blocTest<ReviewSessionCubit, ReviewSessionState>(
     'the last card finishes the session',
     setUp: () {
-      when(load.call).thenAnswer((_) async => Ok([_card(1)]));
+      when(() => load(any())).thenAnswer((_) async => Ok([_card(1)]));
       when(
         () => grade(any()),
       ).thenAnswer((_) async => Ok(_scheduled(SchedulePhase.review)));
     },
-    build: () => ReviewSessionCubit(load, grade),
+    build: () => ReviewSessionCubit(load, count, grade, goal),
     act: (cubit) async {
       await cubit.start();
       cubit.reveal();
@@ -152,6 +166,118 @@ void main() {
       expect(cubit.state.reviewed, 1);
     },
   );
+
+  group('a sitting is the daily goal, and says what it left behind', () {
+    blocTest<ReviewSessionCubit, ReviewSessionState>(
+      'asks for exactly the goal, not the whole queue',
+      setUp: () {
+        when(goal.read).thenReturn(20);
+        when(() => load(any())).thenAnswer((_) async => Ok([_card(1)]));
+      },
+      build: () => ReviewSessionCubit(load, count, grade, goal),
+      act: (cubit) => cubit.start(),
+      verify: (cubit) {
+        verify(() => load(20)).called(1);
+        expect(cubit.state.sessionSize, 20);
+      },
+    );
+
+    blocTest<ReviewSessionCubit, ReviewSessionState>(
+      'finishing with cards left over reports how many',
+      setUp: () {
+        when(() => load(any())).thenAnswer((_) async => Ok([_card(1)]));
+        when(
+          () => grade(any()),
+        ).thenAnswer((_) async => Ok(_scheduled(SchedulePhase.review)));
+        // 160 still waiting: the sitting cleared its share, not the queue.
+        when(count.call).thenAnswer((_) async => const Ok(160));
+      },
+      build: () => ReviewSessionCubit(load, count, grade, goal),
+      act: (cubit) async {
+        await cubit.start();
+        cubit.reveal();
+        await cubit.grade(ReviewGrade.good);
+      },
+      verify: (cubit) {
+        expect(cubit.state.status, ReviewSessionStatus.finished);
+        expect(cubit.state.dueAfter, 160);
+        expect(cubit.state.hasMoreDue, isTrue);
+        expect(
+          cubit.state.nextSessionSize,
+          20,
+          reason: 'the next sitting is another goal-sized batch',
+        );
+      },
+    );
+
+    blocTest<ReviewSessionCubit, ReviewSessionState>(
+      'clearing the queue reports nothing left',
+      setUp: () {
+        when(() => load(any())).thenAnswer((_) async => Ok([_card(1)]));
+        when(
+          () => grade(any()),
+        ).thenAnswer((_) async => Ok(_scheduled(SchedulePhase.review)));
+        when(count.call).thenAnswer((_) async => const Ok(0));
+      },
+      build: () => ReviewSessionCubit(load, count, grade, goal),
+      act: (cubit) async {
+        await cubit.start();
+        cubit.reveal();
+        await cubit.grade(ReviewGrade.good);
+      },
+      verify: (cubit) => expect(cubit.state.hasMoreDue, isFalse),
+    );
+
+    blocTest<ReviewSessionCubit, ReviewSessionState>(
+      'an empty queue counts what is due before calling it a day',
+      setUp: () =>
+          when(() => load(any())).thenAnswer((_) async => const Ok([])),
+      build: () => ReviewSessionCubit(load, count, grade, goal),
+      act: (cubit) => cubit.start(),
+      verify: (cubit) {
+        expect(cubit.state.status, ReviewSessionStatus.finished);
+        expect(cubit.state.hasMoreDue, isFalse);
+      },
+    );
+
+    blocTest<ReviewSessionCubit, ReviewSessionState>(
+      'carrying on loads another batch',
+      setUp: () {
+        when(() => load(any())).thenAnswer((_) async => Ok([_card(1)]));
+        when(
+          () => grade(any()),
+        ).thenAnswer((_) async => Ok(_scheduled(SchedulePhase.review)));
+        when(count.call).thenAnswer((_) async => const Ok(5));
+      },
+      build: () => ReviewSessionCubit(load, count, grade, goal),
+      act: (cubit) async {
+        await cubit.start();
+        cubit.reveal();
+        await cubit.grade(ReviewGrade.good);
+        // What the "review N more" button does.
+        await cubit.start();
+      },
+      verify: (cubit) {
+        verify(() => load(20)).called(2);
+        expect(cubit.state.status, ReviewSessionStatus.reviewing);
+        expect(
+          cubit.state.reviewed,
+          0,
+          reason: 'a fresh sitting counts from zero',
+        );
+      },
+    );
+
+    test('the offer never promises more than is actually left', () {
+      const state = ReviewSessionState(
+        status: ReviewSessionStatus.finished,
+        sessionSize: 20,
+        dueAfter: 3,
+      );
+
+      expect(state.nextSessionSize, 3);
+    });
+  });
 
   _typedDrillTests();
 
@@ -181,14 +307,20 @@ void main() {
 
 void _typedDrillTests() {
   late _MockLoad load;
+  late _MockCount count;
   late _MockGrade grade;
+  late _MockDailyGoal goal;
 
   ReviewCard cloze(int id) => _card(id, kind: CardKind.cloze);
 
   setUp(() {
     load = _MockLoad();
+    count = _MockCount();
     grade = _MockGrade();
-    when(load.call).thenAnswer((_) async => Ok([cloze(1)]));
+    goal = _MockDailyGoal();
+    when(goal.read).thenReturn(20);
+    when(count.call).thenAnswer((_) async => const Ok(0));
+    when(() => load(any())).thenAnswer((_) async => Ok([cloze(1)]));
     when(
       () => grade(any()),
     ).thenAnswer((_) async => Ok(_scheduled(SchedulePhase.review)));
@@ -212,7 +344,7 @@ void _typedDrillTests() {
 
   blocTest<ReviewSessionCubit, ReviewSessionState>(
     'a typing drill offers no way to reveal without answering',
-    build: () => ReviewSessionCubit(load, grade),
+    build: () => ReviewSessionCubit(load, count, grade, goal),
     act: (cubit) async {
       await cubit.start();
       cubit.reveal();
@@ -226,7 +358,7 @@ void _typedDrillTests() {
 
   blocTest<ReviewSessionCubit, ReviewSessionState>(
     'an empty answer cannot be submitted',
-    build: () => ReviewSessionCubit(load, grade),
+    build: () => ReviewSessionCubit(load, count, grade, goal),
     act: (cubit) async {
       await cubit.start();
       cubit.answerChanged('   ');
@@ -240,7 +372,7 @@ void _typedDrillTests() {
 
   blocTest<ReviewSessionCubit, ReviewSessionState>(
     'a correct answer reveals the card and records the verdict',
-    build: () => ReviewSessionCubit(load, grade),
+    build: () => ReviewSessionCubit(load, count, grade, goal),
     act: (cubit) async {
       await cubit.start();
       cubit.answerChanged('W1');
@@ -254,7 +386,7 @@ void _typedDrillTests() {
 
   blocTest<ReviewSessionCubit, ReviewSessionState>(
     'a wrong answer still reveals the word rather than moving on',
-    build: () => ReviewSessionCubit(load, grade),
+    build: () => ReviewSessionCubit(load, count, grade, goal),
     act: (cubit) async {
       await cubit.start();
       cubit.answerChanged('wrong');
@@ -270,7 +402,7 @@ void _typedDrillTests() {
 
   blocTest<ReviewSessionCubit, ReviewSessionState>(
     'submitting does not grade — that is a separate step',
-    build: () => ReviewSessionCubit(load, grade),
+    build: () => ReviewSessionCubit(load, count, grade, goal),
     act: (cubit) async {
       await cubit.start();
       cubit.answerChanged('w1');
@@ -281,7 +413,7 @@ void _typedDrillTests() {
 
   blocTest<ReviewSessionCubit, ReviewSessionState>(
     'after a wrong answer only "again" is accepted',
-    build: () => ReviewSessionCubit(load, grade),
+    build: () => ReviewSessionCubit(load, count, grade, goal),
     act: (cubit) async {
       await cubit.start();
       cubit.answerChanged('wrong');
@@ -293,7 +425,7 @@ void _typedDrillTests() {
 
   blocTest<ReviewSessionCubit, ReviewSessionState>(
     'after a wrong answer "again" goes through',
-    build: () => ReviewSessionCubit(load, grade),
+    build: () => ReviewSessionCubit(load, count, grade, goal),
     act: (cubit) async {
       await cubit.start();
       cubit.answerChanged('wrong');
@@ -305,10 +437,10 @@ void _typedDrillTests() {
 
   blocTest<ReviewSessionCubit, ReviewSessionState>(
     'the typed answer is cleared before the next card',
-    setUp: () => when(load.call).thenAnswer(
+    setUp: () => when(() => load(any())).thenAnswer(
       (_) async => Ok([cloze(1), cloze(2)]),
     ),
-    build: () => ReviewSessionCubit(load, grade),
+    build: () => ReviewSessionCubit(load, count, grade, goal),
     act: (cubit) async {
       await cubit.start();
       cubit.answerChanged('w1');
@@ -325,8 +457,9 @@ void _typedDrillTests() {
 
   blocTest<ReviewSessionCubit, ReviewSessionState>(
     'a recognition card still reveals and takes any grade',
-    setUp: () => when(load.call).thenAnswer((_) async => Ok([_card(1)])),
-    build: () => ReviewSessionCubit(load, grade),
+    setUp: () =>
+        when(() => load(any())).thenAnswer((_) async => Ok([_card(1)])),
+    build: () => ReviewSessionCubit(load, count, grade, goal),
     act: (cubit) async {
       await cubit.start();
       cubit.reveal();

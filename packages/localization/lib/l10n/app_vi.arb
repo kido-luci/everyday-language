@@ -314,6 +314,24 @@
   "reviewDoneTitle": "Chưa tới hạn",
   "reviewDoneMessage": "Bạn đã ôn xong. Quay lại khi có thẻ tới hạn nhé.",
   "reviewFinishedTitle": "Xong phiên ôn",
+  "reviewMoreDueMessage": "{count, plural, other{Còn {count} thẻ đến hạn hôm nay.}}",
+  "@reviewMoreDueMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "160"
+      }
+    }
+  },
+  "reviewContinueCta": "{count, plural, other{Ôn tiếp {count} thẻ}}",
+  "@reviewContinueCta": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "20"
+      }
+    }
+  },
   "reviewRemaining": "Còn {count}",
   "reviewProduceHint": "Nói to trước khi xem đáp án.",
   "reviewTypeHint": "Gõ lại từ",

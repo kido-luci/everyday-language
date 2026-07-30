@@ -802,6 +802,26 @@ class AppLocalizationsVi extends AppLocalizations {
   String get reviewFinishedTitle => 'Xong phiên ôn';
 
   @override
+  String reviewMoreDueMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Còn $count thẻ đến hạn hôm nay.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String reviewContinueCta(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ôn tiếp $count thẻ',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String reviewRemaining(int count) {
     return 'Còn $count';
   }

@@ -803,6 +803,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reviewFinishedTitle => 'Session done';
 
   @override
+  String reviewMoreDueMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count cards are still due today.',
+      one: '1 card is still due today.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String reviewContinueCta(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Review $count more',
+      one: 'Review 1 more',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String reviewRemaining(int count) {
     return '$count left';
   }

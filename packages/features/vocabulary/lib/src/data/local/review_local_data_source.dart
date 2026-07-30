@@ -25,14 +25,18 @@ class ReviewLocalDataSource {
 
   final AppDatabase _db;
 
-  /// Cards due at [now], most overdue first, capped at [limit].
+  /// Cards due at [now], most overdue first, at most [limit] of them.
+  ///
+  /// [limit] is required rather than defaulted: a session that quietly serves
+  /// some of what is due, with nothing in the UI saying so, is how cards go
+  /// missing. Whoever asks has to decide how many they can account for.
   ///
   /// Ordered by due time rather than shuffled: a card that has been waiting
   /// three days has decayed further than one due this morning, so it is the
   /// one worth spending the session's attention on.
   Future<List<DueCardRow>> dueCards({
     required DateTime now,
-    int limit = 100,
+    required int limit,
   }) async {
     final nowUs = now.toUtc().microsecondsSinceEpoch;
 

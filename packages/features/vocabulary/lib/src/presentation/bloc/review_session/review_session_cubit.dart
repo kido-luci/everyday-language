@@ -2,30 +2,55 @@ import 'package:architecture/architecture.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:srs/srs.dart';
+import 'package:storage/storage.dart';
 
 import '../../../domain/entities/review_card.dart';
+import '../../../domain/usecases/count_due_cards.dart';
 import '../../../domain/usecases/grade_card.dart';
 import '../../../domain/usecases/load_due_cards.dart';
 import 'review_session_state.dart';
 
 @injectable
 class ReviewSessionCubit extends Cubit<ReviewSessionState> {
-  ReviewSessionCubit(this._loadDueCards, this._gradeCard)
-    : super(const ReviewSessionState());
+  ReviewSessionCubit(
+    this._loadDueCards,
+    this._countDueCards,
+    this._gradeCard,
+    this._dailyGoal,
+  ) : super(const ReviewSessionState());
 
   final LoadDueCards _loadDueCards;
+  final CountDueCards _countDueCards;
   final GradeCard _gradeCard;
+  final DailyGoalStore _dailyGoal;
 
+  /// Loads a sitting's worth of due cards.
+  ///
+  /// A sitting is the daily goal, not the whole queue: a learner who comes
+  /// back to 180 due cards meets a wall and stops, and the goal is already
+  /// their own statement of what a day's work looks like. What is left over is
+  /// reported when the sitting ends, with a way to start another — the queue
+  /// used to be silently truncated at a hundred instead, so cards simply went
+  /// missing.
   Future<void> start() async {
     emit(const ReviewSessionState());
-    switch (await _loadDueCards()) {
+    final size = _dailyGoal.read();
+    switch (await _loadDueCards(size)) {
       case Ok(:final value):
+        if (value.isEmpty) {
+          emit(
+            ReviewSessionState(
+              status: ReviewSessionStatus.finished,
+              sessionSize: size,
+            ),
+          );
+          return;
+        }
         emit(
           ReviewSessionState(
-            status: value.isEmpty
-                ? ReviewSessionStatus.finished
-                : ReviewSessionStatus.reviewing,
+            status: ReviewSessionStatus.reviewing,
             queue: value,
+            sessionSize: size,
           ),
         );
       case Err(:final failure):
@@ -117,8 +142,20 @@ class ReviewSessionCubit extends Cubit<ReviewSessionState> {
                 : ReviewSessionStatus.reviewing,
           ),
         );
+        if (queue.isEmpty) await _countWhatIsLeft();
       case Err(:final failure):
         emit(state.copyWith(failureMessage: failure.message));
+    }
+  }
+
+  /// Asks storage what is still due, so the finished screen can say whether
+  /// this was the last of it.
+  ///
+  /// Counted rather than derived from what was reviewed: a relearning card
+  /// comes round more than once, so the two numbers do not line up.
+  Future<void> _countWhatIsLeft() async {
+    if (await _countDueCards() case Ok(:final value)) {
+      emit(state.copyWith(dueAfter: value));
     }
   }
 }

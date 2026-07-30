@@ -1550,6 +1550,18 @@ abstract class AppLocalizations {
   /// **'Session done'**
   String get reviewFinishedTitle;
 
+  /// Shown when a review session ends with cards still waiting.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 card is still due today.} other{{count} cards are still due today.}}'**
+  String reviewMoreDueMessage(int count);
+
+  /// Starts another session of the same size.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Review 1 more} other{Review {count} more}}'**
+  String reviewContinueCta(int count);
+
   /// No description provided for @reviewRemaining.
   ///
   /// In en, this message translates to:

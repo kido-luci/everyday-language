@@ -21,6 +21,7 @@ dependencies:
   localization: ^0.1.0
   shared_contracts: ^0.1.0
   srs: ^0.1.0
+  storage: ^0.1.0
 
   # Third-party.
   flutter_bloc: ^9.1.1
