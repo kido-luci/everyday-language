@@ -292,6 +292,18 @@
   "vocabularyTitle": "Từ của tôi",
   "vocabularyEmptyTitle": "Chưa có từ nào",
   "vocabularyEmptyMessage": "Thêm một từ bạn gặp hôm nay, kèm câu bạn đã gặp nó.",
+  "vocabularySearchHint": "Tìm trong từ của bạn",
+  "vocabularySearchClear": "Xoá tìm kiếm",
+  "vocabularySearchNoMatchesTitle": "Không tìm thấy",
+  "vocabularySearchNoMatchesMessage": "Không có từ nào khớp với “{query}”.",
+  "@vocabularySearchNoMatchesMessage": {
+    "placeholders": {
+      "query": {
+        "type": "String",
+        "example": "decision"
+      }
+    }
+  },
   "vocabularyAddTitle": "Thêm từ",
   "vocabularyWordLabel": "Từ",
   "vocabularyWordHint": "decision",

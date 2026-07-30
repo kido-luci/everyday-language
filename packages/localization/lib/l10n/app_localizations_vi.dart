@@ -733,6 +733,20 @@ class AppLocalizationsVi extends AppLocalizations {
       'Thêm một từ bạn gặp hôm nay, kèm câu bạn đã gặp nó.';
 
   @override
+  String get vocabularySearchHint => 'Tìm trong từ của bạn';
+
+  @override
+  String get vocabularySearchClear => 'Xoá tìm kiếm';
+
+  @override
+  String get vocabularySearchNoMatchesTitle => 'Không tìm thấy';
+
+  @override
+  String vocabularySearchNoMatchesMessage(String query) {
+    return 'Không có từ nào khớp với “$query”.';
+  }
+
+  @override
   String get vocabularyAddTitle => 'Thêm từ';
 
   @override

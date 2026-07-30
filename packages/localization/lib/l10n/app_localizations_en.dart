@@ -733,6 +733,20 @@ class AppLocalizationsEn extends AppLocalizations {
       'Add a word you met today, with the sentence you met it in.';
 
   @override
+  String get vocabularySearchHint => 'Search your words';
+
+  @override
+  String get vocabularySearchClear => 'Clear search';
+
+  @override
+  String get vocabularySearchNoMatchesTitle => 'No matches';
+
+  @override
+  String vocabularySearchNoMatchesMessage(String query) {
+    return 'Nothing here matches “$query”.';
+  }
+
+  @override
   String get vocabularyAddTitle => 'Add a word';
 
   @override

@@ -11,13 +11,16 @@ class _MockListWords extends Mock implements ListWords {}
 
 class _MockDeleteWord extends Mock implements DeleteWord {}
 
-Word _word(int id) => Word(
-  id: id,
-  lemma: 'w$id',
-  display: 'w$id',
-  enrichmentStatus: EnrichmentStatus.ready,
-  createdAt: DateTime.utc(2026, 6, 1),
-);
+Word _word(int id, {String? display, String? meaningVi, String? meaningEn}) =>
+    Word(
+      id: id,
+      lemma: (display ?? 'w$id').toLowerCase(),
+      display: display ?? 'w$id',
+      meaningVi: meaningVi,
+      meaningEn: meaningEn,
+      enrichmentStatus: EnrichmentStatus.ready,
+      createdAt: DateTime.utc(2026, 6, 1),
+    );
 
 void main() {
   late _MockListWords listWords;
@@ -90,5 +93,109 @@ void main() {
 
     expect(loading.isEmpty, isFalse);
     expect(ready.isEmpty, isTrue);
+  });
+
+  group('search', () {
+    blocTest<WordsListBloc, WordsListState>(
+      'narrows the list without going back to storage',
+      setUp: () => when(listWords.call).thenAnswer(
+        (_) async =>
+            Ok([_word(1, display: 'decision'), _word(2, display: 'errand')]),
+      ),
+      build: () => WordsListBloc(listWords, deleteWord),
+      act: (bloc) async {
+        bloc.add(const WordsRequested());
+        await Future<void>.delayed(Duration.zero);
+        bloc.add(const WordsSearched('deci'));
+      },
+      skip: 2,
+      expect: () => [
+        isA<WordsListState>()
+            .having((s) => s.query, 'query', 'deci')
+            .having((s) => s.words, 'words held', hasLength(2))
+            .having(
+              (s) => s.visibleWords.map((w) => w.display),
+              'visible',
+              ['decision'],
+            ),
+      ],
+      verify: (_) => verify(listWords.call).called(1),
+    );
+
+    blocTest<WordsListBloc, WordsListState>(
+      'clearing the query brings everything back',
+      setUp: () => when(listWords.call).thenAnswer(
+        (_) async => Ok([_word(1, display: 'decision'), _word(2)]),
+      ),
+      build: () => WordsListBloc(listWords, deleteWord),
+      act: (bloc) async {
+        bloc.add(const WordsRequested());
+        await Future<void>.delayed(Duration.zero);
+        bloc.add(const WordsSearched('deci'));
+        bloc.add(const WordsSearched(''));
+      },
+      skip: 3,
+      expect: () => [
+        isA<WordsListState>()
+            .having((s) => s.query, 'query', '')
+            .having((s) => s.visibleWords, 'visible', hasLength(2)),
+      ],
+    );
+
+    test('matches the word whatever the case', () {
+      final state = WordsListState(
+        status: WordsListStatus.ready,
+        words: [_word(1, display: 'Decision')],
+        query: 'DECI',
+      );
+
+      expect(state.visibleWords, hasLength(1));
+    });
+
+    test('matches a meaning, so a half-remembered one finds the word', () {
+      final state = WordsListState(
+        status: WordsListStatus.ready,
+        words: [
+          _word(1, display: 'errand', meaningVi: 'việc chạy loăng quăng'),
+          _word(2, display: 'decision', meaningEn: 'a choice made'),
+        ],
+        query: 'choice',
+      );
+
+      expect(state.visibleWords.map((w) => w.display), ['decision']);
+
+      final vietnamese = WordsListState(
+        status: WordsListStatus.ready,
+        words: state.words,
+        query: 'loăng quăng',
+      );
+      expect(vietnamese.visibleWords.map((w) => w.display), ['errand']);
+    });
+
+    test('"nothing matches" is not the same as "nothing collected"', () {
+      final noMatches = WordsListState(
+        status: WordsListStatus.ready,
+        words: [_word(1, display: 'decision')],
+        query: 'zzz',
+      );
+
+      expect(noMatches.hasNoMatches, isTrue);
+      expect(noMatches.isEmpty, isFalse);
+
+      const nothingCollected = WordsListState(status: WordsListStatus.ready);
+      expect(nothingCollected.hasNoMatches, isFalse);
+      expect(nothingCollected.isEmpty, isTrue);
+    });
+
+    test('a whitespace-only query is not a query', () {
+      final state = WordsListState(
+        status: WordsListStatus.ready,
+        words: [_word(1), _word(2)],
+        query: '   ',
+      );
+
+      expect(state.visibleWords, hasLength(2));
+      expect(state.hasNoMatches, isFalse);
+    });
   });
 }

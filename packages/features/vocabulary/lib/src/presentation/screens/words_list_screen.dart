@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:localization/localization.dart';
 
+import '../../domain/entities/word.dart';
 import '../../locator.dart';
 import '../bloc/words_list/words_list_bloc.dart';
 import '../bloc/words_list/words_list_event.dart';
@@ -91,23 +92,108 @@ class WordsListView extends StatelessWidget {
               title: context.l10n.vocabularyEmptyTitle,
               message: context.l10n.vocabularyEmptyMessage,
             ),
-            _ => ListView.builder(
-              // The last card would otherwise sit behind the shell's
-              // floating nav pill.
-              padding: const EdgeInsets.fromLTRB(
-                AppSpacing.lg,
-                AppSpacing.md,
-                AppSpacing.lg,
-                AppSpacing.md + kFloatingNavBarInset,
-              ),
-              itemCount: state.words.length,
-              itemBuilder: (context, i) {
-                final word = state.words[i];
-                return WordTile(word: word, onTap: () => onOpen(word.id));
-              },
+            _ => Column(
+              children: [
+                const _SearchField(),
+                // The search field stays put while the results below it
+                // change — including when nothing matches, or the query
+                // could not be cleared without retyping over it.
+                Expanded(
+                  child: state.hasNoMatches
+                      ? AppEmptyView(
+                          icon: FontAwesomeIcons.magnifyingGlass,
+                          title: context.l10n.vocabularySearchNoMatchesTitle,
+                          message: context.l10n
+                              .vocabularySearchNoMatchesMessage(state.query),
+                        )
+                      : _WordsList(words: state.visibleWords, onOpen: onOpen),
+                ),
+              ],
             ),
           },
         );
+      },
+    );
+  }
+}
+
+/// Filters the list as it is typed into.
+///
+/// Stateful only to own the controller, which the clear button needs; the
+/// query itself lives in the bloc.
+class _SearchField extends StatefulWidget {
+  const _SearchField();
+
+  @override
+  State<_SearchField> createState() => _SearchFieldState();
+}
+
+class _SearchFieldState extends State<_SearchField> {
+  final _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _search(String query) =>
+      context.read<WordsListBloc>().add(WordsSearched(query));
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.lg,
+        AppSpacing.md,
+        AppSpacing.lg,
+        0,
+      ),
+      child: AppTextField(
+        controller: _controller,
+        hint: context.l10n.vocabularySearchHint,
+        prefixIcon: FontAwesomeIcons.magnifyingGlass,
+        textInputAction: TextInputAction.search,
+        onChanged: _search,
+        suffix: ValueListenableBuilder(
+          valueListenable: _controller,
+          builder: (context, value, _) {
+            if (value.text.isEmpty) return const SizedBox.shrink();
+            return IconButton(
+              tooltip: context.l10n.vocabularySearchClear,
+              icon: const FaIcon(FontAwesomeIcons.xmark, size: 16),
+              onPressed: () {
+                _controller.clear();
+                _search('');
+              },
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class _WordsList extends StatelessWidget {
+  const _WordsList({required this.words, required this.onOpen});
+
+  final List<Word> words;
+  final void Function(int wordId) onOpen;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      // The last card would otherwise sit behind the shell's floating nav pill.
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.lg,
+        AppSpacing.md,
+        AppSpacing.lg,
+        AppSpacing.md + kFloatingNavBarInset,
+      ),
+      itemCount: words.length,
+      itemBuilder: (context, i) {
+        final word = words[i];
+        return WordTile(word: word, onTap: () => onOpen(word.id));
       },
     );
   }

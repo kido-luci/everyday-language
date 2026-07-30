@@ -388,6 +388,18 @@
   "vocabularyTitle": "My words",
   "vocabularyEmptyTitle": "No words yet",
   "vocabularyEmptyMessage": "Add a word you met today, with the sentence you met it in.",
+  "vocabularySearchHint": "Search your words",
+  "vocabularySearchClear": "Clear search",
+  "vocabularySearchNoMatchesTitle": "No matches",
+  "vocabularySearchNoMatchesMessage": "Nothing here matches “{query}”.",
+  "@vocabularySearchNoMatchesMessage": {
+    "placeholders": {
+      "query": {
+        "type": "String",
+        "example": "decision"
+      }
+    }
+  },
   "vocabularyAddTitle": "Add a word",
   "vocabularyWordLabel": "Word",
   "vocabularyWordHint": "decision",
