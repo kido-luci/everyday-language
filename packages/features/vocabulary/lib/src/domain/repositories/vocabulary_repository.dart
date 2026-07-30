@@ -23,4 +23,19 @@ abstract interface class VocabularyRepository {
 
   /// Removes a word, its examples and its cards.
   Future<Result<void>> deleteWord(int id);
+
+  /// Words still waiting for a meaning, oldest first.
+  Future<Result<List<Word>>> wordsAwaitingMeaning({required int limit});
+
+  /// Stores a looked-up meaning against [wordId] and marks it done.
+  Future<Result<void>> saveMeaning(
+    int wordId, {
+    required String meaningVi,
+    String? phonetic,
+    String? partOfSpeech,
+  });
+
+  /// Records that the dictionary has nothing for [wordId], so it stops being
+  /// asked about.
+  Future<Result<void>> giveUpOnMeaning(int wordId);
 }

@@ -109,4 +109,65 @@ void main() {
     final words = await source.listWords();
     expect(words.map((w) => w.display), ['second', 'first']);
   });
+
+  group('the enrichment queue', () {
+    test('holds the words with no meaning, oldest first', () async {
+      await source.addWord(display: 'older', now: now);
+      await source.addWord(
+        display: 'newer',
+        now: now.add(const Duration(minutes: 1)),
+      );
+
+      final queue = await source.pendingEnrichment(limit: 10);
+
+      // Oldest first, opposite to the list: a backlog should drain in the
+      // order it built up.
+      expect(queue.map((w) => w.display), ['older', 'newer']);
+    });
+
+    test('drops a word once it has been glossed', () async {
+      final row = await source.addWord(display: 'errand', now: now);
+
+      await source.applyGloss(row.id, meaningVi: 'Việc vặt.', now: now);
+
+      expect(await source.pendingEnrichment(limit: 10), isEmpty);
+      final stored = await source.findWord(row.id);
+      expect(stored!.meaningVi, 'Việc vặt.');
+      expect(stored.enrichmentStatus, EnrichmentStatus.ready);
+    });
+
+    test('drops a word the dictionary could not help with', () async {
+      final row = await source.addWord(display: 'gaslighting', now: now);
+
+      await source.markEnrichmentFailed(row.id, now: now);
+
+      expect(await source.pendingEnrichment(limit: 10), isEmpty);
+      expect(
+        (await source.findWord(row.id))!.enrichmentStatus,
+        EnrichmentStatus.failed,
+      );
+    });
+
+    test('never writes over a meaning that is already there', () async {
+      // The seed pack's own glosses, and anything a future import brings, are
+      // not the dictionary's to replace.
+      final row = await source.addWord(
+        display: 'decision',
+        now: now,
+        meaningVi: 'quyết định',
+      );
+
+      await source.applyGloss(row.id, meaningVi: 'Sự giải quyết.', now: now);
+
+      expect((await source.findWord(row.id))!.meaningVi, 'quyết định');
+    });
+
+    test('honours its limit', () async {
+      for (final word in ['one', 'two', 'three']) {
+        await source.addWord(display: word, now: now);
+      }
+
+      expect(await source.pendingEnrichment(limit: 2), hasLength(2));
+    });
+  });
 }

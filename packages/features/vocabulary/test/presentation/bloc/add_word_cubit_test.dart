@@ -8,10 +8,13 @@ import 'package:mocktail/mocktail.dart';
 
 class _MockAddWord extends Mock implements AddWord {}
 
+class _MockEnricher extends Mock implements WordEnricher {}
+
 class _FakeParams extends Fake implements AddWordParams {}
 
 void main() {
   late _MockAddWord addWord;
+  late _MockEnricher enricher;
 
   final word = Word(
     id: 1,
@@ -22,12 +25,16 @@ void main() {
   );
 
   setUpAll(() => registerFallbackValue(_FakeParams()));
-  setUp(() => addWord = _MockAddWord());
+  setUp(() {
+    addWord = _MockAddWord();
+    enricher = _MockEnricher();
+    when(enricher.sweep).thenAnswer((_) async {});
+  });
 
   group('a share seeds the form', () {
     blocTest<AddWordCubit, AddWordState>(
       'a shared word fills the word, leaving the sentence empty',
-      build: () => AddWordCubit(addWord),
+      build: () => AddWordCubit(addWord, enricher),
       act: (cubit) => cubit.prefill(word: 'decision'),
       expect: () => [
         isA<AddWordState>()
@@ -38,7 +45,7 @@ void main() {
 
     blocTest<AddWordCubit, AddWordState>(
       'a shared sentence fills the sentence, leaving the word to the learner',
-      build: () => AddWordCubit(addWord),
+      build: () => AddWordCubit(addWord, enricher),
       act: (cubit) => cubit.prefill(sentence: 'It was a hard decision.'),
       expect: () => [
         isA<AddWordState>()
@@ -49,7 +56,7 @@ void main() {
 
     blocTest<AddWordCubit, AddWordState>(
       'nothing shared emits nothing',
-      build: () => AddWordCubit(addWord),
+      build: () => AddWordCubit(addWord, enricher),
       act: (cubit) => cubit.prefill(),
       expect: () => <AddWordState>[],
     );
@@ -58,7 +65,7 @@ void main() {
   blocTest<AddWordCubit, AddWordState>(
     'passes what was typed to the use case',
     setUp: () => when(() => addWord(any())).thenAnswer((_) async => Ok(word)),
-    build: () => AddWordCubit(addWord),
+    build: () => AddWordCubit(addWord, enricher),
     act: (cubit) async {
       cubit
         ..displayChanged('decision')
@@ -69,12 +76,27 @@ void main() {
       final params = verify(() => addWord(captureAny())).captured.single;
       expect((params as AddWordParams).display, 'decision');
       expect(params.sentence, 'It was a hard decision.');
+      // A stored word with no meaning is what the lookup exists for.
+      verify(enricher.sweep).called(1);
     },
   );
 
   blocTest<AddWordCubit, AddWordState>(
+    'a word that failed to save is not sent for a lookup',
+    setUp: () => when(() => addWord(any())).thenAnswer(
+      (_) async => const Err(ValidationFailure('nope')),
+    ),
+    build: () => AddWordCubit(addWord, enricher),
+    act: (cubit) async {
+      cubit.displayChanged('decision');
+      await cubit.submit();
+    },
+    verify: (_) => verifyNever(enricher.sweep),
+  );
+
+  blocTest<AddWordCubit, AddWordState>(
     'refuses to submit an empty word',
-    build: () => AddWordCubit(addWord),
+    build: () => AddWordCubit(addWord, enricher),
     act: (cubit) => cubit.submit(),
     expect: () => <AddWordState>[],
     verify: (_) => verifyNever(() => addWord(any())),
@@ -85,7 +107,7 @@ void main() {
     setUp: () => when(() => addWord(any())).thenAnswer(
       (_) async => const Err(ValidationFailure('Enter a single word')),
     ),
-    build: () => AddWordCubit(addWord),
+    build: () => AddWordCubit(addWord, enricher),
     act: (cubit) async {
       cubit.displayChanged('hard decision');
       await cubit.submit();
@@ -108,7 +130,7 @@ void main() {
     setUp: () => when(() => addWord(any())).thenAnswer(
       (_) async => const Err(ValidationFailure('nope')),
     ),
-    build: () => AddWordCubit(addWord),
+    build: () => AddWordCubit(addWord, enricher),
     act: (cubit) async {
       cubit.displayChanged('hard decision');
       await cubit.submit();
@@ -128,7 +150,7 @@ void main() {
       await Future<void>.delayed(const Duration(milliseconds: 20));
       return Ok(word);
     }),
-    build: () => AddWordCubit(addWord),
+    build: () => AddWordCubit(addWord, enricher),
     act: (cubit) async {
       cubit.displayChanged('decision');
       final first = cubit.submit();

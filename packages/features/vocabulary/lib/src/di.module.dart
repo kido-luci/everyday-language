@@ -16,6 +16,8 @@ import 'package:feature_vocabulary/src/data/local/vocabulary_local_data_source.d
     as _i566;
 import 'package:feature_vocabulary/src/data/readers/study_stats_reader_impl.dart'
     as _i632;
+import 'package:feature_vocabulary/src/data/remote/wiktionary_client.dart'
+    as _i93;
 import 'package:feature_vocabulary/src/data/repositories/review_repository_impl.dart'
     as _i158;
 import 'package:feature_vocabulary/src/data/repositories/seed_repository_impl.dart'
@@ -45,6 +47,7 @@ import 'package:feature_vocabulary/src/domain/usecases/list_words.dart'
     as _i1044;
 import 'package:feature_vocabulary/src/domain/usecases/load_due_cards.dart'
     as _i345;
+import 'package:feature_vocabulary/src/domain/word_enricher.dart' as _i242;
 import 'package:feature_vocabulary/src/presentation/bloc/add_word/add_word_cubit.dart'
     as _i330;
 import 'package:feature_vocabulary/src/presentation/bloc/review_session/review_session_cubit.dart'
@@ -63,6 +66,7 @@ class FeatureVocabularyPackageModule extends _i526.MicroPackageModule {
   @override
   _i687.FutureOr<void> init(_i526.GetItHelper gh) {
     final vocabularyExternalModule = _$VocabularyExternalModule();
+    gh.lazySingleton<_i93.WiktionaryClient>(() => _i93.WiktionaryClient());
     gh.lazySingleton<_i914.SeedPackLoader>(() => _i914.SeedPackLoader());
     gh.lazySingleton<_i902.SrsScheduler>(
       () => vocabularyExternalModule.provideScheduler(),
@@ -116,6 +120,12 @@ class FeatureVocabularyPackageModule extends _i526.MicroPackageModule {
         gh<_i740.ReviewLocalDataSource>(),
       ),
     );
+    gh.lazySingleton<_i242.WordEnricher>(
+      () => _i242.WordEnricher(
+        gh<_i644.VocabularyRepository>(),
+        gh<_i93.WiktionaryClient>(),
+      ),
+    );
     gh.factory<_i1028.ReviewSessionCubit>(
       () => _i1028.ReviewSessionCubit(
         gh<_i345.LoadDueCards>(),
@@ -152,7 +162,10 @@ class FeatureVocabularyPackageModule extends _i526.MicroPackageModule {
       () => _i122.WordDetailCubit(gh<_i985.GetWord>()),
     );
     gh.factory<_i330.AddWordCubit>(
-      () => _i330.AddWordCubit(gh<_i967.AddWord>()),
+      () => _i330.AddWordCubit(
+        gh<_i967.AddWord>(),
+        gh<_i242.WordEnricher>(),
+      ),
     );
   }
 }

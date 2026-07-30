@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer' as developer;
 
 import 'package:app_platform/app_platform.dart';
@@ -44,6 +45,16 @@ Future<void> main() async {
     await getIt<CrashReporter>().install();
 
     await _importSeedVocabulary();
+
+    // The dictionary's licence requires attribution wherever its text is
+    // shown, and the app shows it on every word. Registered before anything
+    // can open the licence page.
+    registerWiktionaryAttribution();
+
+    // Look up whatever is still missing a meaning, without holding the first
+    // frame behind a network round trip. Words captured offline wait here
+    // until a launch that has signal.
+    unawaited(getIt<WordEnricher>().sweep());
 
     runApp(const App());
   } on Object catch (error, stackTrace) {

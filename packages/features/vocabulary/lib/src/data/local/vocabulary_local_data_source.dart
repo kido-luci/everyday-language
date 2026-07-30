@@ -28,6 +28,55 @@ class VocabularyLocalDataSource {
     _db.words,
   )..where((w) => w.lemma.equals(lemma))).getSingleOrNull();
 
+  /// Words still waiting for a meaning, oldest first.
+  ///
+  /// Oldest first so a backlog drains in the order it built up, and the word
+  /// captured last week is not stuck behind everything captured since.
+  Future<List<WordRow>> pendingEnrichment({required int limit}) =>
+      (_db.select(_db.words)
+            ..where(
+              (w) => w.enrichmentStatus.equalsValue(
+                EnrichmentStatus.pending,
+              ),
+            )
+            ..orderBy([(w) => OrderingTerm.asc(w.createdAtUs)])
+            ..limit(limit))
+          .get();
+
+  /// Stores a looked-up meaning and marks the word done.
+  ///
+  /// Leaves a meaning that is already there alone: the learner's own words are
+  /// never overwritten by a dictionary, and re-running the sweep is harmless.
+  Future<void> applyGloss(
+    int wordId, {
+    required String meaningVi,
+    String? phonetic,
+    String? partOfSpeech,
+    required DateTime now,
+  }) async {
+    final existing = await findWord(wordId);
+    if (existing == null) return;
+
+    await (_db.update(_db.words)..where((w) => w.id.equals(wordId))).write(
+      WordsCompanion(
+        meaningVi: Value(existing.meaningVi ?? meaningVi),
+        phonetic: Value(existing.phonetic ?? phonetic),
+        partOfSpeech: Value(existing.partOfSpeech ?? partOfSpeech),
+        enrichmentStatus: const Value(EnrichmentStatus.ready),
+        updatedAtUs: Value(now.toUtc().microsecondsSinceEpoch),
+      ),
+    );
+  }
+
+  /// Marks a word the dictionary does not have, so the sweep stops asking.
+  Future<void> markEnrichmentFailed(int wordId, {required DateTime now}) =>
+      (_db.update(_db.words)..where((w) => w.id.equals(wordId))).write(
+        WordsCompanion(
+          enrichmentStatus: const Value(EnrichmentStatus.failed),
+          updatedAtUs: Value(now.toUtc().microsecondsSinceEpoch),
+        ),
+      );
+
   Future<List<ExampleRow>> examplesFor(Iterable<int> wordIds) {
     if (wordIds.isEmpty) return Future.value(const []);
     return (_db.select(_db.examples)

@@ -27,6 +27,9 @@ dependencies:
   flutter_bloc: ^9.1.1
   bloc_concurrency: ^0.3.0
   go_router: ^17.3.0
+  # The dictionary lookup: one GET per captured word. `http` rather than a
+  # heavier client because that is the whole of the app's network surface.
+  http: ^1.6.0
   injectable: ^3.0.0
   get_it: ^9.2.1
   meta: ^1.16.0

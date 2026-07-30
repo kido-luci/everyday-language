@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:localization/localization.dart';
+import 'package:shared_contracts/shared_contracts.dart';
 
 import '../../domain/entities/word.dart';
 import '../../locator.dart';
@@ -28,13 +31,56 @@ class WordsListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => getIt<WordsListBloc>()..add(const WordsRequested()),
-      child: WordsListView(
-        onAdd: onAdd,
-        onOpen: onOpen,
-        onReview: onReview,
+      child: _ReloadOnActivity(
+        child: WordsListView(
+          onAdd: onAdd,
+          onOpen: onOpen,
+          onReview: onReview,
+        ),
       ),
     );
   }
+}
+
+/// Reloads the list whenever something changes the collection.
+///
+/// Returning from the add screen is not the only way a word changes any more:
+/// the dictionary lookup runs after the save, on its own time, and writes a
+/// meaning — or gives up — while this screen is already on top. Without this,
+/// the tile keeps whatever it was built with, so a word sits there saying its
+/// details will arrive when you are online long after they have arrived, or
+/// long after the lookup decided they never would.
+///
+/// The shell keeps every tab alive, so leaving and coming back does not
+/// rebuild this either. The dashboard listens for the same reason.
+class _ReloadOnActivity extends StatefulWidget {
+  const _ReloadOnActivity({required this.child});
+
+  final Widget child;
+
+  @override
+  State<_ReloadOnActivity> createState() => _ReloadOnActivityState();
+}
+
+class _ReloadOnActivityState extends State<_ReloadOnActivity> {
+  StreamSubscription<void>? _activity;
+
+  @override
+  void initState() {
+    super.initState();
+    _activity = getIt<ActivityNotifier>().onActivityOccurred.listen((_) {
+      if (mounted) context.read<WordsListBloc>().add(const WordsRequested());
+    });
+  }
+
+  @override
+  void dispose() {
+    unawaited(_activity?.cancel());
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.child;
 }
 
 @visibleForTesting
