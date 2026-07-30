@@ -37,12 +37,15 @@ void main() {
     when(activity.notifyActivityOccurred).thenReturn(null);
   });
 
-  test('a found meaning is announced, so the tile stops saying "soon"', () async {
-    final result = await repository.saveMeaning(1, meaningVi: 'Trì hoãn.');
+  test(
+    'a found meaning is announced, so the tile stops saying "soon"',
+    () async {
+      final result = await repository.saveMeaning(1, meaningVi: 'Trì hoãn.');
 
-    expect(result, isA<Ok<void>>());
-    verify(activity.notifyActivityOccurred).called(1);
-  });
+      expect(result, isA<Ok<void>>());
+      verify(activity.notifyActivityOccurred).called(1);
+    },
+  );
 
   test('giving up is announced too', () async {
     // Otherwise the tile keeps promising a meaning that is never coming.
