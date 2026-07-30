@@ -32,19 +32,12 @@ class AddWordCubit extends Cubit<AddWordState> {
   void sentenceChanged(String value) =>
       emit(state.copyWith(sentence: value, status: AddWordStatus.editing));
 
-  void meaningChanged(String value) =>
-      emit(state.copyWith(meaningVi: value, status: AddWordStatus.editing));
-
   Future<void> submit() async {
     if (!state.canSubmit) return;
     emit(state.copyWith(status: AddWordStatus.submitting));
 
     final result = await _addWord(
-      AddWordParams(
-        display: state.display,
-        sentence: state.sentence,
-        meaningVi: state.meaningVi,
-      ),
+      AddWordParams(display: state.display, sentence: state.sentence),
     );
 
     switch (result) {

@@ -39,14 +39,16 @@ void main() {
       find.byType(TextField).at(1),
       'It was a hard decision.',
     );
-    await tester.enterText(find.byType(TextField).at(2), 'quyết định');
     await tester.pumpAndSettle();
 
     await tapAndSettle(tester, find.text('Save word'));
 
-    // ── It is in the list, showing the meaning ──────────────────────────────
+    // ── It is in the list, captioned by the sentence it came from ───────────
+    // There is no meaning to show: the form does not ask for one, so the tile
+    // falls back to the learner's own sentence. That fallback is the normal
+    // case for a captured word, not an edge one.
     expect(find.text('decision'), findsOneWidget);
-    expect(find.text('quyết định'), findsOneWidget);
+    expect(find.text('It was a hard decision.'), findsWidgets);
 
     // Three cards, one per direction, all due now.
     final db = getIt<AppDatabase>();

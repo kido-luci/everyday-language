@@ -1454,18 +1454,6 @@ abstract class AppLocalizations {
   /// **'Optional — but it makes the word stick.'**
   String get vocabularySentenceHelper;
 
-  /// No description provided for @vocabularyMeaningLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Meaning'**
-  String get vocabularyMeaningLabel;
-
-  /// No description provided for @vocabularyMeaningHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Optional'**
-  String get vocabularyMeaningHint;
-
   /// No description provided for @vocabularySave.
   ///
   /// In en, this message translates to:

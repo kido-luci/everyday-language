@@ -752,12 +752,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Optional — but it makes the word stick.';
 
   @override
-  String get vocabularyMeaningLabel => 'Meaning';
-
-  @override
-  String get vocabularyMeaningHint => 'Optional';
-
-  @override
   String get vocabularySave => 'Save word';
 
   @override

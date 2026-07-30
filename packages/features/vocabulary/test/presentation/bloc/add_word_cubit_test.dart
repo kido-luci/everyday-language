@@ -62,15 +62,13 @@ void main() {
     act: (cubit) async {
       cubit
         ..displayChanged('decision')
-        ..sentenceChanged('It was a hard decision.')
-        ..meaningChanged('quyết định');
+        ..sentenceChanged('It was a hard decision.');
       await cubit.submit();
     },
     verify: (_) {
       final params = verify(() => addWord(captureAny())).captured.single;
       expect((params as AddWordParams).display, 'decision');
       expect(params.sentence, 'It was a hard decision.');
-      expect(params.meaningVi, 'quyết định');
     },
   );
 

@@ -99,12 +99,6 @@ class AddWordView extends StatelessWidget {
                 maxLines: 3,
                 onChanged: cubit.sentenceChanged,
               ),
-              const SizedBox(height: AppSpacing.lg),
-              AppTextField(
-                label: context.l10n.vocabularyMeaningLabel,
-                hint: context.l10n.vocabularyMeaningHint,
-                onChanged: cubit.meaningChanged,
-              ),
               const SizedBox(height: AppSpacing.xl),
               AppButton(
                 label: context.l10n.vocabularySave,

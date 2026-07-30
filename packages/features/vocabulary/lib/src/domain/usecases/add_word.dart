@@ -5,15 +5,18 @@ import '../entities/word.dart';
 import '../repositories/vocabulary_repository.dart';
 
 /// What the learner typed, before it becomes a word.
+///
+/// The word and the sentence they met it in, and nothing else. A meaning is
+/// not theirs to write: capture has to stay quick enough to do mid-sentence,
+/// and a field asking what the word means turns a two-second capture into
+/// homework — so words arrive unglossed and something else fills them in.
 class AddWordParams {
-  const AddWordParams({required this.display, this.sentence, this.meaningVi});
+  const AddWordParams({required this.display, this.sentence});
 
   final String display;
 
   /// The sentence they met it in, if they had one to hand.
   final String? sentence;
-
-  final String? meaningVi;
 }
 
 @injectable
@@ -56,13 +59,7 @@ class AddWord extends UseCase<AddWordParams, Word> {
       () => _repository.addWord(
         display: display,
         sentence: (sentence?.isEmpty ?? true) ? null : sentence,
-        meaningVi: _blankToNull(param.meaningVi),
       ),
     );
-  }
-
-  static String? _blankToNull(String? value) {
-    final trimmed = value?.trim();
-    return (trimmed == null || trimmed.isEmpty) ? null : trimmed;
   }
 }

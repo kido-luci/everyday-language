@@ -394,8 +394,6 @@
   "vocabularySentenceLabel": "Sentence you met it in",
   "vocabularySentenceHint": "It was a hard decision.",
   "vocabularySentenceHelper": "Optional — but it makes the word stick.",
-  "vocabularyMeaningLabel": "Meaning",
-  "vocabularyMeaningHint": "Optional",
   "vocabularySave": "Save word",
   "vocabularyDelete": "Delete word",
   "vocabularyDeleteConfirm": "Delete this word and everything you have learned about it?",
