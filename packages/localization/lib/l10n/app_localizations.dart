@@ -1418,6 +1418,30 @@ abstract class AppLocalizations {
   /// **'Add a word you met today, with the sentence you met it in.'**
   String get vocabularyEmptyMessage;
 
+  /// No description provided for @vocabularySearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search your words'**
+  String get vocabularySearchHint;
+
+  /// No description provided for @vocabularySearchClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear search'**
+  String get vocabularySearchClear;
+
+  /// No description provided for @vocabularySearchNoMatchesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No matches'**
+  String get vocabularySearchNoMatchesTitle;
+
+  /// No description provided for @vocabularySearchNoMatchesMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing here matches “{query}”.'**
+  String vocabularySearchNoMatchesMessage(String query);
+
   /// No description provided for @vocabularyAddTitle.
   ///
   /// In en, this message translates to:

@@ -16,6 +16,7 @@ class WordsListBloc extends Bloc<WordsListEvent, WordsListState> {
     // newer result, not race the older one to the screen.
     on<WordsRequested>(_onRequested, transformer: restartable());
     on<WordDeleted>(_onDeleted, transformer: sequential());
+    on<WordsSearched>(_onSearched);
   }
 
   final ListWords _listWords;
@@ -37,6 +38,12 @@ class WordsListBloc extends Bloc<WordsListEvent, WordsListState> {
           ),
         );
     }
+  }
+
+  /// Records the query. The filtering itself is [WordsListState.visibleWords],
+  /// so no reload is needed and a keystroke costs nothing but a rebuild.
+  void _onSearched(WordsSearched event, Emitter<WordsListState> emit) {
+    emit(state.copyWith(query: event.query));
   }
 
   Future<void> _onDeleted(

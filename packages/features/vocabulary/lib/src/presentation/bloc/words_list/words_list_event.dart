@@ -15,3 +15,10 @@ final class WordDeleted extends WordsListEvent {
 
   final int id;
 }
+
+/// The learner typed in the search field.
+final class WordsSearched extends WordsListEvent {
+  const WordsSearched(this.query);
+
+  final String query;
+}
