@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.application") version "8.9.1" apply false
+    id("com.android.application") version "9.3.1" apply false
     id("org.jetbrains.kotlin.android") version "2.4.10" apply false
     id("com.google.gms.google-services") version "4.5.0" apply false
     id("com.google.firebase.crashlytics") version "3.0.7" apply false
@@ -42,7 +42,13 @@ subprojects {
     // late and Gradle would fail with "Cannot run Project.afterEvaluate(Action)
     // when the project is already evaluated."
     plugins.withId("com.android.library") {
-        extensions.configure<com.android.build.gradle.LibraryExtension>("android") {
+        // `com.android.build.api.dsl.LibraryExtension`, not the older
+        // `com.android.build.gradle.LibraryExtension`: AGP 9 deprecates the
+        // latter and drops it in AGP 10. The legacy extension object each
+        // plugin module registers still implements this interface, so
+        // configuring against it works today under `android.newDsl=false` and
+        // keeps working once that opt-out is gone.
+        extensions.configure<com.android.build.api.dsl.LibraryExtension>("android") {
             compileOptions {
                 sourceCompatibility = JavaVersion.VERSION_17
                 targetCompatibility = JavaVersion.VERSION_17
