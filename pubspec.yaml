@@ -111,7 +111,7 @@ dependencies:
   # Firebase platform initialization — required by every Firebase plugin.
   firebase_core: ^4.9.0
 
-  vector_graphics: ^1.2.2
+  vector_graphics: ^1.2.3
   font_awesome_flutter: ^11.0.0
 dev_dependencies:
   flutter_test:
@@ -133,7 +133,7 @@ dev_dependencies:
 
   # Codegen driver. Runs every generator below.
   # Run: dart run build_runner build --delete-conflicting-outputs
-  build_runner: ^2.15.1
+  build_runner: ^2.16.0
 
   # CI guard: fails the build if generated files are stale
   # (i.e. someone forgot to re-run build_runner).
@@ -141,7 +141,7 @@ dev_dependencies:
 
   # Generates configureDependencies() registration code for get_it
   # from @injectable annotations.
-  injectable_generator: ^3.0.2
+  injectable_generator: ^3.1.3
 
   # Generates type-safe references to assets and fonts declared below
   # (output: lib/gen/assets.gen.dart). Use e.g. Assets.images.logo instead
